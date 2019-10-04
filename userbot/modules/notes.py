@@ -106,14 +106,17 @@ async def incom_note(getnt):
                 msg_o = await getnt.client.get_messages(entity=BOTLOG_CHATID,
                                                         ids=int(
                                                             note.f_mesg_id))
+                await getnt.delete()
                 await getnt.client.send_message(getnt.chat_id,
                                                 msg_o.mesage,
                                                 reply_to=message_id_to_reply,
                                                 file=msg_o.media)
             elif note and note.reply:
+                await getnt.delete()
                 await getnt.client.send_message(getnt.chat_id,
                                                 note.reply,
                                                 reply_to=message_id_to_reply)
+
     except AttributeError:
         pass
 
@@ -149,12 +152,12 @@ CMD_HELP.update({
     "\
 #<notename>\
 \nUsage: Gets the specified note.\
-\n\n.save <notename>\
-\nUsage: Saves the replied message as a note with the name notename. (Works with pics, docs, and stickers too!)\
+\n\n.save <notename> <notedata> or reply to a message with .save <notename>\
+\nUsage: Saves the replied message as a note with the notename. (Works with pics, docs, and stickers too!)\
 \n\n.notes\
 \nUsage: Gets all saved notes in a chat.\
 \n\n.clear <notename>\
 \nUsage: Deletes the specified note.\
-\n\n.rmbotnotes <bot_name>\
+\n\n.rmbotnotes <marie/rose>\
 \nUsage: Removes all notes of admin bots (Currently supported: Marie, Rose and their clones.) in the chat."
 })

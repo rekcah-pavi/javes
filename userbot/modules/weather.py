@@ -47,6 +47,7 @@ async def get_weather(weather):
         return
 
     APPID = OWM_API
+    result = None
 
     if not weather.pattern_match.group(1):
         CITY = DEFCITY
@@ -130,7 +131,7 @@ async def get_weather(weather):
         + f"**Humidity:** `{humidity}%`\n" +
         f"**Wind:** `{kmph[0]} kmh | {mph[0]} mph, {findir}`\n" +
         f"**Sunrise:** `{sun(sunrise)}`\n" +
-        f"**Sunset:** `{sun(sunset)}`\n\n" + f"**{desc}**\n" +
+        f"**Sunset:** `{sun(sunset)}`\n\n\n" + f"**{desc}**\n" +
         f"`{cityname}, {fullc_n}`\n" + f"`{time}`")
 
 

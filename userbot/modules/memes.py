@@ -535,7 +535,7 @@ SLAP_TEMPLATES = [
     "picks up a {item} and {hits} {victim} with it.",
     "ties {victim} to a chair and {throws} a {item} at them.",
     "{hits} {victim} {where} with a {item}.",
-    "ties {victim} to a pole and whips them {where} with a {item}."
+    "ties {victim} to a pole and whips them {where} with a {item}.",
     "gave a friendly push to help {victim} learn to swim in lava.",
     "sent {victim} to /dev/null.", "sent {victim} down the memory hole.",
     "beheaded {victim}.", "threw {victim} off a building.",
@@ -854,12 +854,12 @@ async def zal(zgfy):
             continue
 
         for _ in range(0, 3):
-            randint = randint(0, 2)
+            zalgint = randint(0, 2)
 
-            if randint == 0:
+            if zalgint == 0:
                 charac = charac.strip() + \
                     choice(ZALG_LIST[0]).strip()
-            elif randint == 1:
+            elif zalgint == 1:
                 charac = charac.strip() + \
                     choice(ZALG_LIST[1]).strip()
             else:
@@ -1054,17 +1054,17 @@ async def scam(event):
     ]
     input_str = event.pattern_match.group(1)
     args = input_str.split()
-    if len(args) is 0:  # Let bot decide action and time
+    if len(args) == 0:  # Let bot decide action and time
         scam_action = choice(options)
         scam_time = randint(30, 60)
-    elif len(args) is 1:  # User decides time/action, bot decides the other.
+    elif len(args) == 1:  # User decides time/action, bot decides the other.
         try:
             scam_action = str(args[0]).lower()
             scam_time = randint(30, 60)
         except ValueError:
             scam_action = choice(options)
             scam_time = int(args[0])
-    elif len(args) is 2:  # User decides both action and time
+    elif len(args) == 2:  # User decides both action and time
         scam_action = str(args[0]).lower()
         scam_time = int(args[1])
     else:

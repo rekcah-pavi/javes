@@ -12,7 +12,6 @@
   "repository": "https://github.com/AvinashReddy3108/PaperplaneExtended",
   "website": "https://telegra.ph/How-to-host-a-Telegram-Userbot-07-24",
   "success_url": "https://t.me/PaperplaneExtended",
-  "stack": "container",
   "env": {
     "API_KEY": {
       "description": "Get this value from my.telegram.org.",
@@ -26,6 +25,18 @@
       "description": "Get this value by running [python3 string_session.py] in Termux or local system.",
       "required": true
     },
+    "UPSTREAM_REPO_URL": {
+      "description": "In case you maintain a fork, add your repo URL here.",
+      "required": false
+    },
+    "HEROKU_APIKEY": {
+      "description": "Your Heroku API key, get it from 'https://dashboard.heroku.com/account'",
+      "value": ""
+    },
+    "HEROKU_APPNAME": {
+      "description": "Add the Heroku app name here. It helps with userbot updates.",
+      "value": ""
+    },
     "COUNTRY": {
       "description": "Set your Country to be used in the .time and .date commands.",
       "required": false
@@ -37,12 +48,12 @@
     },
     "CHROME_DRIVER": {
       "description": "ChromeDriver location for selenium based modules.",
-      "value": "/usr/bin/chromedriver",
+      "value": "/app/.chromedriver/bin/chromedriver",
       "required": false
     },
     "GOOGLE_CHROME_BIN": {
       "description": "Google Chrome (or) Chromium binary location for selenium based modules.",
-      "value": "/usr/bin/chromium-browser",
+      "value": "/app/.apt/usr/bin/google-chrome",
       "required": false
     },
     "OPEN_WEATHER_MAP_APPID": {
@@ -119,7 +130,7 @@
     },
     "DEFAULT_BIO": {
       "description": "Default profile bio.",
-      "value": "[PM = Report Spam] I ❤ ️@PaperplaneExtended",
+      "value": "[PM = Report Spam] Beware of my userbot.",
       "required": false
     },
     "ALIVE_NAME": {
@@ -149,6 +160,29 @@
       "options": {
         "version": "9.5"
       }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    },
+    {
+      "url": "https://github.com/opendoor-labs/heroku-buildpack-p7zip"
+    },
+    {
+      "url": "https://github.com/amivin/aria2-heroku"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-google-chrome"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-chromedriver"
+    },
+    {
+      "url": "heroku-community/apt"
+    },
+    {
+      "url": "heroku/python"
     }
   ]
 }

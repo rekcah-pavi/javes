@@ -21,6 +21,7 @@ RUN apk add --no-cache --update \
     sudo \
     aria2 \
     util-linux \
+    libevent \
     chromium \
     chromium-chromedriver \
     jpeg-dev \
@@ -64,7 +65,7 @@ RUN python3 -m ensurepip \
 #
 # Clone repo and prepare working directory
 #
-RUN git clone -b sql-extended https://github.com/AvinashReddy3108/PaperplaneExtended /root/userbot
+RUN git clone https://github.com/AvinashReddy3108/PaperplaneExtended /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 

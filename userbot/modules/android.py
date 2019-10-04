@@ -38,6 +38,7 @@ async def magisk(request):
                     f'[Uninstaller]({data["uninstaller"]["link"]})\n'
     await request.edit(releases)
 
+
 @register(outgoing=True, pattern=r"^.device(?: |$)(\S*)")
 async def device_info(request):
     """ get android device basic info from its codename """
