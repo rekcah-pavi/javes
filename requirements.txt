@@ -3,7 +3,6 @@ aria2p
 async_generator
 bs4
 cowpy
-cryptg
 dnspython
 emoji
 gitpython
@@ -34,7 +33,8 @@ requests>=2.18.4
 search-engine-parser>=0.4.2
 speedtest-cli>=2.0.2
 sqlalchemy>=1.2
-telethon>=1.10.6
+telethon>=1.10.9
 telethon-session-sqlalchemy>=0.2.6
+tgcrypto
 urbandict>=0.5
 wikipedia>=1.4.0
