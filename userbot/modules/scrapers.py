@@ -194,7 +194,7 @@ async def gsearch(q_event):
     gsearch = GoogleSearch()
     gresults = await gsearch.async_search(*search_args)
     msg = ""
-    for i in range(10):
+    for i in len(gresults["links"]):
         try:
             title = gresults["titles"][i]
             link = gresults["links"][i]
