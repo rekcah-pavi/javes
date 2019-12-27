@@ -160,6 +160,7 @@ if STRING_SESSION:
     bot = TelegramClient(StringSession(STRING_SESSION),
                          API_KEY,
                          API_HASH,
+                         connection_retries=None,
                          auto_reconnect=False,
                          lang_code='en')
 else:
@@ -167,6 +168,7 @@ else:
     bot = TelegramClient("userbot",
                          API_KEY,
                          API_HASH,
+                         connection_retries=None,
                          auto_reconnect=False,
                          lang_code='en')
 
