@@ -23,7 +23,7 @@ def register(**args):
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', False)
     ignore_unsafe = args.get('ignore_unsafe', False)
-    unsafe_pattern = r'^[^/!#@\$0-9A-Za-z]'
+    unsafe_pattern = r"^[^/!#@\$A-Za-z0-9]"
     groups_only = args.get('groups_only', False)
     trigger_on_fwd = args.get('trigger_on_fwd', False)
     disable_errors = args.get('disable_errors', False)
