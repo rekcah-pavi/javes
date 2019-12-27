@@ -35,6 +35,4 @@ LOGS.info("Congratulations, your userbot is now running !!"
 if len(argv) not in (1, 3, 4):
     bot.disconnect()
 else:
-    await bot.run_until_disconnected()
-    args = [sys.executable, "-m", "userbot"]
-    os.execle(sys.executable, *args, os.environ)
+    bot.run_until_disconnected()
