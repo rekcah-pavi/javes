@@ -190,20 +190,22 @@ async def check_botlog_chatid():
         return
 
     entity = await bot.get_entity(BOTLOG_CHATID)
-    if entity.default_banned_rights.send_messages:
-        LOGS.info(
-            "Your account doesn't have rights to send messages to BOTLOG_CHATID "
-            "group. Check if you typed the Chat ID correctly.")
-        quit(1)
+    if not entity.creator:
+        if entity.default_banned_rights.send_messages:
+            LOGS.info(
+                "Your account doesn't have rights to send messages to BOTLOG_CHATID "
+                "group. Check if you typed the Chat ID correctly.")
+            quit(1)
 
 
 with bot:
     try:
         bot.loop.run_until_complete(check_botlog_chatid())
-    except:
+    except Exception as error:
         LOGS.info(
             "BOTLOG_CHATID environment variable isn't a "
-            "valid entity. Check your environment variables/config.env file.")
+            "valid entity. Check your environment variables/config.env file. "
+            f"Here's the error log: {error}")
         quit(1)
 
 # Global Variables
