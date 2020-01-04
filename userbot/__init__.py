@@ -172,6 +172,39 @@ else:
                          auto_reconnect=False,
                          lang_code='en')
 
+async def check_botlog_chatid():
+    if not BOTLOG_CHATID and LOGSPAMMER:
+        LOGS.info(
+            "You must set up the BOTLOG_CHATID variable in the config.env or environment variables, for the private error log storage to work."
+        )
+        quit(1)
+
+    elif not BOTLOG_CHATID and BOTLOG:
+        LOGS.info(
+            "You must set up the BOTLOG_CHATID variable in the config.env or environment variables, for the userbot logging feature to work."
+        )
+        quit(1)
+
+    elif not BOTLOG or not LOGSPAMMER:
+        return
+
+    entity = await bot.get_entity(BOTLOG_CHATID)
+    if not entity.creator:
+        if entity.default_banned_rights.send_messages:
+            LOGS.info(
+                "Your account doesn't have rights to send messages to BOTLOG_CHATID "
+                "group. Check if you typed the Chat ID correctly.")
+            quit(1)
+
+
+with bot:
+    try:
+        bot.loop.run_until_complete(check_botlog_chatid())
+    except:
+        LOGS.info(
+            "BOTLOG_CHATID environment variable isn't a "
+            "valid entity. Check your environment variables/config.env file.")
+        quit(1)
 
 # Global Variables
 COUNT_MSG = 0
