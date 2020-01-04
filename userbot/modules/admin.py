@@ -406,7 +406,7 @@ async def unmoot(unmot):
                 f"CHAT: {unmot.chat.title}(`{unmot.chat_id}`)")
 
 
-@register(incoming=True, disable_edited=True)
+@register(incoming=True, disable_errors=True)
 async def muter(moot):
     """ Used for deleting the messages of muted people """
     try:
