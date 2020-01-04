@@ -1,6 +1,7 @@
 aiohttp
 aria2p
 async_generator
+asyncurban
 bs4
 cowpy
 dnspython
@@ -36,5 +37,4 @@ sqlalchemy>=1.2
 telethon>=1.10.9
 telethon-session-sqlalchemy>=0.2.6
 tgcrypto
-urbandict>=0.5
 wikipedia>=1.4.0
