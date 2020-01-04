@@ -433,7 +433,7 @@ async def muter(moot):
                     await moot.delete()
                     await moot.client(
                         EditBannedRequest(moot.chat_id, moot.sender_id, rights))
-                except (BadRequestError, UserAdminInvalidError):
+                except (BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, UserIdInvalidError):
                     await moot.client.send_read_acknowledge(moot.chat_id, moot.id)
     for i in gmuted:
         if i.sender == str(moot.sender_id):
