@@ -429,12 +429,18 @@ async def muter(moot):
     if muted:
         for i in muted:
             if str(i.sender) == str(moot.sender_id):
-                await moot.delete()
-                await moot.client(
-                    EditBannedRequest(moot.chat_id, moot.sender_id, rights))
+                try:
+                    await moot.delete()
+                    await moot.client(
+                        EditBannedRequest(moot.chat_id, moot.sender_id, rights))
+                except (BadRequestError, UserAdminInvalidError):
+                    await moot.client.send_read_acknowledge(moot.chat_id, moot.id)
     for i in gmuted:
         if i.sender == str(moot.sender_id):
-            await moot.delete()
+            try:
+                await moot.delete()
+            except BadRequestError:
+                await moot.client.send_read_acknowledge(moot.chat_id, moot.id)
 
 
 @register(outgoing=True, pattern="^.ungmute(?: |$)(.*)", groups_only=True)
