@@ -633,7 +633,7 @@ async def kek(keks):
         await keks.edit(":" + uio[i % 2])
 
 
-@register(outgoing=True, pattern=r"^.coinflip (.*)")
+@register(outgoing=True, pattern=r"^.coinflip(?: |$)(.*)")
 async def coin(event):
     r = choice(["heads", "tails"])
     input_str = event.pattern_match.group(1)
@@ -642,20 +642,20 @@ async def coin(event):
     if r == "heads":
         if input_str == "heads":
             await event.edit(
-                "The coin landed on: **Heads**.\nYou were correct.")
+                "The coin landed on: **Heads**.\nAs expected.")
         elif input_str == "tails":
             await event.edit(
-                "The coin landed on: **Heads**.\nYou weren't correct, try again ..."
+                "The coin landed on: **Heads**.\nBetter luck next time?"
             )
         else:
             await event.edit("The coin landed on: **Heads**.")
     elif r == "tails":
         if input_str == "tails":
             await event.edit(
-                "The coin landed on: **Tails**.\nYou were correct.")
+                "The coin landed on: **Tails**.\nAs expected.")
         elif input_str == "heads":
             await event.edit(
-                "The coin landed on: **Tails**.\nYou weren't correct, try again ..."
+                "The coin landed on: **Tails**.\nBetter luck next time?"
             )
         else:
             await event.edit("The coin landed on: **Tails**.")
