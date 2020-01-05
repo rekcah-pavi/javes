@@ -263,8 +263,9 @@ async def urban_dict(ud_e):
         if int(meanlen) >= 4096:
             await ud_e.edit("`Output too large, sending as file.`")
             file = open("output.txt", "w+")
-            file.write("Text: " + query + "\n\nMeaning: " + urban_def.definition +
-                       "\n\n" + "Example: \n" + urban_def.example)
+            file.write("Text: " + query + "\n\nMeaning: " +
+                       urban_def.definition + "\n\n" + "Example: \n" +
+                       urban_def.example)
             file.close()
             await ud_e.client.send_file(
                 ud_e.chat_id,
@@ -279,8 +280,8 @@ async def urban_dict(ud_e):
                         urban_def.example + "__")
         if BOTLOG:
             await ud_e.client.send_message(
-                BOTLOG_CHATID,
-                "UrbanDictionary query for `" + query + "` executed successfully.")
+                BOTLOG_CHATID, "UrbanDictionary query for `" + query +
+                "` executed successfully.")
     else:
         await ud_e.edit("No result found for **" + query + "**")
 

@@ -641,22 +641,18 @@ async def coin(event):
         input_str = input_str.lower()
     if r == "heads":
         if input_str == "heads":
-            await event.edit(
-                "The coin landed on: **Heads**.\nAs expected.")
+            await event.edit("The coin landed on: **Heads**.\nAs expected.")
         elif input_str == "tails":
             await event.edit(
-                "The coin landed on: **Heads**.\nBetter luck next time?"
-            )
+                "The coin landed on: **Heads**.\nBetter luck next time?")
         else:
             await event.edit("The coin landed on: **Heads**.")
     elif r == "tails":
         if input_str == "tails":
-            await event.edit(
-                "The coin landed on: **Tails**.\nAs expected.")
+            await event.edit("The coin landed on: **Tails**.\nAs expected.")
         elif input_str == "heads":
             await event.edit(
-                "The coin landed on: **Tails**.\nBetter luck next time?"
-            )
+                "The coin landed on: **Tails**.\nBetter luck next time?")
         else:
             await event.edit("The coin landed on: **Tails**.")
 
