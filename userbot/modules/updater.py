@@ -7,7 +7,7 @@
 This module updates the userbot based on Upstream revision
 """
 
-from os import remove, execle, path, makedirs, getenv
+from os import remove, execle, path, makedirs, getenv, environ
 from shutil import rmtree
 import asyncio
 import sys
@@ -180,7 +180,7 @@ async def upstream(ups):
                        'Bot is restarting... Wait for a second!`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "userbot"]
-        execle(sys.executable, *args, os.environ)
+        execle(sys.executable, *args, environ)
         return
 
 
