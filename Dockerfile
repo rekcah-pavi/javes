@@ -1,57 +1,52 @@
 # We're using Alpine Edge
 FROM alpine:edge
 
-#
 # We have to uncomment Community repo for some packages
-#
 RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
 
-#
+# install ca-certificates so that HTTPS works consistently
+# other runtime dependencies for Python are installed later
+RUN apk add --no-cache ca-certificates
+
 # Installing Packages
-#
 RUN apk add --no-cache --update \
     bash \
     build-base \
     bzip2-dev \
     curl \
+    coreutils \
     figlet \
     gcc \
     g++ \
     git \
-    sudo \
     aria2 \
     util-linux \
     libevent \
+    libjpeg-turbo-dev \
     chromium \
     chromium-chromedriver \
     jpeg-dev \
+    libc-dev \
     libffi-dev \
     libpq \
     libwebp-dev \
-    libxml2 \
     libxml2-dev \
     libxslt-dev \
     linux-headers \
-    musl \
+    musl-dev \
     neofetch \
     openssl-dev \
-    postgresql \
     postgresql-client \
     postgresql-dev \
-    openssl \
     pv \
     jq \
     wget \
-    python \
-    python3 \
     python3-dev \
     readline-dev \
-    sqlite \
     ffmpeg \
     sqlite-dev \
     sudo \
     zlib-dev \
-    jpeg-dev \
     python-dev
 
 
