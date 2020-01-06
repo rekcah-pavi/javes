@@ -43,7 +43,7 @@ async def update_requirements():
         return repr(e)
 
 
-@register(outgoing=True, pattern="^.update(?: |$)(.*)")
+@register(outgoing=True, pattern="^\.update(?: |$)(.*)")
 async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
     await ups.edit("`Checking for updates, please wait....`")

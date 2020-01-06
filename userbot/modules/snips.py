@@ -38,7 +38,7 @@ async def on_snip(event):
         await event.delete()
 
 
-@register(outgoing=True, pattern="^.snip (\w*)")
+@register(outgoing=True, pattern="^\.snip (\w*)")
 async def on_snip_save(event):
     """ For .snip command, saves snips for future use. """
     try:
@@ -78,7 +78,7 @@ async def on_snip_save(event):
         await event.edit(success.format('saved', keyword))
 
 
-@register(outgoing=True, pattern="^.snips$")
+@register(outgoing=True, pattern="^\.snips$")
 async def on_snip_list(event):
     """ For .snips command, lists snips saved by you. """
     try:
@@ -99,7 +99,7 @@ async def on_snip_list(event):
     await event.edit(message)
 
 
-@register(outgoing=True, pattern="^.remsnip (\w*)")
+@register(outgoing=True, pattern="^\.remsnip (\w*)")
 async def on_snip_delete(event):
     """ For .remsnip command, deletes a snip. """
     try:
