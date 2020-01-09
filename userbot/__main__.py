@@ -15,8 +15,8 @@ from userbot.modules import ALL_MODULES
 
 
 INVALID_PH = '\nERROR: The Phone No. entered is INVALID' \
-             '\n Tip: Use Country Code along with number.' \
-             '\n or check your phone number and try again !'
+             '\nTip: Use Country Code along with number.' \
+             '\nor check your phone number and try again !'
 
 try:
     bot.start()
@@ -29,8 +29,8 @@ for module_name in ALL_MODULES:
 
 LOGS.info("You are running Paperplane Extended [v5.0]")
 
-LOGS.info("Congratulations, your userbot is now running !!"
-          "Test it by typing .alive in any chat.")
+LOGS.info("Congratulations, your userbot is now running !!\
+          \nTest it by typing .alive in any chat.")
 
 if len(argv) not in (1, 3, 4):
     bot.disconnect()
