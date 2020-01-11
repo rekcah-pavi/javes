@@ -6,28 +6,22 @@
 """ Userbot module for executing code and terminal commands from Telegram. """
 
 import asyncio
-import ast
-import contextlib
 from getpass import getuser
 from os import remove
 from sys import executable
-from io import StringIO
-from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, bot
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID
 from userbot.events import register
 
 
-@register(outgoing=True, pattern=r"^\.eval(?:\s+([\S\s]+)|$)")
+@register(outgoing=True, pattern="^\.eval(?: |$)(.*)")
 async def evaluate(query):
     """ For .eval command, evaluates the given Python expression. """
-    reply = await query.get_reply_message()
     if query.is_channel and not query.is_group:
         await query.edit("`Eval isn't permitted on channels`")
         return
 
     if query.pattern_match.group(1):
         expression = query.pattern_match.group(1)
-    elif reply:
-        expression = reply
     else:
         await query.edit("``` Give an expression to evaluate. ```")
         return
@@ -37,11 +31,7 @@ async def evaluate(query):
         return
 
     try:
-        response, out = await async_eval(expression,
-                                         bot=bot,
-                                         event=query,
-                                         reply=reply)
-        evaluation = str(response)
+        evaluation = str(eval(expression))
         if evaluation:
             if isinstance(evaluation, str):
                 if len(evaluation) >= 4096:
@@ -75,92 +65,6 @@ async def evaluate(query):
         await query.client.send_message(
             BOTLOG_CHATID,
             f"Eval query {expression} was executed successfully")
-
-
-# Helper code for eval.
-# https://stackoverflow.com/a/57349931/974936
-async def async_eval(code, **kwargs):
-    # Note to self: please don't set globals here as they will be lost.
-    # Don't clutter locals
-    locs = {}
-    # Restore globals later
-    globs = globals().copy()
-    # This code saves __name__ and __package into a kwarg passed to the function.
-    # It is set before the users code runs to make sure relative imports work
-    global_args = "_globs"
-    while global_args in globs.keys():
-        # Make sure there's no name collision, just keep prepending _s
-        global_args = "_" + global_args
-    kwargs[global_args] = {}
-    for glob in ["__name__", "__package__"]:
-        # Copy data to args we are sending
-        kwargs[global_args][glob] = globs[glob]
-
-    root = ast.parse(code, 'exec')
-    code = root.body
-    if isinstance(
-            code[-1],
-            ast.Expr):  # If we can use it as a lambda return (but multiline)
-        code[-1] = ast.copy_location(ast.Return(
-            code[-1].value), code[-1])  # Change it to a return statement
-    # globals().update(**<global_args>)
-    glob_copy = ast.Expr(
-        ast.Call(
-            func=ast.Attribute(value=ast.Call(func=ast.Name(id='globals',
-                                                            ctx=ast.Load()),
-                                              args=[],
-                                              keywords=[]),
-                               attr='update',
-                               ctx=ast.Load()),
-            args=[],
-            keywords=[
-                ast.keyword(arg=None,
-                            value=ast.Name(id=global_args, ctx=ast.Load()))
-            ]))
-    glob_copy.lineno = 0
-    glob_copy.col_offset = 0
-    ast.fix_missing_locations(glob_copy)
-    code.insert(0, glob_copy)
-    args = []
-    for a in list(map(lambda x: ast.arg(x, None), kwargs.keys())):
-        a.lineno = 0
-        a.col_offset = 0
-        args += [a]
-    fun = ast.AsyncFunctionDef(
-        'tmp',
-        ast.arguments(args=[],
-                      vararg=None,
-                      kwonlyargs=args,
-                      kwarg=None,
-                      defaults=[],
-                      kw_defaults=[None for i in range(len(args))]), code, [],
-        None)
-    fun.lineno = 0
-    fun.col_offset = 0
-    mod = ast.Module([fun])
-    comp = compile(mod, '<string>', 'exec')
-
-    exec(comp, {}, locs)
-
-    with temp_stdio() as out:
-        result = await locs["tmp"](**kwargs)
-        try:
-            globals().clear()
-            # Inconsistent state
-        finally:
-            globals().update(**globs)
-        return result, out.getvalue()
-
-
-# Create a temporary stdio
-@contextlib.contextmanager
-def temp_stdio(stdout=None, stderr=None):
-    old_out = sys.stdout
-    if stdout is None:
-        stdout = StringIO()
-    sys.stdout = stdout
-    yield stdout
-    sys.stdout = old_out
 
 
 @register(outgoing=True, pattern=r"^\.exec(?: |$)([\s\S]*)")
