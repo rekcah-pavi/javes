@@ -9,8 +9,8 @@ emoji
 gitpython
 google-api-python-client
 google-auth-oauthlib
-googletrans>=2.4.0
 google_images_download>=2.7.1
+googletrans>=2.4.0
 gTTS>=2.0.1
 gTTS-token>=1.1.3
 hachoir
@@ -27,7 +27,6 @@ pylast
 pySmartDL
 python-barcode
 python-dotenv
-youtube-dl
 pytz
 qrcode
 requests>=2.18.4
@@ -38,3 +37,5 @@ telethon>=1.10.9
 telethon-session-sqlalchemy>=0.2.6
 tgcrypto
 wikipedia>=1.4.0
+youtube-dl
+
