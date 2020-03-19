@@ -108,10 +108,10 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
-                     f"Hey {DEFAULTUSER},"\n\n"   
-                     f"Javes : 1.2\n"
-                     f"Telethon : {version.__version__} \n"
-                     f"Python: {python_version()} "                     
+                     "Javes: \n\n"
+                     f"Telethon version: {version.__version__} \n"
+                     f"Python: {python_version()} \n"
+                     f"User: {DEFAULTUSER}"
                      "`")
 
 
