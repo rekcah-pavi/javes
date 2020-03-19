@@ -15,24 +15,20 @@
   "stack": "container",
   "env": {
     "TELEGRAM_API_KEY": {
-      "description": "Get this value from my.telegram.org.",
-      "required": true
+      "description": "Get this value from my.telegram.org."
     },
     "TELEGRAM_API_HASH": {
-      "description": "Get this value from my.telegram.org.",
-      "required": true
+      "description": "Get this value from my.telegram.org."
     },
     "TELEGRAM_STRING_SESSION": {
-      "description": "Get this value by running [python3 string_session.py] in Termux or local system.",
-      "required": true
-    
+      "description": "Get this value by running [python3 string_session.py] in Termux or local system."    
     },
     "HEROKU_APIKEY": {
-      "description": "enter your heroku api key for make !update command , get it from 'https://dashboard.heroku.com/account'",
-      "value": "",     
+      "description": "enter your heroku api key for make !update command , get it from 'https://dashboard.heroku.com/account.",
+      "value": ""   
     },
     "HEROKU_APPNAME": {
-      "description": "enter this app name agin here its also need for update bot",
+      "description": "enter this app name agin here its also need for update bot.",
       "value": ""
     },
     "COUNTRY": {
@@ -73,7 +69,7 @@
     },
     "PM_PROTECTOR": {
       "description": "Prevent unknown people to spam your pm , type !allow to allow them ",
-      "value": "False"
+      "value": "false"
     },
     "YOUTUBE_API_KEY": {
       "description": "YouTube Data API Key for .yt command. Get from https://console.cloud.google.com",
@@ -108,11 +104,11 @@
       "required": false
     },
     "LASTFM_API": {
-      "description": "API Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create]",
+      "description": "API Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create].",
       "required": false
     },
     "LASTFM_SECRET": {
-      "description": "SECRET Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create]",
+      "description": "SECRET Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create].",
       "required": false
     },
     "LASTFM_USERNAME": {
