@@ -11,18 +11,18 @@
   ],
   "repository": "https://github.com/rekcah-pavi/javes",
   "website": "https://telegra.ph/How-to-host-a-Telegram-Userbot-07-24",
-  "success_url": "https://t.me/PaperplaneExtended",
+  "success_url": "https://t.me/rekcah05",
   "stack": "container",
   "env": {
-    "API_KEY": {
+    "TELEGRAM_API_KEY": {
       "description": "Get this value from my.telegram.org.",
       "required": true
     },
-    "API_HASH": {
+    "TELEGRAM_API_HASH": {
       "description": "Get this value from my.telegram.org.",
       "required": true
     },
-    "STRING_SESSION": {
+    "TELEGRAM_STRING_SESSION": {
       "description": "Get this value by running [python3 string_session.py] in Termux or local system.",
       "required": true
     },
