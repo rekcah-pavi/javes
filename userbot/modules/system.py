@@ -100,13 +100,3 @@ async def amireallyalive(alive):
 
 
 
-CMD_HELP.update({"system":
-"
-     !javes\
-    \nUsage: Type .!javes to see wether your javes is working or not.\
-    \n\n!pip <module(s)>\
-    \nUsage: Does a search of pip modules(s)\
-    \n\n!sysd\
-    \nUsage: Shows termenal information \
-
- "})
