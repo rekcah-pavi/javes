@@ -119,14 +119,14 @@ async def pipcheck(pip):
         await pip.edit("`Use .help pip to see an example`")
 
 
-@register(outgoing=True, pattern="^\.alive$")
+@register(outgoing=True, pattern="^\!javes$")
 async def amireallyalive(alive):
-    """ For .alive command, check if the bot is running.  """
+    """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
-                     "My bot is running \n\n"
+                     "Javes: \n\n"
                      f"Telethon version: {version.__version__} \n"
                      f"Python: {python_version()} \n"
-                     f"User: {DEFAULTUSER}"
+                     f"Owner: {DEFAULTUSER}"
                      "`")
 
 
