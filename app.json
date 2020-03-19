@@ -135,7 +135,7 @@
     "YOUR_SHORT_NAME": {
       "description": "Name to show in !javes message,less then 5 letters recommed :p",
       "value": "rk",
-      "required": True
+      "required": true
     },
     "G_DRIVE_CLIENT_SECRET": {
       "description": "Enter Your Client Secret for Google Drive.",
