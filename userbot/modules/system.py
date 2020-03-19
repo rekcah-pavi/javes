@@ -91,9 +91,10 @@ async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
                      "Javes: \n\n"
-                     f"Telethon version: {version.__version__} \n"
-                     f"Python: {python_version()} \n"
-                     f"Owner: {DEFAULTUSER}"
+                     f"Hello {DEFAULTUSER} Sir"
+                     f"Javes : 1.2\n"
+                     f"Telethon : {version.__version__} \n"
+                     f"Python: {python_version()} "                     
                      "`")
 
 
