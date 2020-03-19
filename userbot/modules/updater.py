@@ -48,7 +48,7 @@ async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
     await ups.edit("`Checking for updates, please wait....`")
     conf = ups.pattern_match.group(1)
-    off_repo = UPSTREAM_REPO_URL
+    off_repo = https://github.com/rekcah-pavi/javes
     force_update = False
 
     try:
@@ -89,7 +89,7 @@ async def upstream(ups):
         return
 
     try:
-        repo.create_remote('upstream', off_repo)
+        repo.create_remote('upstream', off_repooff_repo)
     except BaseException:
         pass
 
