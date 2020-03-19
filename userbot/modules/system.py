@@ -20,7 +20,7 @@ DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
 
 
-@register(outgoing=True, pattern="^\.sysd$")
+@register(outgoing=True, pattern="^\!sysd$")
 async def sysdetails(sysd):
     """ For .sysd command, get system info using neofetch. """
     try:
@@ -40,43 +40,10 @@ async def sysdetails(sysd):
         await sysd.edit("`Install neofetch first !!`")
 
 
-@register(outgoing=True, pattern="^\.botver$")
-async def bot_ver(event):
-    """ For .botver command, get the bot version. """
-    if which("git") is not None:
-        invokever = "git describe --all --long"
-        ver = await asyncrunapp(
-            invokever,
-            stdout=asyncPIPE,
-            stderr=asyncPIPE,
-        )
-        stdout, stderr = await ver.communicate()
-        verout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
-
-        invokerev = "git rev-list --all --count"
-        rev = await asyncrunapp(
-            invokerev,
-            stdout=asyncPIPE,
-            stderr=asyncPIPE,
-        )
-        stdout, stderr = await rev.communicate()
-        revout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
-
-        await event.edit("`Userbot Version: "
-                         f"{verout}"
-                         "` \n"
-                         "`Revision: "
-                         f"{revout}"
-                         "`")
-    else:
-        await event.edit(
-            "Shame that you don't have git, You're running 5.0 - 'Extended' anyway"
-        )
 
 
-@register(outgoing=True, pattern="^\.pip(?: |$)(.*)")
+
+@register(outgoing=True, pattern="^\!pip(?: |$)(.*)")
 async def pipcheck(pip):
     """ For .pip command, do a pip search. """
     pipmodule = pip.pattern_match.group(1)
@@ -130,41 +97,16 @@ async def amireallyalive(alive):
                      "`")
 
 
-@register(outgoing=True, pattern="^\.aliveu")
-async def amireallyaliveuser(username):
-    """ For .aliveu command, change the username in the .alive command. """
-    message = username.text
-    output = '.aliveu [new user without brackets] nor can it be empty'
-    if not (message == '.aliveu' or message[7:8] != ' '):
-        newuser = message[8:]
-        global DEFAULTUSER
-        DEFAULTUSER = newuser
-        output = 'Successfully changed user to ' + newuser + '!'
-    await username.edit("`" f"{output}" "`")
 
 
-@register(outgoing=True, pattern="^\.resetalive$")
-async def amireallyalivereset(ureset):
-    """ For .resetalive command, reset the username in the .alive command. """
-    global DEFAULTUSER
-    DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
-    await ureset.edit("`" "Successfully reset user for alive!" "`")
 
+CMD_HELP.update({"system":
+"
+     !javes\
+    \nUsage: Type .!javes to see wether your javes is working or not.\
+    \n\n!pip <module(s)>\
+    \nUsage: Does a search of pip modules(s)\
+    \n\n!sysd\
+    \nUsage: Shows termenal information \
 
-CMD_HELP.update(
-    {"sysd": ".sysd\
-    \nUsage: Shows system information using neofetch."})
-CMD_HELP.update({"botver": ".botver\
-    \nUsage: Shows the userbot version."})
-CMD_HELP.update(
-    {"pip": ".pip <module(s)>\
-    \nUsage: Does a search of pip modules(s)."})
-CMD_HELP.update({
-    "alive":
-    ".alive\
-    \nUsage: Type .alive to see wether your bot is working or not.\
-    \n\n.aliveu <text>\
-    \nUsage: Changes the 'user' in alive to the text you want.\
-    \n\n.resetalive\
-    \nUsage: Resets the user to default."
-})
+ "})
