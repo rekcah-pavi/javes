@@ -2,16 +2,12 @@ from asyncio import sleep
 from random import choice, getrandbits, randint
 from re import sub
 import time
-
 from collections import deque
-
 import requests
-
 from cowpy import cow
-
 from userbot import CMD_HELP
 from userbot.events import register
-from userbot.modules.admin import get_user_from_event
+from userbot.modules.group import get_user_from_event
 
 # ================= CONSTANT =================
 METOOSTR = [
@@ -1182,7 +1178,7 @@ async def gtfo(e):
         await e.edit("`\n█████████`" 
                      "`\n█▄█████▄█`"    
                      "`\n█▼▼▼▼▼`"       
-                     "`\n█       Hello Man`"
+                     "`\n█  Hello Man`"
                      "`\n█▲▲▲▲▲`"
                      "`\n█████████`"
                     "`\n ██   ██`")               
