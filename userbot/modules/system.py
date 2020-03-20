@@ -123,6 +123,9 @@ async def amireallyalive(alive):
 
 
 
+
+
+
 requirements_path = path.join(
     path.dirname(path.dirname(path.dirname(__file__))), 'requirements.txt')
 
@@ -131,7 +134,7 @@ async def gen_chlog(repo, diff):
     ch_log = ''
     d_form = "%d/%m/%y"
     for c in repo.iter_commits(diff):
-        ch_log += f'?[{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>\n'
+        ch_log += f'•[{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>\n'
     return ch_log
 
 
@@ -172,7 +175,7 @@ async def upstream(ups):
         if conf != "now":
             await ups.edit(
                 f"`Unfortunately, the directory {error} does not seem to be a git repository.\
-            \nBut we can fix that by force updating the userbot using !update now.`"
+            \nBut we can fix that by force updating the userbot using .update now.`"
             )
             return
         repo = Repo.init()
@@ -210,7 +213,7 @@ async def upstream(ups):
         return
 
     if conf != "now" and not force_update:
-        changelog_str = f'**New UPDATE available for [{ac_br}]:\n\nCHANGELOG:**\n`{changelog}`'
+        changelog_str = f'**New UPDATE available for Javes\n\nCHANGELOG:**\n`{changelog}`'
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
             file = open("output.txt", "w+")
@@ -229,9 +232,9 @@ async def upstream(ups):
 
     if force_update:
         await ups.edit(
-            '`Force-Syncing to latest stable javes code, please wait...`')
+            '`Force-Syncing to latest stable userbot code, please wait...`')
     else:
-        await ups.edit('`Updating javes, please wait....`')
+        await ups.edit('`Updating userbot, please wait....`')
     # We're in a Heroku Dyno, handle it's memez.
     if HEROKU_APIKEY is not None:
         import heroku3
@@ -240,7 +243,7 @@ async def upstream(ups):
         heroku_applications = heroku.apps()
         if not HEROKU_APPNAME:
             await ups.edit(
-                '`[HEROKU MEMEZ] Please set up the HEROKU_APPNAME variable to be able to update javes.`'
+                '`Please set up the HEROKU_APPNAME variable to be able to update userbot.`'
             )
             repo.__del__()
             return
@@ -254,8 +257,8 @@ async def upstream(ups):
             )
             repo.__del__()
             return
-        await ups.edit('`[HEROKU MEMEZ]\
-                        \nJaves dyno build in progress......., please wait 10 minutes `'
+        await ups.edit('`[Updater]\
+                        \Jaces dyno build in progress, please wait for it to complete.`'
                        )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
@@ -273,7 +276,7 @@ async def upstream(ups):
             repo.__del__()
             return
         await ups.edit('`Successfully Updated!\n'
-                       'Restarting, Type !javes after 30 seconds `')
+                       'Restarting......., type !javes for check`')
     else:
         # Classic Updater, pretty straightforward.
         try:
@@ -282,11 +285,13 @@ async def upstream(ups):
             repo.git.reset("--hard", "FETCH_HEAD")
         reqs_upgrade = await update_requirements()
         await ups.edit('`Successfully Updated!\n'
-                       'Restarting, Type !javes after 30 seconds`')
+                       'javes is restarting... Wait for a second!`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "userbot"]
         execle(sys.executable, *args, environ)
         return
+
+
 
 @register(outgoing=True, pattern="^\!speed$")
 async def speedtst(spd):
