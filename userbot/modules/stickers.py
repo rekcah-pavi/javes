@@ -30,7 +30,11 @@ A pack can't have more than 120 stickers at the moment."
 KANGING_STR = [
     
     "Kanging this sticker...",
-    "Hey that's a nice sticker!\",]
+    "Hey that's a nice sticker!\
+    \nMind if I kang?!..",
+    
+    "Kanging this sticker ... ",
+]
 
 
 @register(outgoing=True, pattern="^\!kang")
