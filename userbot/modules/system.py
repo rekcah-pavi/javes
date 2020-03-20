@@ -1,4 +1,13 @@
 from datetime import datetime
+from random import randint
+from asyncio import sleep
+from os import execl
+import sys
+import os
+import io
+import sys
+import json
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot, UPSTREAM_REPO_URL
 from speedtest import Speedtest
 from telethon import functions
 from os import remove, execle, path, makedirs, getenv, environ
@@ -838,5 +847,104 @@ async def selfdestruct(destroy):
     if BOTLOG:
         await destroy.client.send_message(BOTLOG_CHATID,
                                           "sd query done successfully")
+
+@register(outgoing=True, pattern="^\!random")
+async def randomise(items):
+    """ For .random command, get a random item from the list of items. """
+    itemo = (items.text[8:]).split()
+    if len(itemo) < 2:
+        await items.edit(
+            "`2 or more items are required! Check .help random for more info.`"
+        )
+        return
+    index = randint(1, len(itemo) - 1)
+    await items.edit("**Query: **\n`" + items.text[8:] + "`\n**Output: **\n`" +
+                     itemo[index] + "`")
+
+
+@register(outgoing=True, pattern="^\.sleep( [0-9]+)?$")
+async def sleepybot(time):
+    """ For .sleep command, let the userbot snooze for a few second. """
+    message = time.text
+    if " " not in time.pattern_match.group(1):
+        await time.reply("Syntax: `.sleep [seconds]`")
+    else:
+        counter = int(time.pattern_match.group(1))
+        await time.edit("`I am sulking and snoozing....`")
+        await sleep(2)
+        if BOTLOG:
+            await time.client.send_message(
+                BOTLOG_CHATID,
+                "You put the bot to sleep for " + str(counter) + " seconds",
+            )
+        await sleep(counter)
+        await time.edit("`OK, I'm awake now.`")
+
+
+@register(outgoing=True, pattern="^\!shutdown$")
+async def killdabot(event):
+    """ For .shutdown command, shut the bot down."""
+    await event.edit("`Goodbye `")
+    if BOTLOG:
+        await event.client.send_message(BOTLOG_CHATID, "#SHUTDOWN \n"
+                                        "Bot shut down")
+    await bot.disconnect()
+
+
+@register(outgoing=True, pattern="^\!restart$")
+async def killdabot(event):
+    await event.edit("`Restarting.....`")
+    if BOTLOG:
+        await event.client.send_message(BOTLOG_CHATID, "#RESTART \n"
+                                        "Bot Restarted")
+    await bot.disconnect()
+    # Spin a new instance of bot
+    execl(sys.executable, sys.executable, *sys.argv)
+
+
+# Copyright (c) Gegham Zakaryan | 2019
+@register(outgoing=True, pattern="^\!repeat (.*)")
+async def repeat(rep):
+    cnt, txt = rep.pattern_match.group(1).split(' ', 1)
+    replyCount = int(cnt)
+    toBeRepeated = txt
+
+    replyText = toBeRepeated + "\n"
+
+    for i in range(0, replyCount - 1):
+        replyText += toBeRepeated + "\n"
+
+    await rep.edit(replyText)
+
+
+@register(outgoing=True, pattern="^\!repo$")
+async def repo_is_here(wannasee):
+    """ For .repo command, just returns the repo URL. """
+    await wannasee.edit(
+        f"Click [here]({UPSTREAM_REPO_URL}) to open my javes's repository.\n If you want to add more future report @rekcah_05")
+
+
+@register(outgoing=True, pattern="^\!raw$")
+async def raw(event):
+    the_real_message = None
+    reply_to_id = None
+    if event.reply_to_msg_id:
+        previous_message = await event.get_reply_message()
+        the_real_message = previous_message.stringify()
+        reply_to_id = event.reply_to_msg_id
+    else:
+        the_real_message = event.stringify()
+        reply_to_id = event.message.id
+    with io.BytesIO(str.encode(the_real_message)) as out_file:
+        out_file.name = "raw_message_data.txt"
+        await event.edit(
+            "`javes: `i have sent decoded message data in my chat!")
+        await event.client.send_file(
+            BOTLOG_CHATID,
+            out_file,
+            force_document=True,
+            allow_cache=False,
+            reply_to=reply_to_id,
+            caption="`Here's the decoded message data !!`")
 
 
