@@ -1218,7 +1218,7 @@ async def scam(results, lim):
 
     return imglinks
 
-    @register(pattern=r"^\!goss (.*)", outgoing=True)
+@register(pattern=r"^\!goss (.*)", outgoing=True)
 async def capture(url):
     """ For .ss command, capture a website's screenshot and send the photo. """
     await url.edit("`Processing ...`")
