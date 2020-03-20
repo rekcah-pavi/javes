@@ -320,7 +320,7 @@ except AttributeError:
     afk_db = False
 
 # ========================= CONSTANTS ============================
-AFKSTR = [f"Javes: {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou \n"]
+AFKSTR = [f"`Javes: Hello! Sir`: {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou \n"]
 # =================================================================
 
 
