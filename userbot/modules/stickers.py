@@ -1,14 +1,20 @@
-# Copyright (C) 2019 The Raphielscape Company LLC.
-#
-# Licensed under the Raphielscape Public License, Version 1.c (the "License");
-# you may not use this file except in compliance with the License.
-#
-""" Userbot module for kanging stickers or making new ones. Thanks @rupansh"""
-
+import datetime
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from userbot.events import register
+from userbot import bot, CMD_HELP
 import io
 import math
 import urllib.request
 from os import remove
+import io
+import os
+import random
+import textwrap
+from PIL import Image, ImageDraw, ImageFont
+from telethon.tl.types import InputMessagesFilterDocument
+from userbot.events import register
 from PIL import Image
 import random
 from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
@@ -22,26 +28,12 @@ PACK_FULL = "Whoa! That's probably enough stickers for one pack, give it a break
 A pack can't have more than 120 stickers at the moment."
 
 KANGING_STR = [
-    "Using Witchery to kang this sticker...",
-    "Plagiarising hehe...",
-    "Inviting this sticker over to my pack...",
+    
     "Kanging this sticker...",
-    "Hey that's a nice sticker!\
-    \nMind if I kang?!..",
-    "hehe me stel ur stikér\
-    \nhehe.",
-    "Ay look over there (☉｡☉)!→\
-    \nWhile I kang this...",
-    "Roses are red \
-    \nviolets are blue, \
-    \nkanging this sticker \
-    \nso my pacc looks cool",
-    "Imprisoning this sticker...",
-    "Mr.Steal Your Sticker is stealing this sticker... ",
-]
+    "Hey that's a nice sticker!\",]
 
 
-@register(outgoing=True, pattern="^\.kang")
+@register(outgoing=True, pattern="^\!kang")
 async def kang(args):
     """ For .kang command, kangs stickers or creates new ones. """
     kang_meme = random.choice(KANGING_STR)
@@ -106,7 +98,7 @@ async def kang(args):
                 emoji = splat[1]
 
         packname = f"a{user.id}_by_{user.username}_{pack}"
-        packnick = f"@{user.username}'s kang pack Vol.{pack}"
+        packnick = f"@{user.username}'s pack Vol.{pack}"
         cmd = '/newpack'
         file = io.BytesIO()
 
@@ -134,7 +126,7 @@ async def kang(args):
                 while x.text == PACK_FULL:
                     pack += 1
                     packname = f"a{user.id}_by_{user.username}_{pack}"
-                    packnick = f"@{user.username}'s kang pack Vol.{pack}"
+                    packnick = f"@{user.username}'s pack Vol.{pack}"
                     await args.edit(f"`{kang_meme}\
                     \nMoving on to Vol.{str(pack)}..`")
                     await conv.send_message(packname)
@@ -275,7 +267,7 @@ async def resize_photo(photo):
     return image
 
 
-@register(outgoing=True, pattern="^\.stkrinfo$")
+@register(outgoing=True, pattern="^\!stickerinfo$")
 async def get_pack_info(event):
     if not event.is_reply:
         await event.edit("`I can't fetch info from nothing, can I ?!`")
@@ -317,17 +309,105 @@ async def get_pack_info(event):
 
     await event.edit(OUTPUT)
 
+@register(outgoing=True, pattern="^!ss(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return 
+    if not event.reply_to_msg_id:
+       await event.edit("```Reply to any user message.```")
+       return
+    reply_message = await event.get_reply_message() 
+    if not reply_message.text:
+       await event.edit("```Reply to text message```")
+       return
+    chat = "@QuotLyBot"
+    sender = reply_message.sender
+    if reply_message.sender.bot:
+       await event.edit("```javes: Can't scan bot meaage```")
+       return
+    await event.edit("```Making a Quote```")
+    async with bot.conversation(chat) as conv:
+          try:     
+              response = conv.wait_event(events.NewMessage(incoming=True,from_users=1031952739))
+              await bot.forward_messages(chat, reply_message)
+              response = await response 
+          except YouBlockedUserError: 
+              await event.reply("```Please unblock @QuotLyBot and try again```")
+              return
+          if response.text.startswith("Hi!"):
+             await event.edit("```javes: This user have forward privacy```")
+          else: 
+             await event.delete()   
+             await bot.forward_messages(event.chat_id, response.message)
 
-CMD_HELP.update({
-    "stickers":
-    ".kang\
-\nUsage: Reply .kang to a sticker or an image to kang it to your userbot pack.\
-\n\n.kang [emoji('s)]\
-\nUsage: Works just like .kang but uses the emoji('s) you picked.\
-\n\n.kang [number]\
-\nUsage: Kang's the sticker/image to the specified pack but uses 🤔 as emoji.\
-\n\n.kang [emoji('s)] [number]\
-\nUsage: Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
-\n\n.stkrinfo\
-\nUsage: Gets info about the sticker pack."
-})
+@register(outgoing=True, pattern="^!text(?: |$)(.*)")
+async def sticklet(event):
+    R = random.randint(0,256)
+    G = random.randint(0,256)
+    B = random.randint(0,256)
+
+    # get the input text
+    # the text on which we would like to do the magic on
+    sticktext = event.pattern_match.group(1)
+
+    # delete the userbot command,
+    # i don't know why this is required
+    await event.delete()
+
+    # https://docs.python.org/3/library/textwrap.html#textwrap.wrap
+    sticktext = textwrap.wrap(sticktext, width=10)
+    # converts back the list to a string
+    sticktext = '\n'.join(sticktext)
+
+    image = Image.new("RGBA", (512, 512), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(image)
+    fontsize = 230
+
+    FONT_FILE = await get_font_file(event.client, "@FontRes")
+
+    font = ImageFont.truetype(FONT_FILE, size=fontsize)
+
+    while draw.multiline_textsize(sticktext, font=font) > (512, 512):
+        fontsize -= 3
+        font = ImageFont.truetype(FONT_FILE, size=fontsize)
+
+    width, height = draw.multiline_textsize(sticktext, font=font)
+    draw.multiline_text(((512-width)/2,(512-height)/2), sticktext, font=font, fill=(R, G, B))
+
+    image_stream = io.BytesIO()
+    image_stream.name = "Javes.webp"
+    image.save(image_stream, "WebP")
+    image_stream.seek(0)
+
+    # finally, reply the sticker
+    #await event.reply( file=image_stream, reply_to=event.message.reply_to_msg_id)
+    #replacing upper line with this to get reply tags
+
+    await event.client.send_file(event.chat_id, image_stream, reply_to=event.message.reply_to_msg_id)
+    # cleanup
+    try:
+        os.remove(FONT_FILE)
+    except:
+        pass
+
+
+async def get_font_file(client, channel_id):
+    # first get the font messages
+    font_file_message_s = await client.get_messages(
+        entity=channel_id,
+        filter=InputMessagesFilterDocument,
+        # this might cause FLOOD WAIT,
+        # if used too many times
+        limit=None
+    )
+    # get a random font from the list of fonts
+    # https://docs.python.org/3/library/random.html#random.choice
+    font_file_message = random.choice(font_file_message_s)
+    # download and return the file path
+    return await client.download_media(font_file_message)
+
+
+
+
+
+
