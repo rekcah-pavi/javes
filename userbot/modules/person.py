@@ -43,7 +43,7 @@ DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
     "`Javes: Hello! Sir\n`"
-   f"I can't allow you{DEFAULTUSER}'s PM without his permissions please be patient,Thankyou")
+   f"I can't allow you to {DEFAULTUSER}'s PM without his permissions please be patient,Thankyou")
     
 
 @register(incoming=True, disable_edited=True, disable_errors=True)
@@ -91,8 +91,8 @@ async def permitpm(event):
 
                 if COUNT_PM[event.chat_id] > 4:
                     await event.respond(
-                             f"I can't allow you to spam {DEFAULTUSER}'s PM, Good bye!")
-                    
+                             f"`javes`: I am not going to allow you to spam {DEFAULTUSER}'s PM, Good bye!")
+                
 
                     try:
                         del COUNT_PM[event.chat_id]
@@ -179,7 +179,7 @@ async def notifon(non_event):
     await non_event.edit("`Notifications from unapproved PM's unmuted!`")
 
 
-@register(outgoing=True, pattern="^\.approve$")
+@register(outgoing=True, pattern="^\!allow$")
 async def approvepm(apprvpm):
     """ For .approve command, give someone the permissions to PM you. """
     try:
@@ -203,7 +203,7 @@ async def approvepm(apprvpm):
     try:
         approve(uid)
     except IntegrityError:
-        await apprvpm.edit("`User may already be approved.`")
+        await apprvpm.edit("`jaces`You allowed to pm!")
         return
 
     await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `javes: approved to PM!`")
@@ -259,12 +259,12 @@ async def blockpm(block):
         aname = replied_user.id
         name0 = str(replied_user.first_name)
         await block.client(BlockRequest(replied_user.id))
-        await block.edit("`You've been blocked!`")
+        await block.edit("`Javes: You've been blocked!`")
         uid = replied_user.id
     else:
         await block.client(BlockRequest(block.chat_id))
         aname = await block.client.get_entity(block.chat_id)
-        await block.edit("`You've been blocked!`")
+        await block.edit("`javes: You've been blocked!`")
         name0 = str(aname.first_name)
         uid = block.chat_id
 
@@ -289,7 +289,7 @@ async def unblockpm(unblock):
         replied_user = await unblock.client.get_entity(reply.from_id)
         name0 = str(replied_user.first_name)
         await unblock.client(UnblockRequest(replied_user.id))
-        await unblock.edit("`You have been unblocked.`")
+        await unblock.edit("`Javes: You have been unblocked.`")
 
     if BOTLOG:
         await unblock.client.send_message(
