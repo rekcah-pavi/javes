@@ -234,7 +234,7 @@ async def upstream(ups):
         await ups.edit(
             '`Force-Syncing to latest stable userbot code, please wait...`')
     else:
-        await ups.edit('`Updating userbot, please wait....`')
+        await ups.edit('`Updating javes, please wait....`')
     # We're in a Heroku Dyno, handle it's memez.
     if HEROKU_APIKEY is not None:
         import heroku3
@@ -258,7 +258,7 @@ async def upstream(ups):
             repo.__del__()
             return
         await ups.edit('`[Updater]\
-                        Javes dyno build in progress, please wait for 10minute to complete.`'
+                        Javes dyno build in progress, please wait for it to complete.`'
                        )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
@@ -275,8 +275,8 @@ async def upstream(ups):
             await ups.edit(f'{txt}\n`Here is the error log:\n{error}`')
             repo.__del__()
             return
-        await ups.edit('`Successfully Updated!\n'
-                       'Restarting......., type !javes for check`')
+        await ups.edit('Successfully Updated!\n'
+                       'Restarting......., type !javes for check')
     else:
         # Classic Updater, pretty straightforward.
         try:
