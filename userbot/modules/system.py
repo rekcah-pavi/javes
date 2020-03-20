@@ -258,7 +258,7 @@ async def upstream(ups):
             repo.__del__()
             return
         await ups.edit('`[Updater]\
-                        \Jaces dyno build in progress, please wait for it to complete.`'
+                        Javes dyno build in progress, please wait for it to complete.`'
                        )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
