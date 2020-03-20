@@ -993,15 +993,7 @@ async def clock(event):
     except BaseException:
         return
 
- @register(outgoing=True, pattern=r"^.f (.*)")
-async def payf(event):
-    paytext = event.pattern_match.group(1)
-    pay = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
-        paytext * 8, paytext * 8, paytext * 2, paytext * 2, paytext * 2,
-        paytext * 6, paytext * 6, paytext * 2, paytext * 2, paytext * 2,
-        paytext * 2, paytext * 2)
-    await event.edit(pay)
-
+ 
         
 @register(outgoing=True, pattern="^!rain$")
 async def rain(event):
@@ -1079,6 +1071,14 @@ async def bluetext(bt_e):
 
 
 
+@register(outgoing=True, pattern="^!f (.*)")
+async def payf(event):
+    paytext = event.pattern_match.group(1)
+    pay = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
+        paytext * 8, paytext * 8, paytext * 2, paytext * 2, paytext * 2,
+        paytext * 6, paytext * 6, paytext * 2, paytext * 2, paytext * 2,
+        paytext * 2, paytext * 2)
+    await event.edit(pay)
 
 
 @register(outgoing=True, pattern="^!ggl (.*)")
