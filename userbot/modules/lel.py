@@ -16,7 +16,7 @@ from userbot.modules.admin import get_user_from_event
 
 
 
-@register(outgoing=True, pattern="^!fail$")  
+@register(outgoing=True, pattern="^!fail")  
 async def fail(e):
    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit("`\n▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ `" 
@@ -25,7 +25,7 @@ async def fail(e):
                      "`\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ `")    
 
 
-@register(outgoing=True, pattern="^!lol$")
+@register(outgoing=True, pattern="^.lol$")
 async def lol(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit("`\n╱┏┓╱╱╱╭━━━╮┏┓╱╱╱╱ `" 
