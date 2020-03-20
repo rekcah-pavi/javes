@@ -1182,7 +1182,7 @@ async def gtfo(e):
         await e.edit("`\n█████████`" 
                      "`\n█▄█████▄█`"    
                      "`\n█▼▼▼▼▼`"       
-                     "`\n█       HelloMan`"
+                     "`\n█       Hello Man`"
                      "`\n█▲▲▲▲▲`"
                      "`\n█████████`"
                     "`\n ██   ██`")               
@@ -1241,7 +1241,7 @@ async def hey(e):
                      "`\n▏┈┈╲▂▂▂▂╱┈┈┈▏┈┈┈`")
 
 
-@register(outgoing=True, pattern="^!nou$")
+@register(outgoing=True, pattern="^.nou$")
 async def nou(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit("`\n┈╭╮╭╮\n┈┃┃┃┃\n╭┻┗┻┗╮`"
