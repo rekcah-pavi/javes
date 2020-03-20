@@ -2,6 +2,7 @@ aiohttp
 aria2p
 async_generator
 asyncurban
+pyfiglet
 bs4
 cowpy
 dnspython
