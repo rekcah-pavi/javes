@@ -86,33 +86,9 @@ from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from userbot.events import register
 from userbot import bot, CMD_HELP
 
-@register(outgoing=True, pattern="^!figlet(?: |$)(.*)")
-async def figlet(event):
-    if event.fwd_from:
-        return
-    CMD_FIG = {"slant": "slant", "3D": "3-d", "5line": "5lineoblique", "alpha": "alphabet", "banner": "banner3-D", "doh": "doh", "iso": "isometric1", "letter": "letters", "allig": "alligator", "dotm": "dotmatrix", "bubble": "bubble", "bulb": "bulbhead", "digi": "digital"}
-    input_str = event.pattern_match.group(1)
-    if "|" in input_str:
-        text, cmd = input_str.split("|", maxsplit=1)
-    elif input_str is not None:
-        cmd = None
-        text = input_str
-    else:
-        await event.edit("Please add some text to figlet")
-        return
-    if cmd is not None:
-        try:
-            font = CMD_FIG[cmd]
-        except KeyError:
-            await event.edit("Invalid selected font.")
-            return
-        result = pyfiglet.figlet_format(text, font=font)
-    else:
-        result = pyfiglet.figlet_format(text)
-    await event.respond("‌‌‎`{}`".format(result))
-    await event.delete()
-    
-    @register(outgoing=True, disable_errors=True, pattern="^!scan(?: |$)(.*)")
+
+
+@register(outgoing=True, disable_errors=True, pattern="^!scan(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
@@ -144,6 +120,35 @@ async def _(event):
           		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
           	else: 
           			await event.edit(f"javes: Antivirus scan was completed. \n {response.message.message}")
+
+
+
+@register(outgoing=True, pattern="^!figlet(?: |$)(.*)")
+async def figlet(event):
+    if event.fwd_from:
+        return
+    CMD_FIG = {"slant": "slant", "3D": "3-d", "5line": "5lineoblique", "alpha": "alphabet", "banner": "banner3-D", "doh": "doh", "iso": "isometric1", "letter": "letters", "allig": "alligator", "dotm": "dotmatrix", "bubble": "bubble", "bulb": "bulbhead", "digi": "digital"}
+    input_str = event.pattern_match.group(1)
+    if "|" in input_str:
+        text, cmd = input_str.split("|", maxsplit=1)
+    elif input_str is not None:
+        cmd = None
+        text = input_str
+    else:
+        await event.edit("Please add some text to figlet")
+        return
+    if cmd is not None:
+        try:
+            font = CMD_FIG[cmd]
+        except KeyError:
+            await event.edit("Invalid selected font.")
+            return
+        result = pyfiglet.figlet_format(text, font=font)
+    else:
+        result = pyfiglet.figlet_format(text)
+    await event.respond("‌‌‎`{}`".format(result))
+    await event.delete()
+    
 
 GITHUB = 'https://github.com'
 DEVICES_DATA = 'https://raw.githubusercontent.com/androidtrackers/' \
@@ -759,7 +764,7 @@ async def get_dogbin_content(dog_url):
         )
 
     
-    @register(outgoing=True, pattern="^\!eval(?: |$)(.*)")
+@register(outgoing=True, pattern="^\!eval(?: |$)(.*)")
 async def evaluate(query):
     """ For .eval command, evaluates the given Python expression. """
     if query.is_channel and not query.is_group:
@@ -1096,7 +1101,7 @@ async def make_qr(makeqr):
     await makeqr.delete()
 
 
-    @register(outgoing=True, pattern=r"^\!reverse(?: |$)(\d*)")
+@register(outgoing=True, pattern=r"^\!reverse(?: |$)(\d*)")
 async def okgoogle(img):
     """ For .reverse command, Google search images and stickers. """
     if os.path.isfile("okgoogle.png"):
