@@ -1,20 +1,45 @@
-# Copyright (C) 2019 The Raphielscape Company LLC.
-#
-# Licensed under the Raphielscape Public License, Version 1.c (the "License");
-# you may not use this file except in compliance with the License.
-#
-""" Userbot module for keeping control who PM you. """
-
 from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 from telethon.tl.functions.messages import ReportSpamRequest
 from telethon.tl.types import User
+from datetime import datetime
+from speedtest import Speedtest
+from telethon import functions
+from os import remove, execle, path, makedirs, getenv, environ
+from shutil import rmtree
+import asyncio
+import json
+from asyncio import sleep
+from telethon.errors import rpcbaseerrors
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
+from userbot.events import register
+import os
+import subprocess
+import time
+import math
+from pySmartDL import SmartDL
+import asyncio
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+from telethon.tl.types import DocumentAttributeVideo
+from userbot import LOGS, CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
+import sys
+from git import Repo
+from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
+from userbot import CMD_HELP, bot, HEROKU_APIKEY, HEROKU_APPNAME, UPSTREAM_REPO_URL
+from userbot.events import register
+from asyncio import create_subprocess_shell as asyncrunapp
+from asyncio.subprocess import PIPE as asyncPIPE
+from platform import python_version, uname
+from shutil import which
+from os import remove
+from telethon import version
+from userbot import CMD_HELP, ALIVE_NAME
+from userbot.events import register
 from sqlalchemy.exc import IntegrityError
-
-from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,
-                     LASTMSG, LOGS)
+from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,LASTMSG, LOGS)
 
 from userbot.events import register
-
+DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
     "`Hello! This is an automated message.\n\n`"
@@ -69,9 +94,8 @@ async def permitpm(event):
 
                 if COUNT_PM[event.chat_id] > 4:
                     await event.respond(
-                        "`You were spamming my PM, which I didn't like.`\n"
-                        "`You have been BLOCKED and reported as SPAM, until further notice.`"
-                    )
+                             f"You cant spam : {DEFAULTUSER}")
+                    
 
                     try:
                         del COUNT_PM[event.chat_id]
@@ -134,7 +158,7 @@ async def auto_accept(event):
                     )
 
 
-@register(outgoing=True, pattern="^\.notifoff$")
+@register(outgoing=True, pattern="^\!notifoff$")
 async def notifoff(noff_event):
     """ For .notifoff command, stop getting notifications from unapproved PMs. """
     try:
@@ -146,7 +170,7 @@ async def notifoff(noff_event):
     await noff_event.edit("`Notifications from unapproved PM's are silenced!`")
 
 
-@register(outgoing=True, pattern="^\.notifon$")
+@register(outgoing=True, pattern="^\!notifon$")
 async def notifon(non_event):
     """ For .notifoff command, get notifications from unapproved PMs. """
     try:
@@ -164,7 +188,7 @@ async def approvepm(apprvpm):
     try:
         from userbot.modules.sql_helper.pm_permit_sql import approve
     except AttributeError:
-        await apprvpm.edit("`Running on Non-SQL mode!`")
+        await apprvpm.edit("`Running `")
         return
 
     if apprvpm.reply_to_msg_id:
@@ -185,7 +209,7 @@ async def approvepm(apprvpm):
         await apprvpm.edit("`User may already be approved.`")
         return
 
-    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `approved to PM!`")
+    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `javes: approved to PM!`")
 
     async for message in apprvpm.client.iter_messages(apprvpm.chat_id,
                                                       from_user='me',
@@ -199,7 +223,7 @@ async def approvepm(apprvpm):
         )
 
 
-@register(outgoing=True, pattern="^\.disapprove$")
+@register(outgoing=True, pattern="^\!disallow$")
 async def disapprovepm(disapprvpm):
     try:
         from userbot.modules.sql_helper.pm_permit_sql import dissprove
@@ -219,7 +243,7 @@ async def disapprovepm(disapprvpm):
         name0 = str(aname.first_name)
 
     await disapprvpm.edit(
-        f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Disaproved to PM!`")
+        f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Javes: Disaproved to PM!`")
 
     if BOTLOG:
         await disapprvpm.client.send_message(
@@ -229,7 +253,7 @@ async def disapprovepm(disapprvpm):
         )
 
 
-@register(outgoing=True, pattern="^\.block$")
+@register(outgoing=True, pattern="^\!block$")
 async def blockpm(block):
     """ For .block command, block people from PMing you! """
     if block.reply_to_msg_id:
@@ -277,20 +301,3 @@ async def unblockpm(unblock):
             " was unblocc'd!.",
         )
 
-
-CMD_HELP.update({
-    "pmpermit":
-    "\
-.approve\
-\nUsage: Approves the mentioned/replied person to PM.\
-\n\n.disapprove\
-\nUsage: Disapproves the mentioned/replied person to PM.\
-\n\n.block\
-\nUsage: Blocks the person.\
-\n\n.unblock\
-\nUsage: Unblocks the person so they can PM you.\
-\n\n.notifoff\
-\nUsage: Clears/Disables any notifications of unapproved PMs.\
-\n\n.notifon\
-\nUsage: Allows notifications for unapproved PMs."
-})
