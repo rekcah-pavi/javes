@@ -993,7 +993,7 @@ async def clock(event):
     except BaseException:
         return
 
- @register(outgoing=True, pattern=r"^!f (.*)")
+ @register(outgoing=True, pattern=r"^.f (.*)")
 async def payf(event):
     paytext = event.pattern_match.group(1)
     pay = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
