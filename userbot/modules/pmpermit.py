@@ -42,12 +42,9 @@ from userbot.events import register
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
-    "`Hello! This is an automated message.\n\n`"
-    "`I haven't approved you to PM yet.`"
-    "`Please wait for me to look in, I mostly approve PMs.\n\n`"
-    "`Until then, please don't spam my PM, you'll get blocked and reported!`")
-# =================================================================
-
+    "`Javes: Hello! Sir\n`"
+   f"I can't allow you{DEFAULTUSER}'s PM without his permissions please be patient,Thankyou")
+    
 
 @register(incoming=True, disable_edited=True, disable_errors=True)
 async def permitpm(event):
@@ -94,7 +91,7 @@ async def permitpm(event):
 
                 if COUNT_PM[event.chat_id] > 4:
                     await event.respond(
-                             f"You cant spam : {DEFAULTUSER}")
+                             f"I can't allow you to spam {DEFAULTUSER}'s PM, Good bye!")
                     
 
                     try:
@@ -119,7 +116,7 @@ async def permitpm(event):
                             BOTLOG_CHATID,
                             "[" + name0 + "](tg://user?id=" +
                             str(event.chat_id) + ")" +
-                            " was just another retarded nibba",
+                            " i blocked him from your pm due to spam",
                         )
 
 
