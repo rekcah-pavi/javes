@@ -881,7 +881,7 @@ async def faces(owo):
     await owo.edit(reply_text)
 
 
-@javes05(outgoing=True, pattern="^.react$")
+@javes05(outgoing=True, pattern="^!react$")
 async def react_meme(react):
     """ Make your userbot react to everything. """
     await react.edit(choice(FACEREACTS))
@@ -907,7 +907,7 @@ async def faces(siwis):
     await siwis.edit(reply_text)
 
 
-@javes05(outgoing=True, pattern="^!shg$")
+@javes05(outgoing=True, pattern="^!idk$")
 async def shrugger(shg):
     r""" ¯\_(ツ)_/¯ """
     await shg.edit(choice(SHGS))
