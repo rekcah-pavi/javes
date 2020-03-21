@@ -232,7 +232,7 @@ async def approvepm(apprvpm):
     try:
         approve(uid)
     except IntegrityError:
-        await apprvpm.edit("`jaces`You allowed to pm!")
+        await apprvpm.edit("``You allowed to pm!")
         return
 
     await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `approved to PM!`")
