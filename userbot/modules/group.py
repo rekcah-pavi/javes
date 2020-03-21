@@ -1,6 +1,6 @@
 from asyncio import sleep
 from os import remove
-from userbot.events import register
+
 from userbot import CMD_HELP, bot, LOGS, CLEAN_WELCOME, BOTLOG_CHATID
 from telethon.events import ChatAction
 from asyncio import sleep
@@ -11,17 +11,17 @@ import userbot.modules.sql_helper.blacklist_sql as sql
 from telethon import events, utils
 from telethon.tl import types, functions
 from userbot import CMD_HELP, bot
-from userbot.events import register
+
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
-from userbot.events import register
+
 from asyncio import sleep
 from telethon.tl.functions.messages import EditChatDefaultBannedRightsRequest
 from telethon.tl.types import ChatBannedRights
 from userbot import CMD_HELP
-from userbot.events import register
+
 from re import fullmatch, IGNORECASE, escape
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
-from userbot.events import register
+
 from requests import get
 from telethon.events import ChatAction
 from telethon.tl.types import ChannelParticipantsAdmins, Message
@@ -32,11 +32,11 @@ from telethon.tl.functions.channels import (EditAdminRequest,EditBannedRequest,E
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
 from telethon.tl.types import (PeerChat, PeerChannel,ChannelParticipantsAdmins, ChatAdminRights,ChatBannedRights, MessageEntityMentionName,MessageMediaPhoto, ChannelParticipantsBots)
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
-from userbot.events import register
+from userbot.events import javes05
 from telethon.tl.functions.messages import EditChatDefaultBannedRightsRequest
 from telethon.tl.types import ChatBannedRights
 from userbot import CMD_HELP
-from userbot.events import register
+
 
 @bot.on(ChatAction)
 async def welcome_to_chat(event):
@@ -111,7 +111,7 @@ async def welcome_to_chat(event):
             update_previous_welcome(event.chat_id, current_message.id)
 
 
-@register(outgoing=True, pattern=r"^\!setwelcome(?: |$)(.*)")
+@javes05(outgoing=True, pattern=r"^\!setwelcome(?: |$)(.*)")
 async def save_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import add_welcome_setting
@@ -149,7 +149,7 @@ async def save_welcome(event):
         await event.edit(success.format('updated'))
 
 
-@register(outgoing=True, pattern="^\!checkwelcome$")
+@javes05(outgoing=True, pattern="^\!checkwelcome$")
 async def show_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings
@@ -172,7 +172,7 @@ async def show_welcome(event):
         await event.reply(cws.reply)
 
 
-@register(outgoing=True, pattern="^\!rmwelcome$")
+@javes05(outgoing=True, pattern="^\!rmwelcome$")
 async def del_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import rm_welcome_setting
@@ -190,7 +190,7 @@ async def del_welcome(event):
 
 
 
-@register(outgoing=True, pattern="^\!notes$")
+@javes05(outgoing=True, pattern="^\!notes$")
 async def notes_active(svd):
     """ For .notes command, list all of the notes saved in a chat. """
     try:
@@ -209,7 +209,7 @@ async def notes_active(svd):
     await svd.edit(message)
 
 
-@register(outgoing=True, pattern=r"^\!clear (\w*)")
+@javes05(outgoing=True, pattern=r"^\!clear (\w*)")
 async def remove_notes(clr):
     """ For .clear command, clear note with the given name."""
     try:
@@ -225,7 +225,7 @@ async def remove_notes(clr):
             "`Successfully deleted note:` **{}**".format(notename))
 
 
-@register(outgoing=True, pattern=r"^\!save (\w*)")
+@javes05(outgoing=True, pattern=r"^\!save (\w*)")
 async def add_note(fltr):
     """ For .save command, saves notes in a chat. """
     try:
@@ -265,7 +265,7 @@ async def add_note(fltr):
         return await fltr.edit(success.format('added', keyword))
 
 
-@register(pattern=r"#\w*", disable_edited=True, disable_errors=True)
+@javes05(pattern=r"#\w*", disable_edited=True, disable_errors=True)
 async def incom_note(getnt):
     """ Notes logic. """
     try:
@@ -300,7 +300,7 @@ async def incom_note(getnt):
 
 
 
-@register(outgoing=True, pattern=r"^\!lock ?(.*)")
+@javes05(outgoing=True, pattern=r"^\!lock ?(.*)")
 async def locks(event):
     input_str = event.pattern_match.group(1).lower()
     peer_id = event.chat_id
@@ -388,7 +388,7 @@ async def locks(event):
         return
 
 
-@register(outgoing=True, pattern=r"^!unlock ?(.*)")
+@javes05(outgoing=True, pattern=r"^!unlock ?(.*)")
 async def rem_locks(event):
     input_str = event.pattern_match.group(1).lower()
     peer_id = event.chat_id
@@ -483,7 +483,7 @@ async def rem_locks(event):
 
 
 
-@register(outgoing=True, pattern="^\!userid$")
+@javes05(outgoing=True, pattern="^\!userid$")
 async def useridgetter(target):
     """ For .userid command, returns the ID of the target user. """
     message = await target.get_reply_message()
@@ -504,7 +504,7 @@ async def useridgetter(target):
             name, user_id))
 
 
-@register(outgoing=True, pattern="^\!link(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!link(?: |$)(.*)")
 async def permalink(mention):
     """ For .link command, generates a link to the user's PM with a custom text. """
     user, custom = await get_user_from_event(mention)
@@ -518,13 +518,13 @@ async def permalink(mention):
         await mention.edit(f"[{tag}](tg://user?id={user.id})")
 
 
-@register(outgoing=True, pattern="^\!chatid$")
+@javes05(outgoing=True, pattern="^\!chatid$")
 async def chatidgetter(chat):
     """ For .chatid, returns the ID of the chat you are in at that moment. """
     await chat.edit("Chat ID: `" + str(chat.chat_id) + "`")
 
 
-@register(outgoing=True, pattern=r"^\.log(?: |$)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\.log(?: |$)([\s\S]*)")
 async def log(log_text):
     """ For .log command, forwards a message or the command argument to the bot logs group """
     if BOTLOG:
@@ -545,14 +545,14 @@ async def log(log_text):
     await log_text.delete()
 
 
-@register(outgoing=True, pattern="^\!kickme$")
+@javes05(outgoing=True, pattern="^\!kickme$")
 async def kickme(leave):
     """ Basically it's .kickme command """
     await leave.edit("Nope, no, no, I go away")
     await leave.client.kick_participant(leave.chat_id, 'me')
 
 
-@register(outgoing=True, pattern="^\!unmutechat$")
+@javes05(outgoing=True, pattern="^\!unmutechat$")
 async def unmute_chat(unm_e):
     """ For .unmutechat command, unmute a muted chat. """
     try:
@@ -566,7 +566,7 @@ async def unmute_chat(unm_e):
     await unm_e.delete()
 
 
-@register(outgoing=True, pattern="^\!mutechat$")
+@javes05(outgoing=True, pattern="^\!mutechat$")
 async def mute_chat(mute_e):
     """ For .mutechat command, mute any chat. """
     try:
@@ -585,7 +585,7 @@ async def mute_chat(mute_e):
             str(mute_e.chat_id) + " was silenced.")
 
 
-@register(incoming=True, disable_errors=True)
+@javes05(incoming=True, disable_errors=True)
 async def keep_read(message):
     """ The mute logic. """
     try:
@@ -645,7 +645,7 @@ UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 
 
 
-@register(outgoing=True, pattern="^\!demote(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!demote(?: |$)(.*)", groups_only=True)
 async def demote(dmod):
     """ For .demote command, demotes the replied/tagged person """
     # Admin right check
@@ -694,7 +694,7 @@ async def demote(dmod):
             f"CHAT: {dmod.chat.title}(`{dmod.chat_id}`)")
 
 
-@register(outgoing=True, pattern="^\!ban(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!ban(?: |$)(.*)", groups_only=True)
 async def ban(bon):
     """ For .ban command, bans the replied/tagged person """
     # Here laying the sanity check
@@ -750,7 +750,7 @@ async def ban(bon):
             f"CHAT: {bon.chat.title}(`{bon.chat_id}`)")
 
 
-@register(outgoing=True, pattern="^\!unban(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!unban(?: |$)(.*)", groups_only=True)
 async def nothanos(unbon):
     """ For .unban command, unbans the replied/tagged person """
     # Here laying the sanity check
@@ -787,7 +787,7 @@ async def nothanos(unbon):
         await unbon.edit("`Uh oh my unban logic broke!`")
 
 
-@register(outgoing=True, pattern="^\!mute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!mute(?: |$)(.*)", groups_only=True)
 async def spider(spdr):
     """
     This function is basically muting peeps
@@ -847,7 +847,7 @@ async def spider(spdr):
             return await spdr.edit("`error1`")
 
 
-@register(outgoing=True, pattern="^\!unmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!unmute(?: |$)(.*)", groups_only=True)
 async def unmoot(unmot):
     """ For .unmute command, unmute the replied/tagged person """
     # Admin or creator check
@@ -895,7 +895,7 @@ async def unmoot(unmot):
                 f"CHAT: {unmot.chat.title}(`{unmot.chat_id}`)")
 
 
-@register(incoming=True, disable_errors=True)
+@javes05(incoming=True, disable_errors=True)
 async def muter(moot):
     """ Used for deleting the messages of muted people """
     try:
@@ -935,7 +935,7 @@ async def muter(moot):
                 await moot.client.send_read_acknowledge(moot.chat_id, moot.id)
 
 
-@register(outgoing=True, pattern="^\!ungmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!ungmute(?: |$)(.*)", groups_only=True)
 async def ungmoot(un_gmute):
     """ For .ungmute command, ungmutes the target in the userbot """
     # Admin or creator check
@@ -978,7 +978,7 @@ async def ungmoot(un_gmute):
                 f"CHAT: {un_gmute.chat.title}(`{un_gmute.chat_id}`)")
 
 
-@register(outgoing=True, pattern="^\!gmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!gmute(?: |$)(.*)", groups_only=True)
 async def gspider(gspdr):
     """ For .gmute command, globally mutes the replied/tagged person """
     # Admin or creator check
@@ -1022,7 +1022,7 @@ async def gspider(gspdr):
                 f"CHAT: {gspdr.chat.title}(`{gspdr.chat_id}`)")
 
 
-@register(outgoing=True, pattern="^\!zombies(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!zombies(?: |$)(.*)", groups_only=True)
 async def rm_deletedacc(show):
     """ For .delusers command, list all the ghost/deleted accounts in a chat. """
     if not show.is_group:
@@ -1092,7 +1092,7 @@ async def rm_deletedacc(show):
             \nCHAT: {show.chat.title}(`{show.chat_id}`)")
 
 
-@register(outgoing=True, pattern="^\!admins$", groups_only=True)
+@javes05(outgoing=True, pattern="^\!admins$", groups_only=True)
 async def get_admin(show):
     """ For .admins command, list all of the admins of the chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -1126,7 +1126,7 @@ async def get_admin(show):
         remove("adminlist.txt")
 
 
-@register(outgoing=True, pattern="^\!bots$", groups_only=True)
+@javes05(outgoing=True, pattern="^\!bots$", groups_only=True)
 async def get_bots(show):
     """ For .bots command, list all of the bots of the chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -1164,7 +1164,7 @@ async def get_bots(show):
         remove("botlist.txt")
 
 
-@register(outgoing=True, pattern="^\!pin(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!pin(?: |$)(.*)", groups_only=True)
 async def pin(msg):
     """ For .pin command, pins the replied/tagged message on the top the chat. """
     # Admin or creator check
@@ -1209,7 +1209,7 @@ async def pin(msg):
             f"LOUD: {not is_silent}")
 
 
-@register(outgoing=True, pattern="^\!kick(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!kick(?: |$)(.*)", groups_only=True)
 async def kick(usr):
     """ For .kick command, kicks the replied/tagged person from the group. """
     # Admin or creator check
@@ -1251,7 +1251,7 @@ async def kick(usr):
             f"CHAT: {usr.chat.title}(`{usr.chat_id}`)\n")
 
 
-@register(outgoing=True, pattern="^\!users ?(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^\!users ?(.*)", groups_only=True)
 async def get_users(show):
     """ For .users command, list all of the users in a chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -1506,7 +1506,7 @@ async def ANTI_SPAMBOT(welcm):
     except ValueError:
         pass
 
-@register(incoming=True, disable_edited=True, disable_errors=True)
+@javes05(incoming=True, disable_edited=True, disable_errors=True)
 async def filter_incoming_handler(handler):
     """ Checks if the incoming message contains handler of a filter """
     try:
@@ -1532,7 +1532,7 @@ async def filter_incoming_handler(handler):
         pass
 
 
-@register(outgoing=True, pattern="^\!filter (\w*)")
+@javes05(outgoing=True, pattern="^\!filter (\w*)")
 async def add_new_filter(new_handler):
     """ For .filter command, allows adding new filters in a chat """
     try:
@@ -1573,7 +1573,7 @@ async def add_new_filter(new_handler):
         await new_handler.edit(success.format(keyword, 'updated'))
 
 
-@register(outgoing=True, pattern="^\!stop (\w*)")
+@javes05(outgoing=True, pattern="^\!stop (\w*)")
 async def remove_a_filter(r_handler):
     """ For .stop command, allows you to remove a filter from a chat. """
     try:
@@ -1592,7 +1592,7 @@ async def remove_a_filter(r_handler):
 
 
 
-@register(outgoing=True, pattern="^\!filters$")
+@javes05(outgoing=True, pattern="^\!filters$")
 async def filters_active(event):
     """ For .filters command, lists all of the active filters in a chat. """
     try:
@@ -1611,7 +1611,7 @@ async def filters_active(event):
 
     await event.edit(transact)
 
-@register(incoming=True, disable_edited=True, disable_errors=True)
+@javes05(incoming=True, disable_edited=True, disable_errors=True)
 async def on_new_message(event):
     # TODO: exempt admins from locks
     name = event.raw_text
@@ -1628,7 +1628,7 @@ async def on_new_message(event):
         pass
 
 
-@register(outgoing=True, pattern="^!addbl(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!addbl(?: |$)(.*)")
 async def on_add_black_list(addbl):
     text = addbl.pattern_match.group(1)
     to_blacklist = list(set(trigger.strip() for trigger in text.split("\n") if trigger.strip()))
@@ -1637,7 +1637,7 @@ async def on_add_black_list(addbl):
     await addbl.edit("Added {} triggers to the blacklist in the current chat".format(len(to_blacklist)))
 
 
-@register(outgoing=True, pattern="^!listbl(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!listbl(?: |$)(.*)")
 async def on_view_blacklist(listbl):
     all_blacklisted = sql.get_chat_blacklist(listbl.chat_id)
     OUT_STR = "Blacklists in the Current Chat:\n"
@@ -1662,7 +1662,7 @@ async def on_view_blacklist(listbl):
         await listbl.edit(OUT_STR)
 
 
-@register(outgoing=True, pattern="^!rmbl(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!rmbl(?: |$)(.*)")
 async def on_delete_blacklist(rmbl):
     text = rmbl.pattern_match.group(1)
     to_unblacklist = list(set(trigger.strip() for trigger in text.split("\n") if trigger.strip()))

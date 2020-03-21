@@ -8,9 +8,7 @@ from pytz import timezone as tz
 from pytz import country_names as c_n
 from userbot import CMD_HELP, WEATHER_DEFCITY
 from userbot import OPEN_WEATHER_MAP_APPID as OWM_API
-from userbot.events import register
 import requests
-from userbot.events import register
 from telethon.tl.types import MessageMediaPhoto
 from userbot import CMD_HELP, REM_BG_API_KEY, TEMP_DOWNLOAD_DIRECTORY
 import time
@@ -19,13 +17,13 @@ import os
 import requests
 import logging
 from userbot import bot, OCR_SPACE_API_KEY, CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
-from userbot.events import register
 import asyncio
 import shutil
 from bs4 import BeautifulSoup
 import re
 from time import sleep
 from html import unescape
+from userbot.events import javes05
 from re import findall
 from selenium import webdriver
 from urllib.parse import quote_plus
@@ -48,7 +46,6 @@ from youtube_dl import YoutubeDL
 from youtube_dl.utils import (DownloadError, ContentTooShortError,ExtractorError, GeoRestrictedError,MaxDownloadsReached, PostProcessingError,UnavailableVideoError, XAttrMetadataError)
 from asyncio import sleep
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
-from userbot.events import register
 from telethon.tl.types import DocumentAttributeAudio
 from userbot.modules.system import progress, humanbytes, time_formatter
 
@@ -74,7 +71,7 @@ async def get_tz(con):
         return
 
 
-@register(outgoing=True, pattern="^.weather(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^.weather(?: |$)(.*)")
 async def get_weather(weather):
     """ For .weather command, gets the current weather of a city. """
 
@@ -178,7 +175,7 @@ CMD_HELP.update({
 })
 
 
-@register(outgoing=True, pattern="^\!youtube (.*)")
+@javes05(outgoing=True, pattern="^\!youtube (.*)")
 async def yt_search(video_q):
     """ For .yt command, do a YouTube search from Telegram. """
     query = video_q.pattern_match.group(1)
@@ -271,7 +268,7 @@ async def ocr_space_file(filename,
     return r.json()
 
 
-@register(pattern=r"^\!read (.*)", outgoing=True)
+@javes05(pattern=r"^\!read (.*)", outgoing=True)
 async def ocr(event):
     await event.edit("`Reading...`")
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
@@ -290,7 +287,7 @@ async def ocr(event):
                          )
     os.remove(downloaded_file_name)
 
-@register(outgoing=True, pattern="^\!rbg(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!rbg(?: |$)(.*)")
 async def kbg(remob):
     """ For .rbg command, Remove Image Background. """
     if REM_BG_API_KEY is None:

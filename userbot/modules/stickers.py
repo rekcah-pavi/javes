@@ -2,7 +2,7 @@ import datetime
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
-from userbot.events import register
+
 from userbot import bot, CMD_HELP
 import io
 import math
@@ -14,12 +14,12 @@ import random
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
 from telethon.tl.types import InputMessagesFilterDocument
-from userbot.events import register
+
 from PIL import Image
 import random
 from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
 from userbot import bot, CMD_HELP
-from userbot.events import register
+
 from telethon.tl.functions.messages import GetStickerSetRequest
 from telethon.tl.types import InputStickerSetID
 from telethon.tl.types import DocumentAttributeSticker
@@ -37,7 +37,7 @@ KANGING_STR = [
 ]
 
 
-@register(outgoing=True, pattern="^\!kang")
+@javes05(outgoing=True, pattern="^\!kang")
 async def kang(args):
     """ For .kang command, kangs stickers or creates new ones. """
     kang_meme = random.choice(KANGING_STR)
@@ -271,7 +271,7 @@ async def resize_photo(photo):
     return image
 
 
-@register(outgoing=True, pattern="^\!stickerinfo$")
+@javes05(outgoing=True, pattern="^\!stickerinfo$")
 async def get_pack_info(event):
     if not event.is_reply:
         await event.edit("`I can't fetch info from nothing, can I ?!`")
@@ -313,7 +313,7 @@ async def get_pack_info(event):
 
     await event.edit(OUTPUT)
 
-@register(outgoing=True, pattern="^!ss(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!ss(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
@@ -344,7 +344,7 @@ async def _(event):
              await event.delete()   
              await bot.forward_messages(event.chat_id, response.message)
 
-@register(outgoing=True, pattern="^!text(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!text(?: |$)(.*)")
 async def sticklet(event):
     R = random.randint(0,256)
     G = random.randint(0,256)

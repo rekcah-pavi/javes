@@ -17,7 +17,7 @@ import json
 from asyncio import sleep
 from telethon.errors import rpcbaseerrors
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
-from userbot.events import register
+
 import os
 import subprocess
 import time
@@ -32,7 +32,7 @@ import sys
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from userbot import CMD_HELP, bot, HEROKU_APIKEY, HEROKU_APPNAME, UPSTREAM_REPO_URL
-from userbot.events import register
+
 from asyncio import create_subprocess_shell as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
 from platform import python_version, uname
@@ -40,14 +40,14 @@ from shutil import which
 from os import remove
 from telethon import version
 from userbot import CMD_HELP, ALIVE_NAME
-from userbot.events import register
+from userbot.events import javes05
 
 # ================= CONSTANT =================
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
 
 
-@register(outgoing=True, pattern="^\!sysd$")
+@javes05(outgoing=True, pattern="^\!sysd$")
 async def sysdetails(sysd):
     """ For .sysd command, get system info using neofetch. """
     try:
@@ -70,7 +70,7 @@ async def sysdetails(sysd):
 
 
 
-@register(outgoing=True, pattern="^\!pip(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!pip(?: |$)(.*)")
 async def pipcheck(pip):
     """ For .pip command, do a pip search. """
     pipmodule = pip.pattern_match.group(1)
@@ -113,7 +113,7 @@ async def pipcheck(pip):
         await pip.edit("`Use .help pip to see an example`")
 
 
-@register(outgoing=True, pattern="^\!javes$")
+@javes05(outgoing=True, pattern="^\!javes$")
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
@@ -160,7 +160,7 @@ async def update_requirements():
         return repr(e)
 
 
-@register(outgoing=True, pattern="^\!update(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!update(?: |$)(.*)")
 async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
     await ups.edit("`Checking for updates, please wait....`")
@@ -302,7 +302,7 @@ async def upstream(ups):
 
 
 
-@register(outgoing=True, pattern="^\!speed$")
+@javes05(outgoing=True, pattern="^\!speed$")
 async def speedtst(spd):
     """ For .speed command, use SpeedTest to check server speeds. """
     await spd.edit("`Running speed test . . .`")
@@ -341,7 +341,7 @@ def speed_convert(size):
     return f"{round(size, 2)} {units[zero]}"
 
 
-@register(outgoing=True, pattern="^\!dc$")
+@javes05(outgoing=True, pattern="^\!dc$")
 async def neardc(event):
     """ For .dc command, get the nearest datacenter information. """
     result = await event.client(functions.help.GetNearestDcRequest())
@@ -350,7 +350,7 @@ async def neardc(event):
                      f"This Datacenter : `{result.this_dc}`")
 
 
-@register(outgoing=True, pattern="^\!ping$")
+@javes05(outgoing=True, pattern="^\!ping$")
 async def pingme(pong):
     """ For .ping command, ping the userbot from any chat.  """
     start = datetime.now()
@@ -418,7 +418,7 @@ def time_formatter(milliseconds: int) -> str:
     return tmp[:-2]
 
 
-@register(pattern=r"^\!download(?: |$)(.*)", outgoing=True)
+@javes05(pattern=r"^\!download(?: |$)(.*)", outgoing=True)
 async def download(target_file):
     """ For .download command, download files to the userbot's server. """
     await target_file.edit("Processing ...")
@@ -493,7 +493,7 @@ async def download(target_file):
             "Reply to a message to download to my local server.")
 
 
-@register(pattern=r"^\!uploadir (.*)", outgoing=True)
+@javes05(pattern=r"^\!uploadir (.*)", outgoing=True)
 async def uploadir(udir_event):
     """ For .uploadir command, allows you to upload everything from a folder in the server"""
     input_str = udir_event.pattern_match.group(1)
@@ -569,7 +569,7 @@ async def uploadir(udir_event):
         await udir_event.edit("404: Directory Not Found")
 
 
-@register(pattern=r"^\!upload (.*)", outgoing=True)
+@javes05(pattern=r"^\!upload (.*)", outgoing=True)
 async def upload(u_event):
     """ For .upload command, allows you to upload a file from the userbot's server """
     await u_event.edit("Processing ...")
@@ -645,7 +645,7 @@ def extract_w_h(file):
         return width, height
 
 
-@register(pattern=r"^\!uploadas(stream|vn|all) (.*)", outgoing=True)
+@javes05(pattern=r"^\!uploadas(stream|vn|all) (.*)", outgoing=True)
 async def uploadas(uas_event):
     """ For .uploadas command, allows you to specify some arguments for upload. """
     await uas_event.edit("Processing ...")
@@ -737,7 +737,7 @@ async def uploadas(uas_event):
     else:
         await uas_event.edit("404: File Not Found")
 
-@register(outgoing=True, pattern="^\!purge$")
+@javes05(outgoing=True, pattern="^\!purge$")
 async def fastpurger(purg):
     """ For .purge command, purge all messages starting from the reply. """
     chat = await purg.get_input_chat()
@@ -771,7 +771,7 @@ async def fastpurger(purg):
     await done.delete()
 
 
-@register(outgoing=True, pattern="^\!del")
+@javes05(outgoing=True, pattern="^\!del")
 async def purgeme(delme):
     """ For .purgeme, delete x count of your latest message."""
     message = delme.text
@@ -798,7 +798,7 @@ async def purgeme(delme):
     await smsg.delete()
 
 
-@register(outgoing=True, pattern="^\.del$")
+@javes05(outgoing=True, pattern="^\.del$")
 async def delete_it(delme):
     """ For .del command, delete the replied message. """
     msg_src = await delme.get_reply_message()
@@ -815,7 +815,7 @@ async def delete_it(delme):
                     BOTLOG_CHATID, "Well, I can't delete a message")
 
 
-@register(outgoing=True, pattern="^\!edit")
+@javes05(outgoing=True, pattern="^\!edit")
 async def editer(edit):
     """ For .editme command, edit your last message. """
     message = edit.text
@@ -834,7 +834,7 @@ async def editer(edit):
                                        "Edit query was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!sd")
+@javes05(outgoing=True, pattern="^\!sd")
 async def selfdestruct(destroy):
     """ For .sd command, make seflf-destructable messages. """
     message = destroy.text
@@ -848,7 +848,7 @@ async def selfdestruct(destroy):
         await destroy.client.send_message(BOTLOG_CHATID,
                                           "sd query done successfully")
 
-@register(outgoing=True, pattern="^\!random")
+@javes05(outgoing=True, pattern="^\!random")
 async def randomise(items):
     """ For .random command, get a random item from the list of items. """
     itemo = (items.text[8:]).split()
@@ -862,7 +862,7 @@ async def randomise(items):
                      itemo[index] + "`")
 
 
-@register(outgoing=True, pattern="^\.sleep( [0-9]+)?$")
+@javes05(outgoing=True, pattern="^\.sleep( [0-9]+)?$")
 async def sleepybot(time):
     """ For .sleep command, let the userbot snooze for a few second. """
     message = time.text
@@ -881,7 +881,7 @@ async def sleepybot(time):
         await time.edit("`OK, I'm awake now.`")
 
 
-@register(outgoing=True, pattern="^\!shutdown$")
+@javes05(outgoing=True, pattern="^\!shutdown$")
 async def killdabot(event):
     """ For .shutdown command, shut the bot down."""
     await event.edit("`Goodbye `")
@@ -891,7 +891,7 @@ async def killdabot(event):
     await bot.disconnect()
 
 
-@register(outgoing=True, pattern="^\!restart$")
+@javes05(outgoing=True, pattern="^\!restart$")
 async def killdabot(event):
     await event.edit("`Restarting.....`")
     if BOTLOG:
@@ -903,7 +903,7 @@ async def killdabot(event):
 
 
 # Copyright (c) Gegham Zakaryan | 2019
-@register(outgoing=True, pattern="^\!repeat (.*)")
+@javes05(outgoing=True, pattern="^\!repeat (.*)")
 async def repeat(rep):
     cnt, txt = rep.pattern_match.group(1).split(' ', 1)
     replyCount = int(cnt)
@@ -917,14 +917,14 @@ async def repeat(rep):
     await rep.edit(replyText)
 
 
-@register(outgoing=True, pattern="^\!repo$")
+@javes05(outgoing=True, pattern="^\!repo$")
 async def repo_is_here(wannasee):
     """ For .repo command, just returns the repo URL. """
     await wannasee.edit(
         f"Click [here]({UPSTREAM_REPO_URL}) to open my javes's repository.\n =>Join our channel for more information @javes05")
 
 
-@register(outgoing=True, pattern="^\!raw$")
+@javes05(outgoing=True, pattern="^\!raw$")
 async def raw(event):
     the_real_message = None
     reply_to_id = None

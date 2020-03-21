@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 import re
 from time import sleep
 from html import unescape
+from userbot.events import javes05
 from re import findall
 from selenium import webdriver
 from urllib.parse import quote_plus
@@ -31,7 +32,6 @@ from youtube_dl import YoutubeDL
 from youtube_dl.utils import (DownloadError, ContentTooShortError,ExtractorError, GeoRestrictedError,MaxDownloadsReached, PostProcessingError,UnavailableVideoError, XAttrMetadataError)
 from asyncio import sleep
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
-from userbot.events import register
 from telethon.tl.types import DocumentAttributeAudio
 from userbot.modules.system import progress, humanbytes, time_formatter
 import io
@@ -40,17 +40,14 @@ from pytz import country_names as c_n
 from pytz import country_timezones as c_tz
 from pytz import timezone as tz
 from userbot import CMD_HELP, COUNTRY, TZ_NUMBER
-from userbot.events import register
 import asyncio
 from asyncio import wait, sleep
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
-from userbot.events import register
 import traceback
 from re import match
 from selenium import webdriver
 from asyncio import sleep
 from selenium.webdriver.chrome.options import Options
-from userbot.events import register
 from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
 import io
 import os
@@ -79,26 +76,21 @@ from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import User as Userbot
 from telethon.errors.rpcerrorlist import FloodWaitError
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, DEFAULT_BIO, BIO_PREFIX, lastfm, LASTFM_USERNAME, bot
-from userbot.events import register
 from subprocess import PIPE
 from subprocess import run as runapp
 import pybase64
 from userbot import CMD_HELP
-from userbot.events import register 
 from getpass import getuser
 from os import remove
 from sys import executable
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID
-from userbot.events import register
 from telethon import events, functions
 from userbot import CMD_HELP
-from userbot.events import register
 import sys
 from requests import get, post, exceptions
 import asyncio
 import os
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
-from userbot.events import register
 from os import popen
 import re
 import urllib.parse
@@ -111,17 +103,15 @@ import re
 from requests import get
 from bs4 import BeautifulSoup
 from userbot import CMD_HELP
-from userbot.events import register
 import datetime
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
-from userbot.events import register
 from userbot import bot, CMD_HELP
 
 
 
-@register(outgoing=True, disable_errors=True, pattern="^!scan(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!scan(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
@@ -156,7 +146,7 @@ async def _(event):
 
 
 
-@register(outgoing=True, pattern="^!figlet(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!figlet(?: |$)(.*)")
 async def figlet(event):
     if event.fwd_from:
         return
@@ -188,7 +178,7 @@ DEVICES_DATA = 'https://raw.githubusercontent.com/androidtrackers/' \
                'certified-android-devices/master/devices.json'
 
 
-@register(outgoing=True, pattern="^\!magisk$")
+@javes05(outgoing=True, pattern="^\!magisk$")
 async def magisk(request):
     """ magisk latest releases """
     magisk_dict = {
@@ -210,7 +200,7 @@ async def magisk(request):
     await request.edit(releases)
 
 
-@register(outgoing=True, pattern=r"^\!device(?: |$)(\S*)")
+@javes05(outgoing=True, pattern=r"^\!device(?: |$)(\S*)")
 async def device_info(request):
     """ get android device basic info from its codename """
     textx = await request.get_reply_message()
@@ -241,7 +231,7 @@ async def device_info(request):
     await request.edit(reply)
 
 
-@register(outgoing=True, pattern=r"^\!codename(?: |)([\S]*)(?: |)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!codename(?: |)([\S]*)(?: |)([\s\S]*)")
 async def codename_info(request):
     """ search for android codename """
     textx = await request.get_reply_message()
@@ -276,7 +266,7 @@ async def codename_info(request):
     await request.edit(reply)
 
 
-@register(outgoing=True, pattern=r"^\!specs(?: |)([\S]*)(?: |)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!specs(?: |)([\S]*)(?: |)([\s\S]*)")
 async def devices_specifications(request):
     """ Mobile devices specifications """
     textx = await request.get_reply_message()
@@ -329,7 +319,7 @@ async def devices_specifications(request):
     await request.edit(reply)
 
 
-@register(outgoing=True, pattern=r"^\!twrp(?: |$)(\S*)")
+@javes05(outgoing=True, pattern=r"^\!twrp(?: |$)(\S*)")
 async def twrp(request):
     """ get android device twrp """
     textx = await request.get_reply_message()
@@ -357,7 +347,7 @@ async def twrp(request):
         f'**Updated:** __{date}__\n'
     await request.edit(reply)
 
-@register(outgoing=True, pattern=r"^\!direct(?: |$)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!direct(?: |$)([\s\S]*)")
 async def direct_link_generator(request):
     """ direct links generator """
     await request.edit("`Processing...`")
@@ -689,7 +679,7 @@ def useragent():
     DOGBIN_URL = "https://del.dog/"
 
 
-@register(outgoing=True, pattern=r"^\!paste(?: |$)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!paste(?: |$)([\s\S]*)")
 async def paste(pstl):
     """ For .paste command, pastes the text directly to dogbin. """
     dogbin_final_url = ""
@@ -747,7 +737,7 @@ async def paste(pstl):
         )
 
 
-@register(outgoing=True, pattern="^\!getpaste(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!getpaste(?: |$)(.*)")
 async def get_dogbin_content(dog_url):
     """ For .getpaste command, fetches the content of a dogbin URL. """
     textx = await dog_url.get_reply_message()
@@ -797,7 +787,7 @@ async def get_dogbin_content(dog_url):
         )
 
     
-@register(outgoing=True, pattern="^\!eval(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!eval(?: |$)(.*)")
 async def evaluate(query):
     """ For .eval command, evaluates the given Python expression. """
     if query.is_channel and not query.is_group:
@@ -851,7 +841,7 @@ async def evaluate(query):
             f"Eval query {expression} was executed successfully")
 
 
-@register(outgoing=True, pattern=r"^\!exec(?: |$)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!exec(?: |$)([\s\S]*)")
 async def run(run_q):
     """ For .exec command, which executes the dynamically created program """
     code = run_q.pattern_match.group(1)
@@ -916,7 +906,7 @@ execute. Use .help exec for an example.```")
             "Exec query " + codepre + " was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!term(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^\!term(?: |$)(.*)")
 async def terminal_runner(term):
     """ For .term command, runs bash commands and scripts on your server. """
     curruser = getuser()
@@ -972,7 +962,7 @@ async def terminal_runner(term):
             "Terminal Command " + command + " was executed sucessfully",
         )
 
-@register(outgoing=True, pattern="^\!hash (.*)")
+@javes05(outgoing=True, pattern="^\!hash (.*)")
 async def gethash(hash_q):
     """ For .hash command, find the md5, sha1, sha256, sha512 of the string. """
     hashtxt_ = hash_q.pattern_match.group(1)
@@ -1004,7 +994,7 @@ async def gethash(hash_q):
         await hash_q.reply(ans)
 
 
-@register(outgoing=True, pattern="^\!base64 (en|de) (.*)")
+@javes05(outgoing=True, pattern="^\!base64 (en|de) (.*)")
 async def endecrypt(query):
     """ For .base64 command, find the base64 encoding of the given string. """
     if query.pattern_match.group(1) == "en":
@@ -1018,7 +1008,7 @@ async def endecrypt(query):
                                validate=True))[2:]
         await query.reply("Decoded: `" + lething[:-1] + "`")
 
-@register(pattern=r"^\!decode$", outgoing=True)
+@javes05(pattern=r"^\!decode$", outgoing=True)
 async def parseqr(qr_e):
     """ For .decode command, get QR Code/BarCode content from the replied photo. """
     downloaded_file_name = await qr_e.client.download_media(
@@ -1049,7 +1039,7 @@ async def parseqr(qr_e):
     await qr_e.edit(qr_contents)
 
 
-@register(pattern=r"^\!barcode(?: |$)([\s\S]*)", outgoing=True)
+@javes05(pattern=r"^\!barcode(?: |$)([\s\S]*)", outgoing=True)
 async def barcode(event):
     """ For .barcode command, genrate a barcode containing the given content. """
     await event.edit("`Processing..`")
@@ -1093,7 +1083,7 @@ async def barcode(event):
     await event.delete()
 
 
-@register(pattern=r"^\!makeqr(?: |$)([\s\S]*)", outgoing=True)
+@javes05(pattern=r"^\!makeqr(?: |$)([\s\S]*)", outgoing=True)
 async def make_qr(makeqr):
     """ For .makeqr command, make a QR Code containing the given content. """
     input_str = makeqr.pattern_match.group(1)
@@ -1134,7 +1124,7 @@ async def make_qr(makeqr):
     await makeqr.delete()
 
 
-@register(outgoing=True, pattern=r"^\!reverse(?: |$)(\d*)")
+@javes05(outgoing=True, pattern=r"^\!reverse(?: |$)(\d*)")
 async def okgoogle(img):
     """ For .reverse command, Google search images and stickers. """
     if os.path.isfile("okgoogle.png"):
@@ -1251,7 +1241,7 @@ async def scam(results, lim):
 
     return imglinks
 
-@register(pattern=r"^\!goss (.*)", outgoing=True)
+@javes05(pattern=r"^\!goss (.*)", outgoing=True)
 async def capture(url):
     """ For .ss command, capture a website's screenshot and send the photo. """
     await url.edit("`Processing ...`")
@@ -1301,7 +1291,7 @@ async def capture(url):
                                    force_document=True,
                                    reply_to=message_id)
 
-@register(outgoing=True, pattern="^\!cspam (.*)")
+@javes05(outgoing=True, pattern="^\!cspam (.*)")
 async def tmeme(e):
     cspam = str(e.pattern_match.group(1))
     message = cspam.replace(" ", "")
@@ -1314,7 +1304,7 @@ async def tmeme(e):
             "TSpam was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!wspam (.*)")
+@javes05(outgoing=True, pattern="^\!wspam (.*)")
 async def tmeme(e):
     wspam = str(e.pattern_match.group(1))
     message = wspam.split()
@@ -1327,7 +1317,7 @@ async def tmeme(e):
             "WSpam was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!spam (.*)")
+@javes05(outgoing=True, pattern="^\!spam (.*)")
 async def spammer(e):
     counter = int(e.pattern_match.group(1).split(' ', 1)[0])
     spam_message = str(e.pattern_match.group(1).split(' ', 1)[1])
@@ -1338,7 +1328,7 @@ async def spammer(e):
                                     "Spam was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!picspam")
+@javes05(outgoing=True, pattern="^\!picspam")
 async def tiny_pic_spam(e):
     message = e.text
     text = message.split()
@@ -1353,7 +1343,7 @@ async def tiny_pic_spam(e):
             "PicSpam was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!delayspam (.*)")
+@javes05(outgoing=True, pattern="^\!delayspam (.*)")
 async def spammer(e):
     spamDelay = float(e.pattern_match.group(1).split(' ', 2)[0])
     counter = int(e.pattern_match.group(1).split(' ', 2)[1])
@@ -1392,7 +1382,7 @@ async def get_tz(con):
         return
 
 
-@register(outgoing=True,
+@javes05(outgoing=True,
           pattern="^\!time(?: |$)(.*)(?<![0-9])(?: |$)([0-9]+)?")
 async def time_func(tdata):
     """ For .time command, return the time of
@@ -1456,7 +1446,7 @@ async def time_func(tdata):
         return
 
 
-@register(outgoing=True,
+@javes05(outgoing=True,
           pattern="^\!date(?: |$)(.*)(?<![0-9])(?: |$)([0-9]+)?")
 async def date_func(dat):
     """ For .date command, return the date of
@@ -1524,14 +1514,14 @@ TTS_LANG = "en"
 TRT_LANG = "en"
 
 
-@register(outgoing=True, pattern="^\!crblang (.*)")
+@javes05(outgoing=True, pattern="^\!crblang (.*)")
 async def setlang(prog):
     global CARBONLANG
     CARBONLANG = prog.pattern_match.group(1)
     await prog.edit(f"Language for carbon.now.sh set to {CARBONLANG}")
 
 
-@register(outgoing=True, pattern="^\!carbon")
+@javes05(outgoing=True, pattern="^\!carbon")
 async def carbon_api(e):
     """ A Wrapper for carbon.now.sh """
     await e.edit("`Processing..`")
@@ -1596,7 +1586,7 @@ async def carbon_api(e):
     await e.delete()  # Deleting msg
 
 
-@register(outgoing=True, pattern="^\!img (.*)")
+@javes05(outgoing=True, pattern="^\!img (.*)")
 async def img_sampler(event):
     """ For .img command, search and return images matching the query. """
     await event.edit("Processing...")
@@ -1627,7 +1617,7 @@ async def img_sampler(event):
     await event.delete()
 
 
-@register(outgoing=True, pattern="^\!currency (.*)")
+@javes05(outgoing=True, pattern="^\!currency (.*)")
 async def moni(event):
     input_str = event.pattern_match.group(1)
     input_sgra = input_str.split(" ")
@@ -1655,7 +1645,7 @@ async def moni(event):
         return
 
 
-@register(outgoing=True, pattern=r"^\!google (.*)")
+@javes05(outgoing=True, pattern=r"^\!google (.*)")
 async def gsearch(q_event):
     """ For .google command, do a Google search. """
     match = q_event.pattern_match.group(1)
@@ -1689,7 +1679,7 @@ async def gsearch(q_event):
         )
 
 
-@register(outgoing=True, pattern=r"^\!wiki (.*)")
+@javes05(outgoing=True, pattern=r"^\!wiki (.*)")
 async def wiki(wiki_q):
     """ For .wiki command, fetch content from Wikipedia. """
     match = wiki_q.pattern_match.group(1)
@@ -1721,7 +1711,7 @@ async def wiki(wiki_q):
             BOTLOG_CHATID, f"Wiki query `{match}` was executed successfully")
 
 
-@register(outgoing=True, pattern="^\!ud (.*)")
+@javes05(outgoing=True, pattern="^\!ud (.*)")
 async def urban_dict(ud_e):
     """ For .ud command, fetch content from Urban Dictionary. """
     await ud_e.edit("Processing...")
@@ -1762,7 +1752,7 @@ async def urban_dict(ud_e):
         await ud_e.edit("No result found for **" + query + "**")
 
 
-@register(outgoing=True, pattern=r"^\!tts(?: |$)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!tts(?: |$)([\s\S]*)")
 async def text_to_speech(query):
     """ For .tts command, a wrapper for Google Text-to-Speech. """
     textx = await query.get_reply_message()
@@ -1808,7 +1798,7 @@ async def text_to_speech(query):
 
 
 # kanged from Blank-x ;---;
-@register(outgoing=True, pattern="^\!imdb (.*)")
+@javes05(outgoing=True, pattern="^\!imdb (.*)")
 async def imdb(e):
     try:
         movie_name = e.pattern_match.group(1)
@@ -1891,7 +1881,7 @@ async def imdb(e):
         await e.edit("Plox enter **Valid movie name** kthx")
 
 
-@register(outgoing=True, pattern=r"^\!trt(?: |$)([\s\S]*)")
+@javes05(outgoing=True, pattern=r"^\!trt(?: |$)([\s\S]*)")
 async def translateme(trans):
     """ For .trt command, translate the given text using Google Translate. """
     translator = Translator()
@@ -1923,7 +1913,7 @@ async def translateme(trans):
         )
 
 
-@register(pattern="^\!lang (trt|tts) (.*)", outgoing=True)
+@javes05(pattern="^\!lang (trt|tts) (.*)", outgoing=True)
 async def lang(value):
     """ For .lang command, change the default langauge of userbot scrapers. """
     util = value.pattern_match.group(1).lower()
@@ -1957,7 +1947,7 @@ async def lang(value):
             BOTLOG_CHATID,
             f"`Language for {scraper} changed to {LANG.title()}.`")
 
-@register(outgoing=True, pattern=r"^\!yt(audio|video) (.*)")
+@javes05(outgoing=True, pattern=r"^\!yt(audio|video) (.*)")
 async def download_video(v_url):
     """ For .rip command, download media from YouTube and many other sites. """
     url = v_url.pattern_match.group(2)
