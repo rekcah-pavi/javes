@@ -33,7 +33,7 @@ from asyncio import sleep
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
 from userbot.events import register
 from telethon.tl.types import DocumentAttributeAudio
-from userbot.modules.upload_download import progress, humanbytes, time_formatter
+from userbot.modules.system import progress, humanbytes, time_formatter
 import io
 from datetime import datetime as dt
 from pytz import country_names as c_n
