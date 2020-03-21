@@ -1,10 +1,4 @@
-# Copyright (C) 2019 The Raphielscape Company LLC.
-#
-# Licensed under the Raphielscape Public License, Version 1.c (the "License");
-# you may not use this file except in compliance with the License.
-#
-""" Userbot module for managing events.
- One of the main components of the userbot. """
+
 
 import sys
 from asyncio import create_subprocess_shell as asyncsubshell
@@ -18,8 +12,8 @@ from telethon import events
 from userbot import bot, BOTLOG_CHATID, LOGSPAMMER
 
 
-def register(**args):
-    """ Register a new event. """
+def javes05(**args):
+   
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', False)
     groups_only = args.get('groups_only', False)
