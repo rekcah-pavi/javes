@@ -1,6 +1,6 @@
 {
   "name": "Javes",
-  "description": "Javes is a Telegram userbot that running on Python ",
+  "description": "Javes is a Telegram userbot that running on Python , It help you to manage your telegram easily ",
   "logo": "https://i.imgur.com/ATSG4w3.png",
   "keywords": [
     "telegram",
@@ -10,7 +10,7 @@
     "productivity"
   ],
   "repository": "https://github.com/rekcah-pavi/javes",
-  "website": "https://t.me/rekcah05",
+  "website": "https://t.me/javes05",
   "success_url": "https://t.me/rekcah05",
   "stack": "container",
   "env": {
@@ -21,14 +21,14 @@
       "description": "Get this value from my.telegram.org."
     },
     "TELEGRAM_STRING_SESSION": {
-      "description": "Get this value by running [python3 string_session.py] in Termux or local system."    
+      "description": "Get this value by running [python3 string_session.py] in Termux or heroku"    
     },
     "HEROKU_APIKEY": {
-      "description": "enter your heroku api key for make !update command , get it from 'https://dashboard.heroku.com/account.",
+      "description": "very inportant for !update command to make javes up-to-date , get it from 'https://dashboard.heroku.com/account.",
       "value": ""   
     },
     "HEROKU_APPNAME": {
-      "description": "enter this app name agin here its also need for update bot.",
+      "description": "enter this app name agin here, very inportant for !update comand to make javes up-to-date ,",
       "value": ""
     },
     "COUNTRY": {
@@ -52,15 +52,15 @@
       "required": false
     },
     "OPEN_WEATHER_MAP_APPID": {
-      "description": "Get your own APPID (API key)from https://api.openweathermap.org/data/2.5/weather",
+      "description": "need for !weather command, (API key)from https://api.openweathermap.org/data/2.5/weather",
       "required": false
     },
     "BOTLOG": {
-      "description": "BOTLOG_CHATID must be filled correct if you set it true",
+      "description": "Recommed to true ,BOTLOG_CHATID must be filled correct if you set it true",
       "value": "False"
     },
     "BOTLOG_CHATID": {
-      "description": "this need for send bot's error , make group with @missrose_bot then type /id",
+      "description": "important for wark some plugins,bot logs , make group with @missrose_bot then type /id to get this value",
       "value": "0"
     },
     "CONSOLE_LOGGER_VERBOSE": {
@@ -68,19 +68,19 @@
       "value": "False"
     },
     "PM_PROTECTOR": {
-      "description": "Prevent unknown people to spam your pm , type !allow to allow them ",
+      "description": "Prevent unknown people to spam your pm , type !allow to allow them to pm",
       "value": "false"
     },
     "YOUTUBE_API_KEY": {
-      "description": "YouTube Data API Key for .yt command. Get from https://console.cloud.google.com",
+      "description": "YouTube Data API Key for !youtube command. Get from https://console.cloud.google.com",
       "required": false
     },
     "OCR_SPACE_API_KEY": {
-      "description": "OCR API Key for .ocr command. Get from https://ocr.space/ocrapi",
+      "description": "OCR API Key for !read (read photo's text)command. Get from https://ocr.space/ocrapi",
       "required": false
     },
     "REM_BG_API_KEY": {
-      "description": "API Key for .rbg command. Get from https://www.remove.bg/api",
+      "description": "API Key for .rbg(remove background picture) command. Get from https://www.remove.bg/api",
       "required": false
     },
     "ANTI_SPAMBOT": {
@@ -110,18 +110,7 @@
     "LASTFM_SECRET": {
       "description": "SECRET Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create].",
       "required": false
-    },
-    "LASTFM_USERNAME": {
-      "description": "Last.FM Username",
-      "required": false
-    },
-    "LASTFM_PASSWORD": {
-      "description": "Last.FM Password",
-      "required": false
-    },
-    "BIO_PREFIX": {
-      "description": "Prefix for Last.FM Module Bio.",
-      "required": false
+    
     },
     "DEFAULT_BIO": {
       "description": "Default profile bio.",
@@ -142,7 +131,7 @@
       "required": false
     },
     "WEATHER_DEFCITY": {
-      "description": "Set the default city for the userbot's weather module.",
+      "description": "Set the default city for the userbot's !weather module.",
       "required": false
     },
     "LOGSPAMMER": {
