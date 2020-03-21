@@ -268,7 +268,7 @@ async def ocr_space_file(filename,
     return r.json()
 
 
-@javes05(pattern=r"^\!read (.*)", outgoing=True)
+@javes05(pattern=r"^\.read (.*)", outgoing=True)
 async def ocr(event):
     await event.edit("`Reading...`")
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
