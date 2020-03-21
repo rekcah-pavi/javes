@@ -907,7 +907,7 @@ async def faces(siwis):
     await siwis.edit(reply_text)
 
 
-@javes05(outgoing=True, pattern="^!idk$")
+@javes05(outgoing=True, pattern="^!shg$")
 async def shrugger(shg):
     r""" ¯\_(ツ)_/¯ """
     await shg.edit(choice(SHGS))
@@ -925,6 +925,19 @@ async def Oof(e):
         await e.edit(t)
 
 
+@javes05(outgoing=True, pattern="^!kill$")
+async def iqless(e):
+    await e.edit("User Killed Sucessfully ▀̿ ̿Ĺ̯̿̿▀̿ ̿")      
+
+
+@javes05(outgoing=True, pattern="^!corona$")
+async def iqless(e):
+    await e.edit("Antivirus scan was completed \n⚠️ Warning! This  contains a threat:Corona Virus")      
+
+
+@javes05(outgoing=True, pattern="^!help$")
+async def iqless(e):
+    await e.edit("Please check my channel for get help\n https://t.me/javes05/12")      
 
 
                      
@@ -1247,7 +1260,16 @@ async def nou(e):
 
 
 
-
+@javes05(outgoing=True, pattern="^.joke$")  
+async def gtfo(e):
+   if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+        await e.edit("`\n█████████`" 
+                     "`\n█▄█████▄█`"    
+                     "`\n█▼▼▼▼▼`"       
+                     "`\n█  Nice Joke `"
+                     "`\n█▲▲▲▲▲`"
+                     "`\n█████████`"
+                    "`\n ██   ██`")         
 
 
 

@@ -71,7 +71,7 @@ async def get_tz(con):
         return
 
 
-@javes05(outgoing=True, pattern="^.weather(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!weather(?: |$)(.*)")
 async def get_weather(weather):
     """ For .weather command, gets the current weather of a city. """
 

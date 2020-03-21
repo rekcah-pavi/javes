@@ -1229,7 +1229,7 @@ async def scam(results, lim):
     imglinks = []
     counter = 0
 
-    pattern = r'^,\[\"(.*[.png|.jpg|.jpeg])\",[0-9]+,[0-9]+\]$'
+    pattern = r'^,\[\"(.*[!png|!jpg|!jpeg])\",[0-9]+,[0-9]+\]$'
     oboi = re.findall(pattern, decoded, re.I | re.M)
 
     for imglink in oboi:
