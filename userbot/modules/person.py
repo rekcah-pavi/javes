@@ -71,7 +71,7 @@ from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,LAST
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
-    "`Javes: Hello! Sir\n`"
+    "`Javes: `Hello! Sir\n"
    f"I can't allow you to {DEFAULTUSER}'s PM without his permissions please be patient,Thankyou")
     
 
@@ -235,7 +235,7 @@ async def approvepm(apprvpm):
         await apprvpm.edit("`jaces`You allowed to pm!")
         return
 
-    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `javes: approved to PM!`")
+    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `approved to PM!`")
 
     async for message in apprvpm.client.iter_messages(apprvpm.chat_id,
                                                       from_user='me',
@@ -269,7 +269,7 @@ async def disapprovepm(disapprvpm):
         name0 = str(aname.first_name)
 
     await disapprvpm.edit(
-        f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Javes: Disaproved to PM!`")
+        f"[{name0}](tg://user?id={disapprvpm.chat_id}) ` Disaproved to PM!`")
 
     if BOTLOG:
         await disapprvpm.client.send_message(
