@@ -7,7 +7,14 @@ import datetime
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from random import choice, randint
+from asyncio import sleep
 
+from telethon.events import StopPropagation
+
+from userbot import (AFKREASON, COUNT_MSG, CMD_HELP, ISAFK, BOTLOG,
+                     BOTLOG_CHATID, USERS, PM_AUTO_BAN)
+from userbot.events import javes05
 from userbot import bot, CMD_HELP
 from telethon.errors import rpcbaseerrors
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
@@ -322,14 +329,7 @@ async def unblockpm(unblock):
 
 """ Userbot module which contains afk-related commands """
 
-from random import choice, randint
-from asyncio import sleep
 
-from telethon.events import StopPropagation
-
-from userbot import (AFKREASON, COUNT_MSG, CMD_HELP, ISAFK, BOTLOG,
-                     BOTLOG_CHATID, USERS, PM_AUTO_BAN)
-from userbot.events import javes05
 
 try:
     from userbot.modules.sql_helper.globals import gvarstatus, addgvar, delgvar
