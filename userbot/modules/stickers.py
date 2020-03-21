@@ -20,7 +20,12 @@ from PIL import Image
 import random
 from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
 from userbot import bot, CMD_HELP
-
+import io
+import os
+import random
+import textwrap
+from PIL import Image, ImageDraw, ImageFont
+from telethon.tl.types import InputMessagesFilterDocument
 from telethon.tl.functions.messages import GetStickerSetRequest
 from telethon.tl.types import InputStickerSetID
 from telethon.tl.types import DocumentAttributeSticker
@@ -345,7 +350,7 @@ async def _(event):
              await event.delete()   
              await bot.forward_messages(event.chat_id, response.message)
 
-@javes05(outgoing=True, pattern="^!text(?: |$)(.*)")
+@javes05 (outgoing=True, pattern="^!text(?: |$)(.*)")
 async def sticklet(event):
     R = random.randint(0,256)
     G = random.randint(0,256)
@@ -410,9 +415,5 @@ async def get_font_file(client, channel_id):
     font_file_message = random.choice(font_file_message_s)
     # download and return the file path
     return await client.download_media(font_file_message)
-
-
-
-
 
 
