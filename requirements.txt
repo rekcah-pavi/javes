@@ -1,10 +1,17 @@
 aiohttp
 aria2p
 async_generator
-pyfiglet
 asyncurban
 bs4
 cowpy
+covid
+regex
+freetype
+pill
+pyfiglet
+libfreetype6-dev
+python-imaging
+python-magic
 dnspython
 emoji
 gitpython
@@ -20,6 +27,7 @@ httplib2
 humanize
 lxml
 oauth2client
+pytube
 Pillow
 psycopg2
 psycopg2-binary
