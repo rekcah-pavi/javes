@@ -267,7 +267,7 @@ async def upstream(ups):
             repo.__del__()
             return
         await ups.edit('`[Updater]\
-                        Javes dyno build in progress, please wait for it to complete.`'
+                        Javes dyno build in progress, please wait for it to complete.\n It may take 10 minutes `'
                        )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
@@ -771,7 +771,7 @@ async def fastpurger(purg):
     await done.delete()
 
 
-@javes05(outgoing=True, pattern="^\!del")
+@javes05(outgoing=True, pattern="^\!purgeme")
 async def purgeme(delme):
     """ For .purgeme, delete x count of your latest message."""
     message = delme.text
@@ -798,7 +798,7 @@ async def purgeme(delme):
     await smsg.delete()
 
 
-@javes05(outgoing=True, pattern="^\.del$")
+@javes05(outgoing=True, pattern="^\!del$")
 async def delete_it(delme):
     """ For .del command, delete the replied message. """
     msg_src = await delme.get_reply_message()
