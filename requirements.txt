@@ -2,9 +2,15 @@ aiohttp
 aria2p
 async_generator
 asyncurban
+aiofiles
+coffeehouse
+PyGithub
 bs4
 cowpy
+beautifulsoup4
 covid
+bwb
+cfscrape
 regex
 freetype
 pill
@@ -22,6 +28,7 @@ googletrans
 gTTS
 gTTS-token
 hachoir
+gsearch
 heroku3
 httplib2
 humanize
@@ -33,10 +40,13 @@ psycopg2
 psycopg2-binary
 pybase64
 pylast
+selenium
+pymongo
 pySmartDL
 python-barcode
 python-dotenv
 pytz
+urbandict
 qrcode
 requests
 search-engine-parser
