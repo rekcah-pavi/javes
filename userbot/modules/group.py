@@ -1,6 +1,23 @@
 from asyncio import sleep
 from os import remove
+from asyncio import sleep
+from os import remove
 
+from telethon.errors import (BadRequestError, ChatAdminRequiredError,
+                             ImageProcessFailedError, PhotoCropSizeSmallError,
+                             UserAdminInvalidError)
+from telethon.errors.rpcerrorlist import (UserIdInvalidError,
+                                          MessageTooLongError)
+from telethon.tl.functions.channels import (EditAdminRequest,
+                                            EditBannedRequest,
+                                            EditPhotoRequest)
+from telethon.tl.functions.messages import UpdatePinnedMessageRequest
+from telethon.tl.types import (PeerChannel, ChannelParticipantsAdmins,
+                               ChatAdminRights, ChatBannedRights,
+                               MessageEntityMentionName, MessageMediaPhoto,
+                               ChannelParticipantsBots)
+
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
 from userbot import CMD_HELP, bot, LOGS, CLEAN_WELCOME, BOTLOG_CHATID
 from telethon.events import ChatAction
 from asyncio import sleep
