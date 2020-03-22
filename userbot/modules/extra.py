@@ -108,6 +108,13 @@ from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from userbot import bot, CMD_HELP
+from requests import get, post, exceptions
+import asyncio
+import os
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
+from userbot.events import register
+
+DOGBIN_URL = "https://del.dog/"
 
 
 
@@ -676,7 +683,7 @@ def useragent():
     
     
     
-    DOGBIN_URL = "https://del.dog/"
+    
 
 
 @javes05(outgoing=True, pattern=r"^\!paste(?: |$)([\s\S]*)")
