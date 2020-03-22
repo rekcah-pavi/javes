@@ -1,6 +1,7 @@
 from asyncio import sleep
 from random import choice, getrandbits, randint
 from re import sub
+from covid import Covid
 import time
 from collections import deque
 import requests
@@ -927,12 +928,12 @@ async def Oof(e):
 
 @javes05(outgoing=True, pattern="^!kill$")
 async def iqless(e):
-    await e.edit("User Killed Sucessfully ▀̿ ̿Ĺ̯̿̿▀̿ ̿")      
+    await e.edit("User Killed Sucessfully  ▀̿ ̿Ĺ̯̿̿▀̿ ̿")      
 
 
 @javes05(outgoing=True, pattern="^!corona$")
 async def iqless(e):
-    await e.edit("Antivirus scan was completed \n⚠️ Warning! This  contains a threat:Corona Virus")      
+    await e.edit("Antivirus scan was completed \n⚠️ Warning! This  contains a threat: Corona Virus")      
 
 
 @javes05(outgoing=True, pattern="^!help$")
@@ -1271,6 +1272,24 @@ async def gtfo(e):
                      "`\n█████████`"
                     "`\n ██   ██`")         
 
+@javes05(outgoing=True, pattern="^.covid(?: |$)(.*)")
+async def corona(event):
+    covid = Covid()
+    data = covid.get_data()
+    country = event.pattern_match.group(1)
+    country_data = get_country_data(country, data)
+    output_text = "" 
+    for name, value in country_data.items():
+        output_text += "`{}`: `{}`\n".format(str(name), str(value))
+    await event.edit("**CoronaVirus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
+
+def get_country_data(country, world):
+    for country_data in world:
+        if country_data["country"] == country:
+            return country_data
+    return {"Status": "No information yet about this country!"}
+    
+    
 
 
 
