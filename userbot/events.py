@@ -68,13 +68,11 @@ def javes05(**args):
                 if not disable_errors:
                     date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
-                    text = "**USERBOT ERROR REPORT**\n"
-                    text += "Nothing is logged except the fact of error and date\n"
+                    text = "**JAVES ERROR REPORT**\n"
+                    text += "Send this to @rekcah05 if you cant find issue\n"
 
                     ftext = "========== DISCLAIMER =========="
-                    ftext += "\nThis file uploaded ONLY here,"
-                    ftext += "\nwe logged only fact of error and date,"
-                    ftext += "\nwe respect your privacy,"
+                    ftext += "\nThis file uploaded ONLY here,"                
                     ftext += "\nyou may not report this error if you've"
                     ftext += "\nany confidential data here, no one will see your data\n"
                     ftext += "================================\n\n"
