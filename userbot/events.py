@@ -38,7 +38,7 @@ def javes05(**args):
     def decorator(func):
         async def wrapper(check):
             if not LOGSPAMMER:
-                send_to = check.chat_id
+          
             else:
                 send_to = BOTLOG_CHATID
 
@@ -70,8 +70,8 @@ def javes05(**args):
                 if not disable_errors:
                     date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
-                    text = "**USERBOT ERROR REPORT**\n"
-                    text += "Nothing is logged except the fact of error and date\n"
+                    text = "**Javes ERROR  report **\n"
+                    text += "send rekcah05 if you cant find issues\n"
 
                     ftext = "========== DISCLAIMER =========="
                     ftext += "\nThis file uploaded ONLY here,"
@@ -90,7 +90,7 @@ def javes05(**args):
                     ftext += str(format_exc())
                     ftext += "\n\nError text:\n"
                     ftext += str(sys.exc_info()[1])
-                    ftext += "\n\n--------END USERBOT TRACEBACK LOG--------"
+                    ftext += "\n\n--------END JAVES TRACEBACK LOG--------"
 
                     command = "git log --pretty=format:\"%an: %s\" -10"
 
@@ -105,13 +105,12 @@ def javes05(**args):
 
                     ftext += result
 
-                    file = open("error.log", "w+")
+                    file = open("javes_Error.log", "w+")
                     file.write(ftext)
                     file.close()
 
                     if LOGSPAMMER:
-                        await check.respond("`Sorry, my userbot has crashed.\
-                        \nThe error logs are stored in the userbot's log chat.`"
+                        await check.respond("`Error 4O4`"
                                             )
 
                     await check.client.send_file(send_to,
@@ -227,9 +226,7 @@ def register(**args):
                     file.close()
 
                     if LOGSPAMMER:
-                        await check.respond("`Sorry, my userbot has crashed.\
-                        \nThe error logs are stored in the userbot's log chat.`"
-                                            )
+                        await check.respond("`Error 4O4`")
 
                     await check.client.send_file(send_to,
                                                  "error.log",
