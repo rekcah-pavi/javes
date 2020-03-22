@@ -145,7 +145,7 @@ async def permitpm(event):
                             BOTLOG_CHATID,
                             "[" + name0 + "](tg://user?id=" +
                             str(event.chat_id) + ")" +
-                            " i blocked him from your pm due to spam",
+                            " blocked  for spam your PM",
                         )
 
 
@@ -232,7 +232,7 @@ async def approvepm(apprvpm):
     try:
         approve(uid)
     except IntegrityError:
-        await apprvpm.edit("``You allowed to pm!")
+        await apprvpm.edit("You allowed to pm!")
         return
 
     await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `approved to PM!`")
@@ -359,7 +359,7 @@ async def mention_afk(mention):
         if ISAFK or ISAFK_SQL:
             if mention.sender_id not in USERS:
                 if EXCUSE:
-                    await mention.reply(f"I'm AFK right now.\
+                    await mention.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} AFK right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
@@ -369,7 +369,7 @@ async def mention_afk(mention):
                 if USERS[mention.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await mention.reply(
-                            f"In case you didn't notice, I'm still AFK.\
+                            f"`Javes: ` n case you didn't notice,  {DEFAULTUSER}  still AFK.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await mention.reply(str(choice(AFKSTR)))
@@ -406,7 +406,7 @@ async def afk_on_pm(sender):
         if apprv and (ISAFK or ISAFK_SQL):
             if sender.sender_id not in USERS:
                 if EXCUSE:
-                    await sender.reply(f"I'm AFK right now.\
+                    await sender.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} AFK right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await sender.reply(str(choice(AFKSTR)))
@@ -416,7 +416,7 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await sender.reply(
-                            f"In case you didn't notice, I'm still AFK.\
+                            f"`Javes: ` n case you didn't notice,  {DEFAULTUSER}  still AFK.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await sender.reply(str(choice(AFKSTR)))

@@ -335,7 +335,7 @@ async def _(event):
     if reply_message.sender.bot:
        await event.edit("```javes: Can't scan bot meaage```")
        return
-    await event.edit("```Making a Quote```")
+    await event.edit("```Making.....```")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=1031952739))

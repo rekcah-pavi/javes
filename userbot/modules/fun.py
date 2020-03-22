@@ -933,7 +933,7 @@ async def iqless(e):
 
 @javes05(outgoing=True, pattern="^!corona$")
 async def iqless(e):
-    await e.edit("Antivirus scan was completed \n⚠️ Warning! This  contains a threat: Corona Virus")      
+    await e.edit("Antivirus scan was completed \n⚠️ Warning! This  donkey has Corona Virus")      
 
 
 @javes05(outgoing=True, pattern="^!help$")

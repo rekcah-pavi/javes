@@ -1343,7 +1343,7 @@ async def tiny_pic_spam(e):
             "PicSpam was executed successfully")
 
 
-@javes05(outgoing=True, pattern="^\!delayspam (.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!delayspam (.*)")
 async def spammer(e):
     spamDelay = float(e.pattern_match.group(1).split(' ', 2)[0])
     counter = int(e.pattern_match.group(1).split(' ', 2)[1])
