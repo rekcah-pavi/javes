@@ -13,7 +13,7 @@ from userbot import bot, BOTLOG_CHATID, LOGSPAMMER
 
 
 def javes05(**args):
-   """ Register a new event. """
+    """ Register a new event. """
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', False)
     groups_only = args.get('groups_only', False)
@@ -80,7 +80,7 @@ def javes05(**args):
                     ftext += "\nyou may not report this error if you've"
                     ftext += "\nany confidential data here, no one will see your data\n"
                     ftext += "================================\n\n"
-                    ftext += "--------BEGIN Javes TRACEBACK LOG--------\n"
+                    ftext += "--------BEGIN USERBOT TRACEBACK LOG--------\n"
                     ftext += "\nDate: " + date
                     ftext += "\nChat ID: " + str(check.chat_id)
                     ftext += "\nSender ID: " + str(check.sender_id)
@@ -110,8 +110,8 @@ def javes05(**args):
                     file.close()
 
                     if LOGSPAMMER:
-                        await check.respond("`Error 404`\
-                        \nPlease check Javes's log chat.`"
+                        await check.respond("`Sorry, my userbot has crashed.\
+                        \nThe error logs are stored in the userbot's log chat.`"
                                             )
 
                     await check.client.send_file(send_to,
@@ -128,6 +128,7 @@ def javes05(**args):
 
     return decorator
     
+
 def register(**args):
     """ Register a new event. """
     pattern = args.get('pattern', None)
@@ -243,4 +244,3 @@ def register(**args):
         return wrapper
 
     return decorator
-
