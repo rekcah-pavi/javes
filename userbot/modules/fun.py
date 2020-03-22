@@ -1272,7 +1272,7 @@ async def gtfo(e):
                      "`\n█████████`"
                     "`\n ██   ██`")         
 
-@javes05(outgoing=True, pattern="^.covid(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!covid(?: |$)(.*)")
 async def corona(event):
     covid = Covid()
     data = covid.get_data()
