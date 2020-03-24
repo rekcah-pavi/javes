@@ -5,6 +5,11 @@ from os import execl
 import sys
 import os
 import io
+import heroku3
+import asyncio
+from asyncio import create_subprocess_shell as asyncSubprocess
+from asyncio.subprocess import PIPE as asyncPIPE
+from userbot import CMD_HELP, LOGS, HEROKU_APPNAME, HEROKU_APIKEY
 import sys
 import json
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot, UPSTREAM_REPO_URL
@@ -17,7 +22,6 @@ import json
 from asyncio import sleep
 from telethon.errors import rpcbaseerrors
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
-
 import os
 import subprocess
 import time
@@ -41,10 +45,37 @@ from os import remove
 from telethon import version
 from userbot import CMD_HELP, ALIVE_NAME
 from userbot.events import javes05
-
+Heroku = heroku3.from_key(HEROKU_APIKEY)
 # ================= CONSTANT =================
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
+
+async def subprocess_run(cmd, heroku):
+    subproc = await asyncSubprocess(cmd, stdout=asyncPIPE, stderr=asyncPIPE)
+    stdout, stderr = await subproc.communicate()
+    exitCode = subproc.returncode
+    if exitCode != 0:
+        await heroku.edit(
+            '**An error was detected while running subprocess**\n'
+            f'```exitCode: {exitCode}\n'
+            f'stdout: {stdout.decode().strip()}\n'
+            f'stderr: {stderr.decode().strip()}```')
+        return exitCode
+    return stdout.decode().strip(), stderr.decode().strip(), exitCode
+
+
+@javes05(outgoing=True, pattern=r"^!heroku(?: |$)(.*)")
+async def heroku_manager(heroku):
+    await heroku.edit("`Processing...`")
+    await asyncio.sleep(3)
+    conf = heroku.pattern_match.group(1)
+    result = await subprocess_run(f'heroku ps -a {HEROKU_APPNAME}', heroku)
+    if result[2] != 0:
+        return
+    hours_remaining = result[0]
+    await heroku.edit('`' + hours_remaining + '`')
+    return
+
 
 
 @javes05(outgoing=True, pattern="^\!sysd$")
@@ -117,11 +148,11 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
-                     "Javes: \n\n"
-                     f"Javes version: 1.2 \n"
-                     f"Telethon version: {version.__version__} \n"
-                     f"Python version: {python_version()} \n"
-                     f"User: {DEFAULTUSER}"
+                     " Javes: Stay Alert from covid-19!`\n\n"
+                     f"🦠 Javes : 1.3 \n"
+                     f"🦠 Telethon : {version.__version__} \n"
+                     f"🦠 Python : {python_version()} \n"
+                     f"🦠 Owner: {DEFAULTUSER}"
                      "`")
 
 

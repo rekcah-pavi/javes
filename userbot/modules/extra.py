@@ -2,7 +2,48 @@ import asyncio
 import pyfiglet
 import asyncio
 import os
+from telethon import events
+import os
+import requests
+import json
 import time
+from datetime import datetime
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon import events
+from io import BytesIO
+from PIL import Image
+import asyncio
+import time
+from datetime import datetime
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+from pySmartDL import SmartDL
+from telethon.tl.types import DocumentAttributeVideo
+from userbot.modules.system import progress, humanbytes, time_formatter
+from userbot import (TEMP_DOWNLOAD_DIRECTORY, CMD_HELP, bot)
+
+import datetime
+from collections import defaultdict
+import math
+import os
+import requests
+import zipfile
+from telethon.errors.rpcerrorlist import StickersetInvalidError
+from telethon.errors import MessageNotModifiedError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from telethon.tl.functions.messages import GetStickerSetRequest
+from telethon.tl.types import (DocumentAttributeFilename, DocumentAttributeSticker,
+                               InputMediaUploadedDocument, InputPeerNotifySettings,
+                               InputStickerSetID, InputStickerSetShortName,
+                               MessageMediaPhoto)
+from emoji import emojize
+from math import sqrt
+from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
+from telethon.tl.functions.messages import GetHistoryRequest, CheckChatInviteRequest, GetFullChatRequest
+from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
+from telethon.errors import (ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, InviteHashEmptyError, InviteHashExpiredError, InviteHashInvalidError)
+from telethon.utils import get_input_location
+from userbot import CMD_HELP
 import asyncio
 import shutil
 from bs4 import BeautifulSoup
@@ -35,6 +76,12 @@ from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRI
 from telethon.tl.types import DocumentAttributeAudio
 from userbot.modules.system import progress, humanbytes, time_formatter
 import io
+from telethon import events
+import os
+from PIL import Image
+from datetime import datetime
+from telegraph import Telegraph, upload_file, exceptions
+from userbot import (TELEGRAPH_SHORT_NAME, TEMP_DOWNLOAD_DIRECTORY, BOTLOG_CHATID, CMD_HELP, bot)
 from datetime import datetime as dt
 from pytz import country_names as c_n
 from pytz import country_timezones as c_tz
@@ -112,10 +159,379 @@ from requests import get, post, exceptions
 import asyncio
 import os
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
-
-
+from telethon import events
+import subprocess
+from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotModifiedError
+import io
+import asyncio
+import time
+from userbot import CMD_HELP, bot
+import glob
+import os
+telegraph = Telegraph()
+r = telegraph.create_account(short_name=TELEGRAPH_SHORT_NAME)
+auth_url = r["auth_url"]
+THUMB_IMAGE_PATH = "./thumb_image.jpg"
 DOGBIN_URL = "https://del.dog/"
 
+
+
+
+
+
+
+@javes05(outgoing=True, pattern="^!telegraph (media|text)$")
+async def telegraphs(graph):
+    """ For .telegraph command, upload media & text to telegraph site. """
+    if not graph.text[0].isalpha() and graph.text[0] not in ("/", "#", "@", "!"):
+        if graph.fwd_from:
+            return
+        if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+            os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+        if graph.reply_to_msg_id:
+            start = datetime.now()
+            r_message = await graph.get_reply_message()
+            input_str = graph.pattern_match.group(1)
+            if input_str == "media":
+                downloaded_file_name = await bot.download_media(
+                    r_message,
+                    TEMP_DOWNLOAD_DIRECTORY
+                )
+                end = datetime.now()
+                ms = (end - start).seconds
+                await graph.edit("Downloaded to {} in {} seconds.".format(downloaded_file_name, ms))
+                if downloaded_file_name.endswith((".webp")):
+                    resize_image(downloaded_file_name)
+                try:
+                    start = datetime.now()
+                    media_urls = upload_file(downloaded_file_name)
+                except exceptions.TelegraphException as exc:
+                    await graph.edit("ERROR: " + str(exc))
+                    os.remove(downloaded_file_name)
+                else:
+                    end = datetime.now()
+                    ms_two = (end - start).seconds
+                    os.remove(downloaded_file_name)
+                    await graph.edit("Uploaded to https://telegra.ph{} in {} seconds.".format(media_urls[0], (ms + ms_two)), link_preview=True)
+            elif input_str == "text":
+                user_object = await bot.get_entity(r_message.from_id)
+                title_of_page = user_object.first_name # + " " + user_object.last_name
+                # apparently, all Users do not have last_name field
+                page_content = r_message.message
+                if r_message.media:
+                    if page_content != "":
+                        title_of_page = page_content
+                    downloaded_file_name = await bot.download_media(
+                        r_message,
+                        TEMP_DOWNLOAD_DIRECTORY
+                    )
+                    m_list = None
+                    with open(downloaded_file_name, "rb") as fd:
+                        m_list = fd.readlines()
+                    for m in m_list:
+                        page_content += m.decode("UTF-8") + "\n"
+                    os.remove(downloaded_file_name)
+                page_content = page_content.replace("\n", "<br>")
+                response = telegraph.create_page(
+                    title_of_page,
+                    html_content=page_content
+                )
+                end = datetime.now()
+                ms = (end - start).seconds
+                await graph.edit("Pasted to https://telegra.ph/{} in {} seconds.".format(response["path"], ms), link_preview=True)
+        else:
+            await graph.edit("Reply to a message to get a permanent telegra.ph link. (Inspired by @ControllerBot)")
+
+
+def resize_image(image):
+    im = Image.open(image)
+    im.save(image, "PNG")
+
+
+@javes05(outgoing=True, pattern="^!mmf(?: |$)(.*)")
+async def mim(event):
+    if event.fwd_from:
+        return 
+    if not event.reply_to_msg_id:
+       await event.edit("`Syntax: reply to an image with .mms` 'text on top' ; 'text on bottom' ")
+       return
+    reply_message = await event.get_reply_message() 
+    if not reply_message.media:
+       await event.edit("```reply to a image/sticker/gif```")
+       return
+    chat = "@MemeAutobot"
+    sender = reply_message.sender
+    file_ext_ns_ion = "@memetime.png"
+    file = await bot.download_file(reply_message.media)
+    uploaded_gif = None
+    if reply_message.sender.bot:
+       await event.edit("```Reply to actual users message.```")
+       return
+    else:
+     await event.edit("``` Memifying this image!......  ```")
+     await asyncio.sleep(5)
+    
+    async with bot.conversation("@MemeAutobot") as bot_conv:
+          try:
+            memeVar = event.pattern_match.group(1)
+            await silently_send_message(bot_conv, "/start")
+            await asyncio.sleep(1)
+            await silently_send_message(bot_conv, memeVar)
+            await bot.send_file(chat, reply_message.media)
+            response = await bot_conv.get_response()
+          except YouBlockedUserError: 
+              await event.reply("```Please unblock @MemeAutobot and try again```")
+              return
+          if response.text.startswith("Forward"):
+              await event.edit("```can you kindly disable your forward privacy settings for good, Nibba?```")
+          if "Okay..." in response.text:
+            await event.edit("```🛑 🤨 NANI?! This is not an image! This will take sum tym to convert to image... UwU 🧐 🛑```")
+            thumb = None
+            if os.path.exists(THUMB_IMAGE_PATH):
+                thumb = THUMB_IMAGE_PATH
+            input_str = event.pattern_match.group(1)
+            if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+                os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+            if event.reply_to_msg_id:
+                file_name = "meme.png"
+                reply_message = await event.get_reply_message()
+                to_download_directory = TEMP_DOWNLOAD_DIRECTORY
+                downloaded_file_name = os.path.join(to_download_directory, file_name)
+                downloaded_file_name = await bot.download_media(
+                    reply_message,
+                    downloaded_file_name,
+                    )
+                if os.path.exists(downloaded_file_name):
+                    await bot.send_file(
+                        chat,
+                        downloaded_file_name,
+                        force_document=False,
+                        supports_streaming=False,
+                        allow_cache=False,
+                        thumb=thumb,
+                        )
+                    os.remove(downloaded_file_name)
+                else:
+                    await event.edit("File Not Found {}".format(input_str))
+            response = await bot_conv.get_response()
+            the_download_directory = TEMP_DOWNLOAD_DIRECTORY
+            files_name = "memes.webp"
+            download_file_name = os.path.join(the_download_directory, files_name)
+            await bot.download_media(
+                response.media,
+                download_file_name,
+                )
+            requires_file_name = TEMP_DOWNLOAD_DIRECTORY + "memes.webp"
+            await bot.send_file(  # pylint:disable=E0602
+                event.chat_id,
+                requires_file_name,
+                supports_streaming=False,
+                caption="Memifyed",
+            )
+            await event.delete()
+            #await bot.send_message(event.chat_id, "`☠️☠️Ah Shit... Here we go Again!🔥🔥`")
+          elif not is_message_image(reply_message):
+            await event.edit("Invalid message type. Plz choose right message type u NIBBA.")
+            return
+          else: 
+               await bot.send_file(event.chat_id, response.media)
+
+def is_message_image(message):
+    if message.media:
+        if isinstance(message.media, MessageMediaPhoto):
+            return True
+        if message.media.document:
+            if message.media.document.mime_type.split("/")[0] == "image":
+                return True
+        return False
+    return False
+    
+async def silently_send_message(conv, text):
+    await conv.send_message(text)
+    response = await conv.get_response()
+    await conv.mark_read(message=response)
+    return response
+
+
+@javes05(pattern="!chatinfo(?: |$)(.*)", outgoing=True)
+async def info(event):
+    await event.edit("`Analysing the chat...`")
+    chat = await get_chatinfo(event)
+    caption = await fetch_info(chat, event)
+    try:
+        await event.edit(caption, parse_mode="html")
+    except Exception as e:
+        print("Exception:", e)
+        await event.edit("`An unexpected error has occurred.`")
+    return
+
+
+async def get_chatinfo(event):
+    chat = event.pattern_match.group(1)
+    chat_info = None
+    if chat:
+        try:
+            chat = int(chat)
+        except ValueError:
+            pass
+    if not chat:
+        if event.reply_to_msg_id:
+            replied_msg = await event.get_reply_message()
+            if replied_msg.fwd_from and replied_msg.fwd_from.channel_id is not None:
+                chat = replied_msg.fwd_from.channel_id
+        else:
+            chat = event.chat_id
+    try:
+        chat_info = await event.client(GetFullChatRequest(chat))
+    except:
+        try:
+            chat_info = await event.client(GetFullChannelRequest(chat))
+        except ChannelInvalidError:
+            await event.edit("`Invalid channel/group`")
+            return None
+        except ChannelPrivateError:
+            await event.edit("`This is a private channel/group or I am banned from there`")
+            return None
+        except ChannelPublicGroupNaError:
+            await event.edit("`Channel or supergroup doesn't exist`")
+            return None
+        except (TypeError, ValueError) as err:
+            await event.edit(str(err))
+            return None
+    return chat_info
+
+
+async def fetch_info(chat, event):
+    # chat.chats is a list so we use get_entity() to avoid IndexError
+    chat_obj_info = await event.client.get_entity(chat.full_chat.id)
+    broadcast = chat_obj_info.broadcast if hasattr(chat_obj_info, "broadcast") else False
+    chat_type = "Channel" if broadcast else "Group"
+    chat_title = chat_obj_info.title
+    warn_emoji = emojize(":warning:")
+    try:
+        msg_info = await event.client(GetHistoryRequest(peer=chat_obj_info.id, offset_id=0, offset_date=datetime(2010, 1, 1), 
+                                                        add_offset=-1, limit=1, max_id=0, min_id=0, hash=0))
+    except Exception as e:
+        msg_info = None
+        print("Exception:", e)
+    # No chance for IndexError as it checks for msg_info.messages first
+    first_msg_valid = True if msg_info and msg_info.messages and msg_info.messages[0].id == 1 else False
+    # Same for msg_info.users
+    creator_valid = True if first_msg_valid and msg_info.users else False
+    creator_id = msg_info.users[0].id if creator_valid else None
+    creator_firstname = msg_info.users[0].first_name if creator_valid and msg_info.users[0].first_name is not None else "Deleted Account"
+    creator_username = msg_info.users[0].username if creator_valid and msg_info.users[0].username is not None else None
+    created = msg_info.messages[0].date if first_msg_valid else None
+    former_title = msg_info.messages[0].action.title if first_msg_valid and type(msg_info.messages[0].action) is MessageActionChannelMigrateFrom and msg_info.messages[0].action.title != chat_title else None
+    try:
+        dc_id, location = get_input_location(chat.full_chat.chat_photo)
+    except Exception as e:
+        dc_id = "Unknown"
+        location = str(e)
+    
+    #this is some spaghetti I need to change
+    description = chat.full_chat.about
+    members = chat.full_chat.participants_count if hasattr(chat.full_chat, "participants_count") else chat_obj_info.participants_count
+    admins = chat.full_chat.admins_count if hasattr(chat.full_chat, "admins_count") else None
+    banned_users = chat.full_chat.kicked_count if hasattr(chat.full_chat, "kicked_count") else None
+    restrcited_users = chat.full_chat.banned_count if hasattr(chat.full_chat, "banned_count") else None
+    members_online = chat.full_chat.online_count if hasattr(chat.full_chat, "online_count") else 0
+    group_stickers = chat.full_chat.stickerset.title if hasattr(chat.full_chat, "stickerset") and chat.full_chat.stickerset else None
+    messages_viewable = msg_info.count if msg_info else None
+    messages_sent = chat.full_chat.read_inbox_max_id if hasattr(chat.full_chat, "read_inbox_max_id") else None
+    messages_sent_alt = chat.full_chat.read_outbox_max_id if hasattr(chat.full_chat, "read_outbox_max_id") else None
+    exp_count = chat.full_chat.pts if hasattr(chat.full_chat, "pts") else None
+    username = chat_obj_info.username if hasattr(chat_obj_info, "username") else None
+    bots_list = chat.full_chat.bot_info  # this is a list
+    bots = 0
+    supergroup = "<b>Yes</b>" if hasattr(chat_obj_info, "megagroup") and chat_obj_info.megagroup else "No"
+    slowmode = "<b>Yes</b>" if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else "No"
+    slowmode_time = chat.full_chat.slowmode_seconds if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else None
+    restricted = "<b>Yes</b>" if hasattr(chat_obj_info, "restricted") and chat_obj_info.restricted else "No"
+    verified = "<b>Yes</b>" if hasattr(chat_obj_info, "verified") and chat_obj_info.verified else "No"
+    username = "@{}".format(username) if username else None
+    creator_username = "@{}".format(creator_username) if creator_username else None
+    #end of spaghetti block
+    
+    if admins is None:
+        # use this alternative way if chat.full_chat.admins_count is None, works even without being an admin
+        try:
+            participants_admins = await event.client(GetParticipantsRequest(channel=chat.full_chat.id, filter=ChannelParticipantsAdmins(),
+                                                                            offset=0, limit=0, hash=0))
+            admins = participants_admins.count if participants_admins else None
+        except Exception as e:
+            print("Exception:", e)
+    if bots_list:
+        for bot in bots_list:
+            bots += 1
+
+    caption = "<b>CHAT INFO:</b>\n"
+    caption += f"ID: <code>{chat_obj_info.id}</code>\n"
+    if chat_title is not None:
+        caption += f"{chat_type} name: {chat_title}\n"
+    if former_title is not None:  # Meant is the very first title
+        caption += f"Former name: {former_title}\n"
+    if username is not None:
+        caption += f"{chat_type} type: Public\n"
+        caption += f"Link: {username}\n"
+    else:
+        caption += f"{chat_type} type: Private\n"
+    if creator_username is not None:
+        caption += f"Creator: {creator_username}\n"
+    elif creator_valid:
+        caption += f"Creator: <a href=\"tg://user?id={creator_id}\">{creator_firstname}</a>\n"
+    if created is not None:
+        caption += f"Created: <code>{created.date().strftime('%b %d, %Y')} - {created.time()}</code>\n"
+    else:
+        caption += f"Created: <code>{chat_obj_info.date.date().strftime('%b %d, %Y')} - {chat_obj_info.date.time()}</code> {warn_emoji}\n"
+    caption += f"Data Centre ID: {dc_id}\n"
+    if exp_count is not None:
+        chat_level = int((1+sqrt(1+7*exp_count/14))/2)
+        caption += f"{chat_type} level: <code>{chat_level}</code>\n"
+    if messages_viewable is not None:
+        caption += f"Viewable messages: <code>{messages_viewable}</code>\n"
+    if messages_sent:
+        caption += f"Messages sent: <code>{messages_sent}</code>\n"
+    elif messages_sent_alt:
+        caption += f"Messages sent: <code>{messages_sent_alt}</code> {warn_emoji}\n"
+    if members is not None:
+        caption += f"Members: <code>{members}</code>\n"
+    if admins is not None:
+        caption += f"Administrators: <code>{admins}</code>\n"
+    if bots_list:
+        caption += f"Bots: <code>{bots}</code>\n"
+    if members_online:
+        caption += f"Currently online: <code>{members_online}</code>\n"
+    if restrcited_users is not None:
+        caption += f"Restricted users: <code>{restrcited_users}</code>\n"
+    if banned_users is not None:
+        caption += f"Banned users: <code>{banned_users}</code>\n"
+    if group_stickers is not None:
+        caption += f"{chat_type} stickers: <a href=\"t.me/addstickers/{chat.full_chat.stickerset.short_name}\">{group_stickers}</a>\n"
+    caption += "\n"
+    if not broadcast:
+        caption += f"Slow mode: {slowmode}"
+        if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled:
+            caption += f", <code>{slowmode_time}s</code>\n\n"
+        else:
+            caption += "\n\n"
+    if not broadcast:
+        caption += f"Supergroup: {supergroup}\n\n"
+    if hasattr(chat_obj_info, "restricted"):
+        caption += f"Restricted: {restricted}\n"
+        if chat_obj_info.restricted:
+            caption += f"> Platform: {chat_obj_info.restriction_reason[0].platform}\n"
+            caption += f"> Reason: {chat_obj_info.restriction_reason[0].reason}\n"
+            caption += f"> Text: {chat_obj_info.restriction_reason[0].text}\n\n"
+        else:
+            caption += "\n"
+    if hasattr(chat_obj_info, "scam") and chat_obj_info.scam:
+    	caption += "Scam: <b>Yes</b>\n\n"
+    if hasattr(chat_obj_info, "verified"):
+        caption += f"Verified by Telegram: {verified}\n\n"
+    if description:
+        caption += f"Description: \n<code>{description}</code>\n"
+    return caption
 
 
 @javes05(outgoing=True, disable_errors=True, pattern="^!scan(?: |$)(.*)")
@@ -2096,4 +2512,42 @@ def deEmojify(inputString):
     return get_emoji_regexp().sub(u'', inputString)
 
 
+@javes05(outgoing=True, pattern="^!dns(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    input_str = event.pattern_match.group(1)
+    sample_url = "https://da.gd/dns/{}".format(input_str)
+    response_api = requests.get(sample_url).text
+    if response_api:
+        await event.edit("DNS records of {} are \n{}".format(input_str, response_api))
+    else:
+        await event.edit("i can't seem to find {} on the internet".format(input_str))
+
+
+@javes05(outgoing=True, pattern="^!url(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    input_str = event.pattern_match.group(1)
+    sample_url = "https://da.gd/s?url={}".format(input_str)
+    response_api = requests.get(sample_url).text
+    if response_api:
+        await event.edit("Generated {} for {}.".format(response_api, input_str))
+    else:
+        await event.edit("something is wrong. please try again later.")
+
+
+@javes05(outgoing=True, pattern="^!unshort(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    input_str = event.pattern_match.group(1)
+    if not input_str.startswith("http"):
+        input_str = "http://" + input_str
+    r = requests.get(input_str, allow_redirects=False)
+    if str(r.status_code).startswith('3'):
+        await event.edit("Input URL: {}\nReDirected URL: {}".format(input_str, r.headers["Location"]))
+    else:
+        await event.edit("Input URL {} returned status_code {}".format(input_str, r.status_code))
 

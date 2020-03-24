@@ -369,7 +369,7 @@ async def mention_afk(mention):
                 if USERS[mention.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await mention.reply(
-                            f"`Javes: ` n case you didn't notice,  {DEFAULTUSER}  still AFK.\
+                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still AFK.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await mention.reply(str(choice(AFKSTR)))
