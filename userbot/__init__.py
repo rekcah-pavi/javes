@@ -60,7 +60,7 @@ BOTLOG = sb(os.environ.get("BOTLOG", "False"))
 LOGSPAMMER = sb(os.environ.get("LOGSPAMMER", "False"))
 
 # Bleep Blop, this is a bot ;)
-PM_AUTO_BAN = sb(os.environ.get("PM_PROTECTOR", "False"))
+PM_AUTO_BAN = sb(os.environ.get("PM_PROTECTOR", "True"))
 
 # Heroku Credentials for updater.
 HEROKU_APPNAME = os.environ.get("HEROKU_APPNAME", None)
@@ -70,6 +70,11 @@ HEROKU_APIKEY = os.environ.get("HEROKU_APIKEY", None)
 UPSTREAM_REPO_URL = os.environ.get(
     "UPSTREAM_REPO_URL",
     "https://github.com/rekcah-pavi/javes")
+    
+
+TELEGRAPH_SHORT_NAME = os.environ.get(
+   "TELEGRAPH_SHORT_NAME", 
+   "Javes")
 
 # Console verbose logging
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
