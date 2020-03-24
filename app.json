@@ -60,7 +60,7 @@
       "value": "False"
     },
     "BOTLOG_CHATID": {
-      "description": "important for wark some plugins,bot logs , make group with @missrose_bot then type /id to get this value",
+      "description": "important for wark some plugins,bot logs , make super group with @missrose_bot then type /id to get this value",
       "value": "0"
     },
     "CONSOLE_LOGGER_VERBOSE": {
@@ -69,7 +69,7 @@
     },
     "PM_PROTECTOR": {
       "description": "Prevent unknown people to spam your pm , type !allow to allow them to pm",
-      "value": "false"
+      "value": "true"
     },
     "YOUTUBE_API_KEY": {
       "description": "YouTube Data API Key for !youtube command. Get from https://console.cloud.google.com",
@@ -119,7 +119,7 @@
     },
     "YOUR_SHORT_NAME": {
       "description": "Name to show in !javes message,less then 5 letters recommed :p",
-      "value": "rk",
+      "value": "your name",
       "required": true
     },
     "G_DRIVE_CLIENT_SECRET": {
