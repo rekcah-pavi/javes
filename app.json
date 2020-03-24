@@ -30,6 +30,12 @@
     "HEROKU_APPNAME": {
       "description": "enter this app name agin here, very inportant for !update comand to make javes up-to-date ,",
       "value": ""
+      
+     },
+    "GENIUS_API_TOKEN": {
+      "description": "need for !lyrics comand , Get your own api token from https://genius.com/developers",
+      "required": false
+      
     },
     "COUNTRY": {
       "description": "Set your Country to be used in the .time and .date commands.",
@@ -52,7 +58,7 @@
       "required": false
     },
     "OPEN_WEATHER_MAP_APPID": {
-      "description": "need for !weather command, (API key)from https://api.openweathermap.org/data/2.5/weather",
+      "description": "need for !weather command, (API key)from https://api.openweathermap.org",
       "required": false
     },
     "BOTLOG": {
