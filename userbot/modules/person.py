@@ -416,7 +416,7 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await sender.reply(
-                            f"`Javes: ` n case you didn't notice,  {DEFAULTUSER}  still AFK.\
+                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still AFK.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await sender.reply(str(choice(AFKSTR)))
