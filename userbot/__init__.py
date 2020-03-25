@@ -61,6 +61,7 @@ LOGSPAMMER = sb(os.environ.get("LOGSPAMMER", "False"))
 
 # Genius lyrics  API Token
 GENIUS = os.environ.get("GENIUS_API_TOKEN", None)
+GENIUS_API_TOKEN = os.environ.get("GENIUS_API_TOKEN", None)
 
 # Bleep Blop, this is a bot ;)
 PM_AUTO_BAN = sb(os.environ.get("PM_PROTECTOR", "True"))
