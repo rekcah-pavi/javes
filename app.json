@@ -34,7 +34,9 @@
      },
     "GENIUS_API_TOKEN": {
       "description": "need for !lyrics comand , Get your own api token from https://genius.com/developers",
-      "required": false
+      "required": false,
+       "value": "Enter genius api here if you need "
+      
       
     },
     "COUNTRY": {
@@ -59,7 +61,9 @@
     },
     "OPEN_WEATHER_MAP_APPID": {
       "description": "need for !weather command, (API key)from https://api.openweathermap.org",
+      "value": "Enter api here if you need ",
       "required": false
+       
     },
     "BOTLOG": {
       "description": "Recommed to true ,BOTLOG_CHATID must be filled correct if you set it true",
@@ -79,14 +83,17 @@
     },
     "YOUTUBE_API_KEY": {
       "description": "YouTube Data API Key for !youtube command. Get from https://console.cloud.google.com",
+      "value": "Enter api here if you need ",
       "required": false
     },
     "OCR_SPACE_API_KEY": {
       "description": "OCR API Key for !read (read photo's text)command. Get from https://ocr.space/ocrapi",
+      "value": "Enter api here if you need ",
       "required": false
     },
     "REM_BG_API_KEY": {
       "description": "API Key for .rbg(remove background picture) command. Get from https://www.remove.bg/api",
+      "value": "Enter api here if you need ",
       "required": false
     },
     "ANTI_SPAMBOT": {
@@ -107,14 +114,17 @@
     },
     "G_DRIVE_CLIENT_ID": {
       "description": "Enter Your Client ID for Google Drive.",
+      "value": "Enter vlaue here if you need ",
       "required": false
     },
     "LASTFM_API": {
       "description": "API Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create].",
+      "value": "Enter api here if you need ",
       "required": false
     },
     "LASTFM_SECRET": {
       "description": "SECRET Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create].",
+      "value": "Enter vlaue here if you need ",
       "required": false
     
     },
@@ -138,6 +148,7 @@
     },
     "WEATHER_DEFCITY": {
       "description": "Set the default city for the userbot's !weather module.",
+      "value": "enter your city ",
       "required": false
     },
     "LOGSPAMMER": {
