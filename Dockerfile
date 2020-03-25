@@ -8,9 +8,10 @@ RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/r
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 RUN apk add --no-cache g++ freetype-dev jpeg-dev
+RUN apk add nodejs 
 
 # Installing Packages
-RUN apk add --no-cache --update \
+RUN apk add --no-cache \
     bash \
     build-base \
     bzip2-dev \
@@ -60,7 +61,6 @@ RUN python3 -m ensurepip \
 
 #
 # Clone repo and prepare working directory
-#
 RUN git clone https://github.com/rekcah-pavi/javes /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
