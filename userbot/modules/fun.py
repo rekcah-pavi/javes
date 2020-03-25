@@ -1,7 +1,7 @@
 from asyncio import sleep
 from random import choice, getrandbits, randint
 from re import sub
-#from covid import Covid
+from covid import Covid
 from telethon import events
 import asyncio
 from collections import deque
@@ -1318,7 +1318,7 @@ async def gtfo(e):
                      "`\n█████████`"
                     "`\n ██   ██`")         
 
-""" 
+
 @javes05(outgoing=True, pattern="^!covid(?: |$)(.*)")
 async def corona(event):
     covid = Covid()
@@ -1336,7 +1336,6 @@ def get_country_data(country, world):
             return country_data
     return {"Status": "No information yet about this country!"}
     
-""" 
 
 @javes05(outgoing=True, pattern="^!sayhi$")
 async def shalom(e):
