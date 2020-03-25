@@ -1,7 +1,10 @@
 from asyncio import sleep
 from random import choice, getrandbits, randint
 from re import sub
-from covid import Covid
+#from covid import Covid
+from telethon import events
+import asyncio
+from collections import deque
 import time
 from collections import deque
 from random import randint
@@ -31,6 +34,10 @@ from userbot import bot, CMD_HELP
 from os import execl
 import sys
 import os
+import datetime
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
 import io
 import sys
 import json
@@ -1311,6 +1318,7 @@ async def gtfo(e):
                      "`\n█████████`"
                     "`\n ██   ██`")         
 
+""" 
 @javes05(outgoing=True, pattern="^!covid(?: |$)(.*)")
 async def corona(event):
     covid = Covid()
@@ -1328,7 +1336,8 @@ def get_country_data(country, world):
             return country_data
     return {"Status": "No information yet about this country!"}
     
-    
+""" 
+
 @javes05(outgoing=True, pattern="^!sayhi$")
 async def shalom(e):
     await e.edit(
@@ -1824,7 +1833,7 @@ async def _(event):
               await event.reply("```Please unblock @sangmatainfo_bot and try again```")
               return
           if response.text.startswith("Forward"):
-              await event.edit("```error 2 forward privacy ```")
+              await event.edit("```forward privacy```")
           else: 
               await bot.send_file(event.chat_id, response.message.media)
 
@@ -1988,7 +1997,15 @@ async def _(event):
 
         await event.edit(animation_chars[i % 10])
 
-
+@javes05(outgoing=True, pattern="^!lol$")
+async def _(event):
+	if event.fwd_from:
+		return
+	deq = deque(list("🤔🧐🤔🧐🤔🧐"))
+	for _ in range(999):
+		await asyncio.sleep(0.1)
+		await event.edit("".join(deq))
+		deq.rotate(1)
 
 
 @javes05(outgoing=True, pattern="^!leave$")

@@ -3,6 +3,11 @@ import pyfiglet
 import asyncio
 import os
 import lyricsgenius
+from userbot import GENIUS
+from userbot import GENIUS_API_TOKEN
+import os
+from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
+from telethon import events
 import random
 from userbot import CMD_HELP, GENIUS
 import os
@@ -178,7 +183,13 @@ auth_url = r["auth_url"]
 THUMB_IMAGE_PATH = "./thumb_image.jpg"
 DOGBIN_URL = "https://del.dog/"
 
+opener = urllib.request.build_opener()
+useragent = 'Mozilla/5.0 (Linux; Android 9; SM-G960F Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.157 Mobile Safari/537.36'
+opener.addheaders = [('User-agent', useragent)]
 
+GApi = GENIUS
+import lyricsgenius
+genius = lyricsgenius.Genius(GApi)
 
 
 
@@ -2530,55 +2541,6 @@ async def _(event):
 
 
 
-@javes05(outgoing=True, pattern="^!lyrics(?: |$)(.*)")
-async def lyrics(lyric):
-    if r"-" in lyric.text:
-        pass
-    else:
-        await lyric.edit("`Error: please use '-' as divider for <artist> and <song>`\n"
-                         "eg: `Nicki Minaj - Super Bass`")
-        return
-
-    if GENIUS is None:
-        await lyric.edit(
-            "`Provide genius access token to config.py or Heroku Var first!`")
-    else:
-        genius = lyricsgenius.Genius(GENIUS)
-        try:
-            args = lyric.text.split('.lyrics')[1].split('-')
-            artist = args[0].strip(' ')
-            song = args[1].strip(' ')
-        except Exception:
-            await lyric.edit("`What!?!? Please provide artist and song names`")
-            return
-
-    if len(args) < 1:
-        await lyric.edit("`Please provide artist and song names`")
-        return
-
-    await lyric.edit(f"`Searching lyrics for {artist} - {song}...`")
-
-    try:
-        songs = genius.search_song(song, artist)
-    except TypeError:
-        songs = None
-
-    if songs is None:
-        await lyric.edit(f"Song **{artist} - {song}** not found!")
-        return
-    if len(songs.lyrics) > 4096:
-        await lyric.edit("`Lyrics is too big, view the file to see it.`")
-        with open("lyrics.txt", "w+") as f:
-            f.write(f"Search query: \n{artist} - {song}\n\n{songs.lyrics}")
-        await lyric.client.send_file(
-            lyric.chat_id,
-            "lyrics.txt",
-            reply_to=lyric.id,
-            )
-        os.remove("lyrics.txt")
-    else:
-        await lyric.edit(f"**Search query**: \n`{artist} - {song}`\n\n```{songs.lyrics}```")
-    return
 
 
 
@@ -2594,6 +2556,59 @@ async def _(event):
         await event.edit("Generated {} for {}.".format(response_api, input_str))
     else:
         await event.edit("something is wrong. please try again later.")
+
+@javes05(outgoing=True, pattern="^!lyrics(?: |$)(.*)")
+async def lyrics(lyr):
+	if GApi == 'None':
+		await lyr.edit(
+			"`provide genius api Heroku Var first `"
+		)
+	try:
+		args = lyr.text.split()
+		artist = lyr.text.split()[1]
+		snameinit = lyr.text.split(' ', 2)
+		sname = snameinit[2]
+	except Exception:
+		await lyr.edit("` provide artist and song names `")
+		return
+
+	#Try to search for * in artist string(for multiword artist name)
+	try:
+		artist = artist.replace('*', ' ')
+	except Exception:
+		artist = lyr.text.split()[1]
+		pass
+
+	if len(args) < 3:
+		await lyr.edit("`Please provide artist and song names`")
+
+	await lyr.edit(f"`Searching lyrics for {artist} - {sname}...`")
+
+	try:
+		song = genius.search_song(sname, artist)
+	except TypeError:
+		song = None
+
+	if song is None:
+		await lyr.edit(f"Song **{artist} - {sname}** not found!")
+		return
+	if len(song.lyrics) > 4096:
+			await lyr.edit("`Lyrics is too big, view the file to see it.`")
+			file = open("lyrics.txt", "w+")
+			file.write(f"Search query: \n{artist} - {sname}\n\n{song.lyrics}")
+			file.close()
+			await lyr.client.send_file(
+				lyr.chat_id,
+				"lyrics.txt",
+				reply_to=lyr.id,
+			)
+			os.remove("lyrics.txt")
+	else:
+		await lyr.edit(f"**Search query**: \n`{artist} - {sname}`\n\n```{song.lyrics}```")
+	return
+
+
+
 
 
 @javes05(outgoing=True, pattern="^!unshort(?: |$)(.*)")
