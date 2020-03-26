@@ -6,6 +6,20 @@ import lyricsgenius
 from userbot import GENIUS
 from userbot import GENIUS_API_TOKEN
 import os
+from telethon import events
+import asyncio
+import asyncio
+from telethon import events
+from telethon.tl.types import ChannelParticipantsAdmins
+import html
+from telethon.tl.functions.channels import EditBannedRequest
+import userbot.modules.sql_helper.warns_sql as sql
+from userbot.events import javes05
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
+from asyncio import sleep
+from os import remove
 from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
 from telethon import events
 import random
@@ -2539,6 +2553,58 @@ async def _(event):
     else:
         await event.edit("i can't seem to find {} on the internet".format(input_str))
 
+
+@javes05(outgoing=True, pattern="^!warn(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    warn_reason = event.pattern_match.group(1)
+    reply_message = await event.get_reply_message()
+    limit, soft_warn = sql.get_warn_setting(event.chat_id)
+    num_warns, reasons = sql.warn_user(reply_message.from_id, event.chat_id, warn_reason)
+    if num_warns >= limit:
+        sql.reset_warns(reply_message.from_id, event.chat_id)
+        if soft_warn:
+            logger.info("kick user")
+            reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been kicked!".format(limit, reply_message.from_id)
+        else:
+            logger.info("ban user")
+            reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been banned!".format(limit, reply_message.from_id)
+    else:
+        reply = "<u><a href='tg://user?id={}'>user</a></u> has {}/{} warnings... watch out!".format(reply_message.from_id, num_warns, limit)
+        if warn_reason:
+            reply += "\nReason for last warn:\n{}".format(html.escape(warn_reason))
+    #
+    await event.edit(reply, parse_mode="html")
+
+
+@javes05(outgoing=True, pattern="^!warns(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    reply_message = await event.get_reply_message()
+    result = sql.get_warns(reply_message.from_id, event.chat_id)
+    if result and result[0] != 0:
+        num_warns, reasons = result
+        limit, soft_warn = sql.get_warn_setting(event.chat_id)
+        if reasons:
+            text = "This user has {}/{} warnings, for the following reasons:".format(num_warns, limit)
+            text += "\r\n"
+            text += reasons
+            await event.edit(text)
+        else:
+            await event.edit("this user has {} / {} warning, but no reasons for any of them.".format(num_warns, limit))
+    else:
+        await event.edit("this user hasn't got any warnings!")
+
+
+@javes05(outgoing=True, pattern="^!resetwarns(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    reply_message = await event.get_reply_message()
+    sql.reset_warns(reply_message.from_id, event.chat_id)
+    await event.edit("Warnings have been reset!")
 
 
 

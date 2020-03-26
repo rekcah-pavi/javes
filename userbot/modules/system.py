@@ -36,7 +36,7 @@ import sys
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from userbot import CMD_HELP, bot, HEROKU_APIKEY, HEROKU_APPNAME, UPSTREAM_REPO_URL
-
+from userbot import CMD_HELP, LOGS, HEROKU_APP_NAME, HEROKU_API_KEY
 from asyncio import create_subprocess_shell as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
 from platform import python_version, uname
@@ -45,10 +45,13 @@ from os import remove
 from telethon import version
 from userbot import CMD_HELP, ALIVE_NAME
 from userbot.events import javes05
-Heroku = heroku3.from_key(HEROKU_APIKEY)
+
 # ================= CONSTANT =================
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
+
+Heroku = heroku3.from_key(HEROKU_API_KEY)
+
 
 async def subprocess_run(cmd, heroku):
     subproc = await asyncSubprocess(cmd, stdout=asyncPIPE, stderr=asyncPIPE)
@@ -64,12 +67,13 @@ async def subprocess_run(cmd, heroku):
     return stdout.decode().strip(), stderr.decode().strip(), exitCode
 
 
+
 @javes05(outgoing=True, pattern=r"^!heroku(?: |$)(.*)")
 async def heroku_manager(heroku):
     await heroku.edit("`Processing...`")
     await asyncio.sleep(3)
     conf = heroku.pattern_match.group(1)
-    result = await subprocess_run(f'heroku ps -a {HEROKU_APPNAME}', heroku)
+    result = await subprocess_run(f'heroku ps -a {HEROKU_APP_NAME}', heroku)
     if result[2] != 0:
         return
     hours_remaining = result[0]
@@ -854,7 +858,7 @@ async def repeat(rep):
 async def repo_is_here(wannasee):
     """ For .repo command, just returns the repo URL. """
     await wannasee.edit(
-        f"Click [here]({UPSTREAM_REPO_URL}) to open my javes's repository.\n =>Join our channel for more information @javes05")
+        f"This bot just re-edit PaperplaneExtended  and added more futures from uniborg\n Click [here]({UPSTREAM_REPO_URL}) to open my javes's repository.\n =>Join channel for more information @javes05")
 
 
 @javes05(outgoing=True, pattern="^\!raw$")
