@@ -68,7 +68,9 @@ PM_AUTO_BAN = sb(os.environ.get("PM_PROTECTOR", "True"))
 
 # Heroku Credentials for updater.
 HEROKU_APPNAME = os.environ.get("HEROKU_APPNAME", None)
+HEROKU_APP_NAME = os.environ.get("HEROKU_APPNAME", None)
 HEROKU_APIKEY = os.environ.get("HEROKU_APIKEY", None)
+HEROKU_API_KEY = os.environ.get("HEROKU_APIKEY", None)
 
 
 UPSTREAM_REPO_URL = os.environ.get(
