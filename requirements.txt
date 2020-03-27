@@ -9,8 +9,10 @@ bs4
 bwb
 cfscrape
 coffeehouse
+show
 cowpy
 dnspython
+instantmusic
 covid
 emoji
 telethon
@@ -68,6 +70,7 @@ googletrans
 google_images_download
 gTTS
 gTTS-token
+eyed3
 hachoir
 heroku
 heroku3
@@ -92,7 +95,6 @@ requests
 search-engine-parser
 speedtest-cli
 sqlalchemy
-
 telegraph
 PyGithub
 python-dateutil

@@ -137,6 +137,12 @@
       "description": "Name to show in !javes message,less then 5 letters recommed :p",
       "value": "your name",
       "required": true
+      },
+    "LYDIA_API_KEY": {
+      "description": "need for auto replay (lydia) future get api key from https://coffeehouse.intellivoid.net/",
+      "value": "enter lydia api key here",
+      "required": false
+      
     },
     "G_DRIVE_CLIENT_SECRET": {
       "description": "Enter Your Client Secret for Google Drive.",
