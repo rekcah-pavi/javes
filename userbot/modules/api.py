@@ -33,6 +33,13 @@ from selenium.webdriver.chrome.options import Options
 from wikipedia import summary
 from wikipedia.exceptions import DisambiguationError, PageError
 import asyncurban
+from coffeehouse.lydia import LydiaAI
+from coffeehouse.api import API
+import asyncio
+from userbot import LYDIA_API_KEY
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
+from userbot.events import javes05
+from telethon import events
 from requests import get
 from search_engine_parser import GoogleSearch
 from google_images_download import google_images_download
@@ -48,6 +55,79 @@ from asyncio import sleep
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
 from telethon.tl.types import DocumentAttributeAudio
 from userbot.modules.system import progress, humanbytes, time_formatter
+
+ACC_LYDIA = {}
+
+if LYDIA_API_KEY:
+    api_key = LYDIA_API_KEY
+    api_client = API(api_key)
+    lydia = LydiaAI(api_client)
+
+
+
+@javes05(outgoing=True, pattern="^!repcf$")
+async def repcf(event):
+    if event.fwd_from:
+        return
+    await event.edit("Processing...")
+    try:
+        session = lydia.create_session()
+        session_id = session.id
+        reply = await event.get_reply_message()
+        msg = reply.text
+        text_rep = session.think_thought(msg)
+        await event.edit("**Lydia says**: {0}".format(text_rep))
+    except Exception as e:
+        await event.edit(str(e))
+
+@javes05(outgoing=True, pattern="^!auto$")
+async def addcf(event):
+    if event.fwd_from:
+        return
+    await event.edit("Running...")
+    await asyncio.sleep(4)
+    await event.edit("Processing...")
+    reply_msg = await event.get_reply_message()
+    if reply_msg:
+        session = lydia.create_session()
+        session_id = session.id
+        if reply_msg.from_id is None:
+            return await event.edit("Invalid user type.")
+        ACC_LYDIA.update({(event.chat_id & reply_msg.from_id): session})
+        await event.edit("I will see this  user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+    else:
+        await event.edit("Reply to a user to activate on them")
+
+@javes05(outgoing=True, pattern="^!stop$")
+async def remcf(event):
+    if event.fwd_from:
+        return
+    await event.edit("Running..")
+    await asyncio.sleep(4)
+    await event.edit("Processing...")
+    reply_msg = await event.get_reply_message()
+    try:
+        del ACC_LYDIA[event.chat_id & reply_msg.from_id]
+        await event.edit(" disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+    except Exception:
+        await event.edit("This person does not have activated on him/her.")
+
+@javes05(incoming=True, disable_errors=True, disable_edited=True)
+async def user(event):
+    user_text = event.text
+    try:
+        session = ACC_LYDIA[event.chat_id & event.from_id]
+        msg = event.text
+        async with event.client.action(event.chat_id, "typing"):
+            text_rep = session.think_thought(msg)
+            wait_time = 0
+            for i in range(len(text_rep)):
+                wait_time = wait_time + 0.1
+            await asyncio.sleep(wait_time)
+            await event.reply(text_rep)
+    except (KeyError, TypeError):
+        return
+
 
 
 @javes05(pattern=r"^\!read (.*)", outgoing=True)

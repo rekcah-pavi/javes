@@ -1,12 +1,39 @@
 import asyncio
 import pyfiglet
 import asyncio
+from telethon import events
+import subprocess
+from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotModifiedError
+import io
+import asyncio
+import time
+from userbot import bot
+import glob
+import os
+import instantmusic , subprocess
+import asyncio
+import json
+import re
+from userbot.events import javes05
+import aiohttp
+from bs4 import BeautifulSoup
+from telethon.utils import get_inner_text
+from youtube_dl import YoutubeDL
+import eyed3
+import requests
 import os
 import lyricsgenius
 from userbot import GENIUS
 from userbot import GENIUS_API_TOKEN
 import os
 from telethon import events
+import datetime
+import asyncio
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from userbot.events import javes05
+from userbot import bot, CMD_HELP
 import asyncio
 import asyncio
 from telethon import events
@@ -205,7 +232,13 @@ GApi = GENIUS
 import lyricsgenius
 genius = lyricsgenius.Genius(GApi)
 
+os.system("rm -rf *.mp3")
 
+
+def bruh(name):
+    
+    os.system("instantmusic -q -s "+name)
+    
 
 
 
@@ -2690,3 +2723,58 @@ async def _(event):
     else:
         await event.edit("Input URL {} returned status_code {}".format(input_str, r.status_code))
 
+@javes05(pattern=r"^\!song (.*)", outgoing=True)
+async def _(event):
+    if event.fwd_from:
+        return
+    DELAY_BETWEEN_EDITS = 0.3
+    PROCESS_RUN_TIME = 100
+    cmd = event.pattern_match.group(1)
+    reply_to_id = event.message.id
+    if event.reply_to_msg_id:
+        reply_to_id = event.reply_to_msg_id
+    await event.edit("ok finding the song")    
+    bruh(str(cmd))
+    l = glob.glob("*.mp3")
+    loa = l[0]
+    await event.edit("sending song")
+    await bot.send_file(
+                event.chat_id,
+                loa,
+                force_document=True,
+                allow_cache=False,
+                caption=cmd,
+                reply_to=reply_to_id
+            )
+    os.system("rm -rf *.mp3")
+    subprocess.check_output("rm -rf *.mp3",shell=True)
+
+@javes05(outgoing=True, pattern="^!info(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return 
+    if not event.reply_to_msg_id:
+       await event.edit("```Reply to any user message.```")
+       return
+    reply_message = await event.get_reply_message() 
+    if not reply_message.text:
+       await event.edit("```reply to text message```")
+       return
+    chat = "@getidsbot"
+    sender = reply_message.sender
+    if reply_message.sender.bot:
+       await event.edit("```Reply to actual users message.```")
+       return
+    await event.edit("```Processing```")
+    async with bot.conversation(chat) as conv:
+          try:     
+              response = conv.wait_event(events.NewMessage(incoming=True,from_users=186675376))
+              await bot.forward_messages(chat, reply_message)
+              response = await response 
+          except YouBlockedUserError: 
+              await event.reply("```error1```")
+              return
+          if response.text.startswith("Hello,"):
+             await event.edit("```error 2 - privacy setting```")
+          else: 
+             await event.edit(f"{response.message.message}")
