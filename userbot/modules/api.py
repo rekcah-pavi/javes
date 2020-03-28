@@ -82,6 +82,11 @@ async def repcf(event):
 
 @javes05(outgoing=True, pattern="^!auto$")
 async def addcf(event):
+ reply_message = await event.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+  await reply_message.reply("`javes: he is my master so i can't `")
+ else:
     if event.fwd_from:
         return
     await event.edit("Running...")

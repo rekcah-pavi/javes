@@ -118,6 +118,40 @@ async def _(event):
              await event.edit(f"{response.message.message}")
 
 
+@javes05(outgoing=True, disable_errors=True, pattern="^!ssticker(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return 
+    if not event.reply_to_msg_id:
+       await event.edit("```its bot i cant```")
+       return
+    reply_message = await event.get_reply_message() 
+    if not reply_message.media:
+       await event.edit("```javes: reply to a photo```")
+       return
+    chat = "@BuildStickerBot"
+    sender = reply_message.sender
+    if reply_message.sender.bot:
+       await event.edit("```javes: Reply to actual users message.```")
+       return
+    await event.edit(" `making......`")
+    async with bot.conversation(chat) as conv:
+          try:     
+              response = conv.wait_event(events.NewMessage(incoming=True,from_users=164977173))
+              await bot.forward_messages(chat, reply_message)
+              response = await response 
+          except YouBlockedUserError: 
+              await event.reply("```Please unblock @BuildStickerBot and try again```")
+              return
+          if response.text.startswith("Forward"):
+             await event.edit("```error 2 privacy```")
+          else:
+          	if response.text.startswith("Select"):
+          		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
+          	else: 
+          			await bot.send_file(event.chat_id, response.message.media)
+
+
 
 
 

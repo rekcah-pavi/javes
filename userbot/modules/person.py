@@ -9,9 +9,15 @@ from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from random import choice, randint
 from asyncio import sleep
-
+import asyncio
+from telethon import events
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import ChannelParticipantsAdmins
 from telethon.events import StopPropagation
-
+import asyncio
+from telethon import events
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import ChannelParticipantsAdmins
 from userbot import (AFKREASON, COUNT_MSG, CMD_HELP, ISAFK, BOTLOG,
                      BOTLOG_CHATID, USERS, PM_AUTO_BAN)
 from userbot.events import javes05
@@ -359,7 +365,7 @@ async def mention_afk(mention):
         if ISAFK or ISAFK_SQL:
             if mention.sender_id not in USERS:
                 if EXCUSE:
-                    await mention.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} AFK right now.\
+                    await mention.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
@@ -369,7 +375,7 @@ async def mention_afk(mention):
                 if USERS[mention.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await mention.reply(
-                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still AFK.\
+                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await mention.reply(str(choice(AFKSTR)))
@@ -406,7 +412,7 @@ async def afk_on_pm(sender):
         if apprv and (ISAFK or ISAFK_SQL):
             if sender.sender_id not in USERS:
                 if EXCUSE:
-                    await sender.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} AFK right now.\
+                    await sender.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await sender.reply(str(choice(AFKSTR)))
@@ -416,7 +422,7 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await sender.reply(
-                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still AFK.\
+                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await sender.reply(str(choice(AFKSTR)))
@@ -492,7 +498,11 @@ async def type_afk_is_not_true(notafk):
 
 @javes05(pattern="^\!whois(?: |$)(.*)", outgoing=True)
 async def who(event):
-
+ reply_message = await event.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+  await reply_message.reply("`javes: he is my master so i can't `")
+ else:
     await event.edit(
         "`Hacking database............`")
 
@@ -733,6 +743,11 @@ async def selfdestruct(destroy):
 
 @javes05(outgoing=True, pattern="^!name(?: |$)(.*)")
 async def _(event):
+ reply_message = await event.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+  await reply_message.reply("`javes: he is my master so i can't `")
+ else:
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
@@ -760,4 +775,3 @@ async def _(event):
              await event.edit("`javes: This user have forward privacy`")
           else: 
              await event.edit(f"{response.message.message}")
-

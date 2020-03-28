@@ -2,7 +2,10 @@ from asyncio import sleep
 from os import remove
 from asyncio import sleep
 from os import remove
-
+import asyncio
+from telethon import events
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import ChannelParticipantsAdmins
 from telethon.errors import (BadRequestError, ChatAdminRequiredError,
                              ImageProcessFailedError, PhotoCropSizeSmallError,
                              UserAdminInvalidError)
@@ -710,9 +713,71 @@ async def demote(dmod):
             f"USER: [{user.first_name}](tg://user?id={user.id})\n"
             f"CHAT: {dmod.chat.title}(`{dmod.chat_id}`)")
 
+@javes05(outgoing=True, pattern="^!promote(?: |$)(.*)")
+async def promote(promt):
+    """ For .promote command, promotes the replied/tagged person """
+    # Get targeted chat
+    chat = await promt.get_chat()
+    # Grab admin status or creator in a chat
+    admin = chat.admin_rights
+    creator = chat.creator
+
+    # If not admin and not creator, also return
+    if not admin and not creator:
+        await promt.edit(NO_ADMIN)
+        return
+
+    new_rights = ChatAdminRights(add_admins=False,
+                                 invite_users=True,
+                                 change_info=False,
+                                 ban_users=True,
+                                 delete_messages=True,
+                                 pin_messages=True)
+
+    await promt.edit("`Promoting... please wait`")
+    user, rank = await get_user_from_event(promt)
+    if not rank:
+        rank = "Admeme"  # Just in case.
+    if user:
+        pass
+    else:
+        return
+
+    # Try to promote if current user is admin or creator
+    try:
+        await promt.client(
+            EditAdminRequest(promt.chat_id, user.id, new_rights, rank))
+        await promt.edit("`Promoted Successfully!`")
+        await sleep(5)
+        await promt.delete()
+
+    # If Telethon spit BadRequestError, assume
+    # we don't have Promote permission
+    except BadRequestError:
+        await promt.edit(NO_PERM)
+        return
+
+    # Announce to the logging group if we have promoted successfully
+    if BOTLOG:
+        await promt.client.send_message(
+            BOTLOG_CHATID, "#PROMOTE\n"
+            f"USER: [{user.first_name}](tg://user?id={user.id})\n"
+            f"CHAT: {promt.chat.title}(`{promt.chat_id}`)")
+
+
+
 
 @javes05(outgoing=True, pattern="^\!ban(?: |$)(.*)", groups_only=True)
 async def ban(bon):
+ if bon.reply_to_msg_id:
+  reply_message = await bon.get_reply_message()
+  replied_user = await bon.client(GetFullUserRequest(reply_message.from_id))
+  firstname = replied_user.user.first_name
+  usname = replied_user.user.username
+  idd = reply_message.from_id
+  if idd == 710844948:
+    await reply_message.reply("`javes: he is my master so i can't `")
+  else:
     """ For .ban command, bans the replied/tagged person """
     # Here laying the sanity check
     chat = await bon.get_chat()
@@ -806,6 +871,15 @@ async def nothanos(unbon):
 
 @javes05(outgoing=True, pattern="^\!mute(?: |$)(.*)", groups_only=True)
 async def spider(spdr):
+ if spdr.reply_to_msg_id:
+  reply_message = await spdr.get_reply_message()
+  replied_user = await spdr.client(GetFullUserRequest(reply_message.from_id))
+  firstname = replied_user.user.first_name
+  usname = replied_user.user.username
+  idd = reply_message.from_id
+  if idd == 710844948:
+    await reply_message.reply("`javes: he is my master so i can't `")
+  else:
     """
     This function is basically muting peeps
     """
@@ -997,6 +1071,15 @@ async def ungmoot(un_gmute):
 
 @javes05(outgoing=True, pattern="^\!gmute(?: |$)(.*)", groups_only=True)
 async def gspider(gspdr):
+ if gspdr.reply_to_msg_id:
+  reply_message = await gspdr.get_reply_message()
+  replied_user = await gspdr.client(GetFullUserRequest(reply_message.from_id))
+  firstname = replied_user.user.first_name
+  usname = replied_user.user.username
+  idd = reply_message.from_id
+  if idd == 710844948:
+    await reply_message.reply("`javes: he is my master so i can't `")
+  else:
     """ For .gmute command, globally mutes the replied/tagged person """
     # Admin or creator check
     chat = await gspdr.get_chat()
@@ -1228,6 +1311,15 @@ async def pin(msg):
 
 @javes05(outgoing=True, pattern="^\!kick(?: |$)(.*)", groups_only=True)
 async def kick(usr):
+ if usr.reply_to_msg_id:
+  reply_message = await usr.get_reply_message()
+  replied_user = await usr.client(GetFullUserRequest(reply_message.from_id))
+  firstname = replied_user.user.first_name
+  usname = replied_user.user.username
+  idd = reply_message.from_id
+  if idd == 710844948:
+    await reply_message.reply("`javes: he is my master so i can't `")
+  else:
     """ For .kick command, kicks the replied/tagged person from the group. """
     # Admin or creator check
     chat = await usr.get_chat()
@@ -1763,7 +1855,6 @@ async def on_snip_delete(event):
         await event.edit(f"`Successfully deleted snip:` **{name}**")
     else:
         await event.edit(f"`Couldn't find snip:` **{name}**")
-
 
 
 
