@@ -152,12 +152,12 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
-                     " Javes: Stay Alert from covid-19!\n\n"
-                     f"🦠 Javes : 1.3 \n"
-                     f"🦠 Telethon : {version.__version__} \n"
-                     f"🦠 Python : {python_version()} \n"
-                     f"🦠 User: {DEFAULTUSER}"
-                     "`")
+                     " Javes: Stay Alert from covid-19!`\n\n"                    
+                    f"✨ Javes : ** 1.4 **\n"
+                    f"✨ Telethon : ** {version.__version__} **\n"
+                    f"✨ Python : ** {python_version()} **\n"
+                    f"✨ User: ** {DEFAULTUSER} **"
+                     "")
 
 
 
@@ -278,7 +278,7 @@ async def upstream(ups):
         await ups.edit(
             '`Force-Syncing to latest stable userbot code, please wait...`')
     else:
-        await ups.edit('`Updating javes, please wait....`')
+        await ups.edit('`Finiding your heroku app.....`')
     # We're in a Heroku Dyno, handle it's memez.
     if HEROKU_APIKEY is not None:
         import heroku3
@@ -858,7 +858,7 @@ async def repeat(rep):
 async def repo_is_here(wannasee):
     """ For .repo command, just returns the repo URL. """
     await wannasee.edit(
-        f"This bot just re-edit PaperplaneExtended  and added more futures from uniborg\n Click [here]({UPSTREAM_REPO_URL}) to open my javes's repository.\n =>Join channel for more information @javes05")
+        f"This bot just re-edit PaperplaneExtended  and added more futures from uniborg's plugin\n Click [here](https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves&template=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves) to open my javes\n =>Join channel for more information @javes05")
 
 
 @javes05(outgoing=True, pattern="^\!raw$")

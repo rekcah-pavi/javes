@@ -50,13 +50,13 @@ async def _(event):
               await event.reply("```Please unblock @LinkGeneratorBot and try again```")
               return
           if response.text.startswith("Hi!,"):
-             await event.edit("```error2 - privacy settings ```")
+             await event.edit("```privacy error ```")
           else: 
              await event.edit(f"{response.message.message}")
 
 
 
-@javes05(outgoing=True, pattern="^!ssong(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!song2(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
@@ -82,12 +82,12 @@ async def _(event):
               await event.reply("```error1```")
               return
           if response.text.startswith("Hello,"):
-             await event.edit("```error 2 - privacy setting```")
+             await event.edit("```privacy error```")
           else: 
              await bot.send_file(event.chat_id, response.message.media)
 
 
-@javes05(outgoing=True, pattern="^!llyrics(?: |$)(.*)")
+@javes05(outgoing=True, pattern="^!lyrics2(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
@@ -113,12 +113,14 @@ async def _(event):
               await event.reply("```error1```")
               return
           if response.text.startswith("Hello,"):
-             await event.edit("```error 2 - privacy setting```")
+             await event.edit("```privacy error```")
           else: 
              await event.edit(f"{response.message.message}")
 
 
-@javes05(outgoing=True, disable_errors=True, pattern="^!ssticker(?: |$)(.*)")
+
+
+@javes05(outgoing=True, disable_errors=True, pattern="^!fry(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
@@ -127,32 +129,29 @@ async def _(event):
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
-       await event.edit("```javes: reply to a photo```")
+       await event.edit("```reply to a sticker```")
        return
-    chat = "@BuildStickerBot"
+    chat = "@image_deepfrybot"
     sender = reply_message.sender
     if reply_message.sender.bot:
        await event.edit("```javes: Reply to actual users message.```")
        return
-    await event.edit(" `making......`")
+    await event.edit(" `Making......`")
     async with bot.conversation(chat) as conv:
           try:     
-              response = conv.wait_event(events.NewMessage(incoming=True,from_users=164977173))
+              response = conv.wait_event(events.NewMessage(incoming=True,from_users=432858024))
               await bot.forward_messages(chat, reply_message)
               response = await response 
           except YouBlockedUserError: 
-              await event.reply("```Please unblock @BuildStickerBot and try again```")
+              await event.reply("```Please unblock @image_deepfrybot and try again```")
               return
           if response.text.startswith("Forward"):
-             await event.edit("```error 2 privacy```")
+             await event.edit("```privacy error```")
           else:
           	if response.text.startswith("Select"):
           		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
           	else: 
           			await bot.send_file(event.chat_id, response.message.media)
-
-
-
 
 
 

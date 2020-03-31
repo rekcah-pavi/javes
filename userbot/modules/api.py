@@ -27,6 +27,11 @@ from userbot.events import javes05
 from re import findall
 from selenium import webdriver
 from urllib.parse import quote_plus
+from telethon import events
+import os
+import requests
+import logging
+from userbot import bot, OCR_SPACE_API_KEY, CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
 from urllib.error import HTTPError
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.chrome.options import Options
@@ -62,6 +67,60 @@ if LYDIA_API_KEY:
     api_key = LYDIA_API_KEY
     api_client = API(api_key)
     lydia = LydiaAI(api_client)
+    
+
+
+
+async def ocr_space_file(filename,
+                         overlay=False,
+                         api_key=OCR_SPACE_API_KEY,
+                         language='eng'):
+    """ OCR.space API request with local file.
+        Python3.5 - not tested on 2.7
+    :param filename: Your file path & name.
+    :param overlay: Is OCR.space overlay required in your response.
+                    Defaults to False.
+    :param api_key: OCR.space API key.
+                    Defaults to 'helloworld'.
+    :param language: Language code to be used in OCR.
+                    List of available language codes can be found on https://ocr.space/OCRAPI
+                    Defaults to 'en'.
+    :return: Result in JSON format.
+    """
+
+    payload = {
+        'isOverlayRequired': overlay,
+        'apikey': api_key,
+        'language': language,
+    }
+    with open(filename, 'rb') as f:
+        r = requests.post(
+            'https://api.ocr.space/parse/image',
+            files={filename: f},
+            data=payload,
+        )
+    return r.json()
+
+
+
+@javes05(pattern="^!read(?: |$)(.*)", outgoing=True)
+async def ocr(event):
+    await event.edit("`Reading...`")
+    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+    lang_code = event.pattern_match.group(1)
+    downloaded_file_name = await bot.download_media(
+        await event.get_reply_message(), TEMP_DOWNLOAD_DIRECTORY)
+    test_file = await ocr_space_file(filename=downloaded_file_name,
+                                     language=lang_code)
+    try:
+        ParsedText = test_file["ParsedResults"][0]["ParsedText"]
+    except BaseException:
+        await event.edit("`Couldn't read it.`\n`Is api key entered correct?`")
+    else:
+        await event.edit(f"`Here's what I could read from it:`\n\n{ParsedText}"
+                         )
+    os.remove(downloaded_file_name)
 
 
 
@@ -91,7 +150,7 @@ async def addcf(event):
         return
     await event.edit("Running...")
     await asyncio.sleep(4)
-    await event.edit("Processing...")
+    await event.edit("Still Running....")
     reply_msg = await event.get_reply_message()
     if reply_msg:
         session = lydia.create_session()
@@ -99,9 +158,9 @@ async def addcf(event):
         if reply_msg.from_id is None:
             return await event.edit("Invalid user type.")
         ACC_LYDIA.update({(event.chat_id & reply_msg.from_id): session})
-        await event.edit("I will see this  user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        await event.edit("Auto replay activated this  user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
     else:
-        await event.edit("Reply to a user to activate on them")
+        await event.edit("Tag any user's message to activate on them")
 
 @javes05(outgoing=True, pattern="^!stop$")
 async def remcf(event):
@@ -113,9 +172,9 @@ async def remcf(event):
     reply_msg = await event.get_reply_message()
     try:
         del ACC_LYDIA[event.chat_id & reply_msg.from_id]
-        await event.edit(" disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        await event.edit(" Auto replay disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
     except Exception:
-        await event.edit("This person does not have activated on him/her.")
+        await event.edit("This person does not have activated auto replay on him/her.")
 
 @javes05(incoming=True, disable_errors=True, disable_edited=True)
 async def user(event):
@@ -135,24 +194,16 @@ async def user(event):
 
 
 
-@javes05(pattern=r"^\!read (.*)", outgoing=True)
-async def ocr(event):
-    await event.edit("`Reading...`")
-    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    lang_code = event.pattern_match.group(1)
-    downloaded_file_name = await bot.download_media(
-        await event.get_reply_message(), TEMP_DOWNLOAD_DIRECTORY)
-    test_file = await ocr_space_file(filename=downloaded_file_name,
-                                     language=lang_code)
-    try:
-        ParsedText = test_file["ParsedResults"][0]["ParsedText"]
-    except BaseException:
-        await event.edit("`Couldn't read it.`\n may ocr key missing Get from https://ocr.space/ocrapi")
-    else:
-        await event.edit(f"`Here's what I could read from it:`\n\n{ParsedText}"
-                         )
-    os.remove(downloaded_file_name)
+
+
+
+
+
+
+
+
+
+
 
 @javes05(outgoing=True, pattern="^\!rbg(?: |$)(.*)")
 async def kbg(remob):
@@ -354,16 +405,11 @@ async def get_weather(weather):
         f"`{cityname}, {fullc_n}`\n" + f"`{time}`")
 
 
-CMD_HELP.update({
-    "weather":
-    ".weather <city> or .weather <city>, <country name/code>\
-    \nUsage: Gets the weather of a city."
-})
 
 
 @javes05(outgoing=True, pattern="^\!youtube (.*)")
 async def yt_search(video_q):
-    """ For .yt command, do a YouTube search from Telegram. """
+    
     query = video_q.pattern_match.group(1)
     result = ''
 
@@ -422,35 +468,4 @@ async def youtube_search(query,
     except KeyError:
         nexttok = "KeyError, try again."
         return (nexttok, videos)
-
-async def ocr_space_file(filename,
-                         overlay=False,
-                         api_key=OCR_SPACE_API_KEY,
-                         language='eng'):
-    """ OCR.space API request with local file.
-        Python3.5 - not tested on 2.7
-    :param filename: Your file path & name.
-    :param overlay: Is OCR.space overlay required in your response.
-                    Defaults to False.
-    :param api_key: OCR.space API key.
-                    Defaults to 'helloworld'.
-    :param language: Language code to be used in OCR.
-                    List of available language codes can be found on https://ocr.space/OCRAPI
-                    Defaults to 'en'.
-    :return: Result in JSON format.
-    """
-
-    payload = {
-        'isOverlayRequired': overlay,
-        'apikey': api_key,
-        'language': language,
-    }
-    with open(filename, 'rb') as f:
-        r = requests.post(
-            'https://api.ocr.space/parse/image',
-            files={filename: f},
-            data=payload,
-        )
-    return r.json()
-
 

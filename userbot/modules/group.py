@@ -4,7 +4,7 @@ from asyncio import sleep
 from os import remove
 import asyncio
 from telethon import events
-from telethon.tl.functions.users import GetFullUserRequest
+
 from telethon.tl.types import ChannelParticipantsAdmins
 from telethon.errors import (BadRequestError, ChatAdminRequiredError,
                              ImageProcessFailedError, PhotoCropSizeSmallError,
@@ -767,17 +767,13 @@ async def promote(promt):
 
 
 
-@javes05(outgoing=True, pattern="^\!ban(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^!ban(?: |$)(.*)")
 async def ban(bon):
- if bon.reply_to_msg_id:
-  reply_message = await bon.get_reply_message()
-  replied_user = await bon.client(GetFullUserRequest(reply_message.from_id))
-  firstname = replied_user.user.first_name
-  usname = replied_user.user.username
-  idd = reply_message.from_id
-  if idd == 710844948:
-    await reply_message.reply("`javes: he is my master so i can't `")
-  else:
+ reply_message = await bon.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+ else:
     """ For .ban command, bans the replied/tagged person """
     # Here laying the sanity check
     chat = await bon.get_chat()
@@ -796,7 +792,7 @@ async def ban(bon):
         return
 
     # Announce that we're going to whack the pest
-    await bon.edit("`prossing.......`")
+    await bon.edit("`Processing`")
 
     try:
         await bon.client(EditBannedRequest(bon.chat_id, user.id,
@@ -811,18 +807,15 @@ async def ban(bon):
             await reply.delete()
     except BadRequestError:
         await bon.edit(
-            "`I dont have message nuking rights! But still he was banned!`")
+            "`still he was banned!`")
         return
     # Delete message and then tell that the command
     # is done gracefully
     # Shout out the ID, so that fedadmins can fban later
     if reason:
-        await bon.edit(f"{user.first_name} was banned !!\
-        \nID: `{str(user.id)}`\
-        \nReason: {reason}")
+        await bon.edit(f"`{str(user.id)}` was banned !!\nReason: {reason}")
     else:
-        await bon.edit(f"Javes: {user.first_name} was banned !!\
-        \nID: `{str(user.id)}`")
+        await bon.edit(f"`{str(user.id)}` was banned !!")
     # Announce to the logging group if we have banned the person
     # successfully!
     if BOTLOG:
@@ -832,7 +825,7 @@ async def ban(bon):
             f"CHAT: {bon.chat.title}(`{bon.chat_id}`)")
 
 
-@javes05(outgoing=True, pattern="^\!unban(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^!unban(?: |$)(.*)")
 async def nothanos(unbon):
     """ For .unban command, unbans the replied/tagged person """
     # Here laying the sanity check
@@ -858,7 +851,9 @@ async def nothanos(unbon):
     try:
         await unbon.client(
             EditBannedRequest(unbon.chat_id, user.id, UNBAN_RIGHTS))
-        await unbon.edit("```Javes: Unbanned Successfully```")
+        await unbon.edit("```user Unbanned Successfully```")
+        await sleep(3)
+        await unbon.delete()	
 
         if BOTLOG:
             await unbon.client.send_message(
@@ -869,17 +864,13 @@ async def nothanos(unbon):
         await unbon.edit("`Uh oh my unban logic broke!`")
 
 
-@javes05(outgoing=True, pattern="^\!mute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^!mute(?: |$)(.*)")
 async def spider(spdr):
- if spdr.reply_to_msg_id:
-  reply_message = await spdr.get_reply_message()
-  replied_user = await spdr.client(GetFullUserRequest(reply_message.from_id))
-  firstname = replied_user.user.first_name
-  usname = replied_user.user.username
-  idd = reply_message.from_id
-  if idd == 710844948:
-    await reply_message.reply("`javes: he is my master so i can't `")
-  else:
+ reply_message = await spdr.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+ else:
     """
     This function is basically muting peeps
     """
@@ -910,7 +901,7 @@ async def spider(spdr):
 
     if user.id == self_user.id:
         await spdr.edit(
-            "` can't duct tape myself...`")
+            "`can't duct tape myself...`")
         return
 
     # If everything goes well, do announcing and mute
@@ -924,9 +915,9 @@ async def spider(spdr):
 
             # Announce that the function is done
             if reason:
-                await spdr.edit(f"`Javes: Muted!!`\nReason: {reason}")
+                await spdr.edit(f"`user muted!!`\nReason: {reason}")
             else:
-                await spdr.edit("`Javes: Muted!`")
+                await spdr.edit("`user muted`")
 
             # Announce to logging group
             if BOTLOG:
@@ -935,10 +926,10 @@ async def spider(spdr):
                     f"USER: [{user.first_name}](tg://user?id={user.id})\n"
                     f"CHAT: {spdr.chat.title}(`{spdr.chat_id}`)")
         except UserIdInvalidError:
-            return await spdr.edit("`error1`")
+            return await spdr.edit("`Uh oh my mute logic broke!`")
 
 
-@javes05(outgoing=True, pattern="^\!unmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^!unmute(?: |$)(.*)")
 async def unmoot(unmot):
     """ For .unmute command, unmute the replied/tagged person """
     # Admin or creator check
@@ -974,9 +965,11 @@ async def unmoot(unmot):
         try:
             await unmot.client(
                 EditBannedRequest(unmot.chat_id, user.id, UNBAN_RIGHTS))
-            await unmot.edit("```javes: Unmuted Successfully```")
+            await unmot.edit("```user Unmuted Successfully```")
+            await sleep(3)
+            await unmot.delete()
         except UserIdInvalidError:
-            await unmot.edit("`error3`")
+            await unmot.edit("`Uh oh my unmute logic broke!`")
             return
 
         if BOTLOG:
@@ -986,7 +979,7 @@ async def unmoot(unmot):
                 f"CHAT: {unmot.chat.title}(`{unmot.chat_id}`)")
 
 
-@javes05(incoming=True, disable_errors=True)
+@javes05(incoming=True)
 async def muter(moot):
     """ Used for deleting the messages of muted people """
     try:
@@ -1009,24 +1002,15 @@ async def muter(moot):
     if muted:
         for i in muted:
             if str(i.sender) == str(moot.sender_id):
-                try:
-                    await moot.delete()
-                    await moot.client(
-                        EditBannedRequest(moot.chat_id, moot.sender_id,
-                                          rights))
-                except (BadRequestError, UserAdminInvalidError,
-                        ChatAdminRequiredError, UserIdInvalidError):
-                    await moot.client.send_read_acknowledge(
-                        moot.chat_id, moot.id)
+                await moot.delete()
+                await moot.client(
+                    EditBannedRequest(moot.chat_id, moot.sender_id, rights))
     for i in gmuted:
         if i.sender == str(moot.sender_id):
-            try:
-                await moot.delete()
-            except BadRequestError:
-                await moot.client.send_read_acknowledge(moot.chat_id, moot.id)
+            await moot.delete()
 
 
-@javes05(outgoing=True, pattern="^\!ungmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, pattern="^!ungmute(?: |$)(.*)")
 async def ungmoot(un_gmute):
     """ For .ungmute command, ungmutes the target in the userbot """
     # Admin or creator check
@@ -1060,7 +1044,9 @@ async def ungmoot(un_gmute):
         await un_gmute.edit("`Error! User probably not gmuted.`")
     else:
         # Inform about success
-        await un_gmute.edit("```Ungmuted Successfully```")
+        await un_gmute.edit("```User Ungmuted Successfully```")
+        await sleep(3)
+        await un_gmute.delete()
 
         if BOTLOG:
             await un_gmute.client.send_message(
@@ -1069,17 +1055,13 @@ async def ungmoot(un_gmute):
                 f"CHAT: {un_gmute.chat.title}(`{un_gmute.chat_id}`)")
 
 
-@javes05(outgoing=True, pattern="^\!gmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^!gmute(?: |$)(.*)")
 async def gspider(gspdr):
- if gspdr.reply_to_msg_id:
-  reply_message = await gspdr.get_reply_message()
-  replied_user = await gspdr.client(GetFullUserRequest(reply_message.from_id))
-  firstname = replied_user.user.first_name
-  usname = replied_user.user.username
-  idd = reply_message.from_id
-  if idd == 710844948:
-    await reply_message.reply("`javes: he is my master so i can't `")
-  else:
+ reply_message = await gspdr.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+ else:
     """ For .gmute command, globally mutes the replied/tagged person """
     # Admin or creator check
     chat = await gspdr.get_chat()
@@ -1111,15 +1093,19 @@ async def gspider(gspdr):
             '`Error! User probably already gmuted.\nRe-rolls the tape.`')
     else:
         if reason:
-            await gspdr.edit(f"`Globally muted`Reason: {reason}")
+            await gspdr.edit(f"`user Globally muted`\nReason: {reason}")
         else:
-            await gspdr.edit("`Globally muted`")
+            await gspdr.edit("`user Globally muted`")
 
         if BOTLOG:
             await gspdr.client.send_message(
                 BOTLOG_CHATID, "#GMUTE\n"
                 f"USER: [{user.first_name}](tg://user?id={user.id})\n"
                 f"CHAT: {gspdr.chat.title}(`{gspdr.chat_id}`)")
+
+
+
+
 
 
 @javes05(outgoing=True, pattern="^\!zombies(?: |$)(.*)", groups_only=True)
@@ -1318,7 +1304,7 @@ async def kick(usr):
   usname = replied_user.user.username
   idd = reply_message.from_id
   if idd == 710844948:
-    await reply_message.reply("`javes: he is my master so i can't `")
+    await reply_message.reply("`javes: ** He is my master, I can't ** `")
   else:
     """ For .kick command, kicks the replied/tagged person from the group. """
     # Admin or creator check
@@ -1572,9 +1558,8 @@ async def ANTI_SPAMBOT(welcm):
                     if ANTI_SPAMBOT_SHOUT:
                         await welcm.reply(
                             "@admins\n"
-                            "`ANTI SPAMBOT DETECTOR!\n"
-                            "THIS USER MATCHES MY ALGORITHMS AS A SPAMBOT!`"
-                            f"REASON: {reason}")
+                            "`Warning! There is a SPAMBOT Joined In group`\n"                           
+                            f"SpamBot Type: {reason}")
                         kicked = False
                         reported = True
                 else:
@@ -1596,9 +1581,8 @@ async def ANTI_SPAMBOT(welcm):
                         if ANTI_SPAMBOT_SHOUT:
                             await welcm.reply(
                                 "@admins\n"
-                                "`ANTI SPAMBOT DETECTOR!\n"
-                                "THIS USER MATCHES MY ALGORITHMS AS A SPAMBOT!`"
-                                f"REASON: {reason}")
+                            "`Warning! There is a SPAMBOT Joined In group`\n"                           
+                            f"SpamBot Type: {reason}")
                             kicked = False
                             reported = True
 

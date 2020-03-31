@@ -2,6 +2,13 @@ import datetime
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
+import datetime
+import asyncio
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from userbot.events import javes05
+from userbot import bot, CMD_HELP
 
 from userbot import bot, CMD_HELP
 import io
@@ -275,6 +282,41 @@ async def resize_photo(photo):
         image.thumbnail(maxsize)
 
     return image
+
+
+@javes05(outgoing=True, disable_errors=True, pattern="^!ss2(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return 
+    if not event.reply_to_msg_id:
+       await event.edit("```its bot i cant```")
+       return
+    reply_message = await event.get_reply_message() 
+    if not reply_message.media:
+       await event.edit("```reply to a photo```")
+       return
+    chat = "@BuildStickerBot"
+    sender = reply_message.sender
+    if reply_message.sender.bot:
+       await event.edit("```javes: Reply to actual users message.```")
+       return
+    await event.edit(" `making......`")
+    async with bot.conversation(chat) as conv:
+          try:     
+              response = conv.wait_event(events.NewMessage(incoming=True,from_users=164977173))
+              await bot.forward_messages(chat, reply_message)
+              response = await response 
+          except YouBlockedUserError: 
+              await event.reply("```Please unblock @BuildStickerBot and try again```")
+              return
+          if response.text.startswith("Forward"):
+             await event.edit("```privacy error```")
+          else:
+          	if response.text.startswith("Select"):
+          		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
+          	else: 
+          			await bot.send_file(event.chat_id, response.message.media)
+
 
 
 @javes05(outgoing=True, pattern="^\!stickerinfo$")

@@ -9,6 +9,14 @@ import asyncio
 import time
 from userbot import bot
 import glob
+from telethon import events
+from userbot.events import javes05
+import logging
+from userbot import bot, CMD_HELP
+from telethon.tl.functions.photos import GetUserPhotosRequest
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import MessageEntityMentionName
+from telethon.utils import get_input_location
 import os
 import instantmusic , subprocess
 import asyncio
@@ -239,7 +247,55 @@ def bruh(name):
     
     os.system("instantmusic -q -s "+name)
     
+logger = logging.getLogger(__name__)
+if 1 == 1:
+    name = "Profile Photos"
+    client = bot
 
+
+@javes05(outgoing=True, pattern="^!tagall$")
+async def _(event):
+    if event.fwd_from:
+        return
+    mentions = "Taged All"
+    chat = await event.get_input_chat()
+    async for x in bot.iter_participants(chat, 50000):
+        mentions += f"[\u2063](tg://user?id={x.id})"
+    await event.reply(mentions)
+    await event.delete()
+    
+    
+@javes05(outgoing=True, pattern="^!profile$")
+async def potocmd(event):
+        """Gets the profile photos of replied users, channels or chats"""
+        id = "".join(event.raw_text.split(maxsplit=2)[1:])
+        user = await event.get_reply_message()
+        chat = event.input_chat
+        if user:
+            photos = await event.client.get_profile_photos(user.sender)
+        else:
+            photos = await event.client.get_profile_photos(chat)
+        if id.strip() == "":
+            try:
+                await event.client.send_file(event.chat_id, photos)
+            except a:
+                photo = await event.client.download_profile_photo(chat)
+                await bot.send_file(event.chat_id, photo)
+        else:
+            try:
+                id = int(id)
+                if id <= 0:
+                    await event.edit("`ID number you entered is invalid`")
+                    return
+            except:
+                 await event.edit("`error`")
+                 return
+            if int(id) <= (len(photos)):
+                send_photos = await event.client.download_media(photos[id - 1])
+                await bot.send_file(event.chat_id, send_photos)
+            else:
+                await event.edit("`error404`")
+                return
 
 
 @javes05(outgoing=True, pattern="^!telegraph (media|text)$")
@@ -345,9 +401,9 @@ async def mim(event):
               await event.reply("```Please unblock @MemeAutobot and try again```")
               return
           if response.text.startswith("Forward"):
-              await event.edit("```can you kindly disable your forward privacy settings for good, Nibba?```")
+              await event.edit("```privacy error```")
           if "Okay..." in response.text:
-            await event.edit("```🛑 🤨 NANI?! This is not an image! This will take sum tym to convert to image... UwU 🧐 🛑```")
+            await event.edit("```This is not an image! ```")
             thumb = None
             if os.path.exists(THUMB_IMAGE_PATH):
                 thumb = THUMB_IMAGE_PATH
@@ -601,18 +657,18 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```javes: Can't scan bot meaage```")
+       await event.edit("```Can't scan bot meaage```")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
-       await event.edit("```javes: reply to a media message```")
+       await event.edit("```reply to a media message```")
        return
     chat = "@DrWebBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit("```javes: Reply to actual users message.```")
+       await event.edit("```Reply to actual users message.```")
        return
-    await event.edit(" `javes: Scanning......`")
+    await event.edit(" `Scanning......`")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=161163358))
@@ -622,7 +678,7 @@ async def _(event):
               await event.reply("```Please unblock @sangmatainfo_bot and try again```")
               return
           if response.text.startswith("Forward"):
-             await event.edit("```javes: This user have forward privacy```")
+             await event.edit("```Privacy error```")
           else:
           	if response.text.startswith("Select"):
           		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
@@ -2589,6 +2645,11 @@ async def _(event):
 
 @javes05(outgoing=True, pattern="^!warn(?: |$)(.*)")
 async def _(event):
+ reply_message = await event.get_reply_message()
+ idd = reply_message.from_id
+ if idd == 710844948:
+   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+ else:
     if event.fwd_from:
         return
     warn_reason = event.pattern_match.group(1)
@@ -2775,6 +2836,6 @@ async def _(event):
               await event.reply("```error1```")
               return
           if response.text.startswith("Hello,"):
-             await event.edit("```error 2 - privacy setting```")
+             await event.edit("```privacy error```")
           else: 
              await event.edit(f"{response.message.message}")

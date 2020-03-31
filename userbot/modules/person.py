@@ -11,7 +11,7 @@ from random import choice, randint
 from asyncio import sleep
 import asyncio
 from telethon import events
-from telethon.tl.functions.users import GetFullUserRequest
+
 from telethon.tl.types import ChannelParticipantsAdmins
 from telethon.events import StopPropagation
 import asyncio
@@ -77,8 +77,8 @@ from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,LAST
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
-    "`Javes: `Hello! Sir\n"
-   f"I can't allow you to {DEFAULTUSER}'s PM without his permissions please be patient,Thankyou")
+    "`Javes: Hello Sir!`\n"
+   f"**I can't allow you to {DEFAULTUSER}'s PM without his permissions please be patient,Thankyou **")
     
 
 @javes05(incoming=True, disable_edited=True, disable_errors=True)
@@ -124,9 +124,9 @@ async def permitpm(event):
                 else:
                     COUNT_PM[event.chat_id] = COUNT_PM[event.chat_id] + 1
 
-                if COUNT_PM[event.chat_id] > 4:
+                if COUNT_PM[event.chat_id] > 3:
                     await event.respond(
-                             f"`javes`: I am not going to allow you to spam {DEFAULTUSER}'s PM, Good bye!")
+                             f"`javes`: ** I am not going to allow you to spam {DEFAULTUSER}'s PM, You have been blocked **")
                 
 
                     try:
@@ -344,7 +344,7 @@ except AttributeError:
     afk_db = False
 
 # ========================= CONSTANTS ============================
-AFKSTR = [f"`Javes: Hello! Sir` {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou \n"]
+AFKSTR = [f"`Javes: ` Hello Sir! {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou "]
 # =================================================================
 
 
@@ -365,7 +365,7 @@ async def mention_afk(mention):
         if ISAFK or ISAFK_SQL:
             if mention.sender_id not in USERS:
                 if EXCUSE:
-                    await mention.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} offline right now.\
+                    await mention.reply(f"`Javes: `Hello Sir! {DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
@@ -412,7 +412,7 @@ async def afk_on_pm(sender):
         if apprv and (ISAFK or ISAFK_SQL):
             if sender.sender_id not in USERS:
                 if EXCUSE:
-                    await sender.reply(f"`Javes: `Hello! Sir {DEFAULTUSER} offline right now.\
+                    await sender.reply(f"`Javes: `Hello Sir! {DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await sender.reply(str(choice(AFKSTR)))
@@ -762,7 +762,7 @@ async def _(event):
     if reply_message.sender.bot:
        await event.edit("`Reply to actual users message.`")
        return
-    await event.edit("`javes: Hacking........`")
+    await event.edit("` Hacking........`")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=461843263))
@@ -772,6 +772,6 @@ async def _(event):
               await event.reply("`Please unblock @sangmatainfo_bot and try again`")
               return
           if response.text.startswith("Forward"):
-             await event.edit("`javes: This user have forward privacy`")
+             await event.edit("`Privacy error!`")
           else: 
              await event.edit(f"{response.message.message}")
