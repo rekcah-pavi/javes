@@ -67,7 +67,7 @@ if LYDIA_API_KEY:
     api_key = LYDIA_API_KEY
     api_client = API(api_key)
     lydia = LydiaAI(api_client)
-    
+
 
 
 
@@ -139,7 +139,7 @@ async def repcf(event):
     except Exception as e:
         await event.edit(str(e))
 
-@javes05(outgoing=True, pattern="^!auto$")
+@javes05(outgoing=True, disable_errors=True, pattern="^!auto$")
 async def addcf(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
@@ -158,11 +158,11 @@ async def addcf(event):
         if reply_msg.from_id is None:
             return await event.edit("Invalid user type.")
         ACC_LYDIA.update({(event.chat_id & reply_msg.from_id): session})
-        await event.edit("Auto replay activated this  user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        await event.edit("Auto reply activated this  user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
     else:
         await event.edit("Tag any user's message to activate on them")
 
-@javes05(outgoing=True, pattern="^!stop$")
+@javes05(outgoing=True, disable_errors=True, pattern="^!stop$")
 async def remcf(event):
     if event.fwd_from:
         return
@@ -172,9 +172,9 @@ async def remcf(event):
     reply_msg = await event.get_reply_message()
     try:
         del ACC_LYDIA[event.chat_id & reply_msg.from_id]
-        await event.edit(" Auto replay disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        await event.edit(" Auto reply disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
     except Exception:
-        await event.edit("This person does not have activated auto replay on him/her.")
+        await event.edit("This person does not have activated auto reply on him/her.")
 
 @javes05(incoming=True, disable_errors=True, disable_edited=True)
 async def user(event):

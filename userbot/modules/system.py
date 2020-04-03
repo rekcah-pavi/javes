@@ -6,6 +6,7 @@ import sys
 import os
 import io
 import heroku3
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 import asyncio
 from asyncio import create_subprocess_shell as asyncSubprocess
 from asyncio.subprocess import PIPE as asyncPIPE
@@ -46,7 +47,9 @@ from telethon import version
 from userbot import CMD_HELP, ALIVE_NAME
 from userbot.events import javes05
 
+
 # ================= CONSTANT =================
+JAVES_NAME = str(JAVES_NAME) if ALIVE_NAME else str(JAVES_MSG)
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
 
@@ -152,8 +155,8 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
-                     " Javes: Stay Alert from covid-19!`\n\n"                    
-                    f"✨ Javes : ** 1.4 **\n"
+                     " Javes:  Stay Alert from covid-19!`\n\n"                    
+                    f"✨ Javes:  : ** 1.5 **\n"
                     f"✨ Telethon : ** {version.__version__} **\n"
                     f"✨ Python : ** {python_version()} **\n"
                     f"✨ User: ** {DEFAULTUSER} **"
@@ -875,7 +878,7 @@ async def raw(event):
     with io.BytesIO(str.encode(the_real_message)) as out_file:
         out_file.name = "raw_message_data.txt"
         await event.edit(
-            "`javes: `i have sent decoded message data in my chat!")
+            "`Javes:  `i have sent decoded message data in my chat!")
         await event.client.send_file(
             BOTLOG_CHATID,
             out_file,

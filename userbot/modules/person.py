@@ -69,16 +69,20 @@ from platform import python_version, uname
 from shutil import which
 from os import remove
 from telethon import version
-from userbot import CMD_HELP, ALIVE_NAME
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 
 from sqlalchemy.exc import IntegrityError
 from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,LASTMSG, LOGS)
 
+
+
+JAVES_NAME = str(JAVES_NAME) if ALIVE_NAME else str(JAVES_MSG)
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
+PM_MESSAGE = str(PM_MESSAGE) if PM_MESSAGE else str(ORI_MSG)
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
-    "`Javes: Hello Sir!`\n"
-   f"**I can't allow you to {DEFAULTUSER}'s PM without his permissions please be patient,Thankyou **")
+   f"`Javes:`\n"
+   f"**{PM_MESSAGE}**")
     
 
 @javes05(incoming=True, disable_edited=True, disable_errors=True)
@@ -299,7 +303,7 @@ async def blockpm(block):
     else:
         await block.client(BlockRequest(block.chat_id))
         aname = await block.client.get_entity(block.chat_id)
-        await block.edit("`javes: You've been blocked!`")
+        await block.edit("`Javes: You've been blocked!`")
         name0 = str(aname.first_name)
         uid = block.chat_id
 
@@ -344,7 +348,7 @@ except AttributeError:
     afk_db = False
 
 # ========================= CONSTANTS ============================
-AFKSTR = [f"`Javes: ` Hello Sir! {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou "]
+AFKSTR = [f"`Javes:` ** {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou **"]
 # =================================================================
 
 
@@ -365,7 +369,7 @@ async def mention_afk(mention):
         if ISAFK or ISAFK_SQL:
             if mention.sender_id not in USERS:
                 if EXCUSE:
-                    await mention.reply(f"`Javes: `Hello Sir! {DEFAULTUSER} offline right now.\
+                    await mention.reply(f"`Javes: `{DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
@@ -412,7 +416,7 @@ async def afk_on_pm(sender):
         if apprv and (ISAFK or ISAFK_SQL):
             if sender.sender_id not in USERS:
                 if EXCUSE:
-                    await sender.reply(f"`Javes: `Hello Sir! {DEFAULTUSER} offline right now.\
+                    await sender.reply(f"`Javes:`{DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await sender.reply(str(choice(AFKSTR)))
@@ -422,7 +426,7 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await sender.reply(
-                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
+                            f"`Javes:: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await sender.reply(str(choice(AFKSTR)))
@@ -501,7 +505,7 @@ async def who(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-  await reply_message.reply("`javes: he is my master so i can't `")
+  await reply_message.reply("`Javes: he is my master so i can't `")
  else:
     await event.edit(
         "`Hacking database............`")
@@ -746,16 +750,16 @@ async def _(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-  await reply_message.reply("`javes: he is my master so i can't `")
+  await reply_message.reply("`Javes: he is my master so i can't `")
  else:
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("`javes: Can't scan bot meaage`")
+       await event.edit("`Can't scan bot meaage`")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.text:
-       await event.edit("```javes: reply to a media message```")
+       await event.edit("```reply to a media message```")
        return
     chat = "@SangMataInfo_bot"
     sender = reply_message.sender
