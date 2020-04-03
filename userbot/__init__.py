@@ -98,13 +98,16 @@ REM_BG_API_KEY = os.environ.get("REM_BG_API_KEY", None)
 CHROME_DRIVER = os.environ.get("CHROME_DRIVER", None)
 GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
 
+
+
 # OpenWeatherMap API Key
 OPEN_WEATHER_MAP_APPID = os.environ.get("OPEN_WEATHER_MAP_APPID", None)
 WEATHER_DEFCITY = os.environ.get("WEATHER_DEFCITY", None)
 
 # Lydia API
 LYDIA_API_KEY = os.environ.get("LYDIA_API_KEY", None)
-
+PM_MESSAGE = os.environ.get("PM_MESSAGE", None)
+JAVES_NAME = os.environ.get("JAVES_NAME", None)
 # Anti Spambot Config
 ANTI_SPAMBOT = sb(os.environ.get("ANTI_SPAMBOT", "False"))
 ANTI_SPAMBOT_SHOUT = sb(os.environ.get("ANTI_SPAMBOT_SHOUT", "False"))
@@ -120,6 +123,19 @@ ALIVE_NAME = os.environ.get("YOUR_SHORT_NAME", None)
 # Time & Date - Country and Time Zone
 COUNTRY = str(os.environ.get("COUNTRY", ""))
 TZ_NUMBER = int(os.environ.get("TZ_NUMBER", 1))
+
+from userbot import ALIVE_NAME
+
+JAVES_MSG = (
+   f"Javes: ")
+   
+ORI_MSG = (
+   f"I can't allow you to {ALIVE_NAME}'s PM without his permissions please be patient,Thankyou ")
+
+
+
+
+
 
 # Clean Welcome
 CLEAN_WELCOME = sb(os.environ.get("CLEAN_WELCOME", "True"))
