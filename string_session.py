@@ -16,4 +16,4 @@ with TelegramClient(StringSession(), API_KEY, API_HASH) as client:
     print(client.session.save())
     print("")
     print("")
-    print("Enjoy your userbot !!")
+    print("Enjoy your javes !!")
