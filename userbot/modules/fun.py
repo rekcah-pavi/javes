@@ -1424,6 +1424,8 @@ async def _(event):
 
     await event.edit("Calling")
 
+
+
     animation_chars = [
         
             "`Connecting To Telegram Headquarters...`",
