@@ -126,6 +126,18 @@
       "description": "SECRET Key for Last.FM module. [Get one from - https://www.last.fm/api/account/create].",
       "value": "Enter vlaue here if you need ",
       "required": false
+      
+      },
+    "JAVES_NAME": {
+      "description": "You can edit bot's name too",
+      "value": "Javes: ",
+      "required": false
+    
+    },
+    "PM_MESSAGE": {
+      "description": "you can edit what pm_protecter message! ",
+      "value": "I can't allow you to {Your_Name}'s PM without his permissions please be patient,Thankyou ",
+      "required": true
     
     },
     "DEFAULT_BIO": {
