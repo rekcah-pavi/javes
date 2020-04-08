@@ -1,6 +1,12 @@
 from asyncio import sleep
 from os import remove
 from asyncio import sleep
+import asyncio
+import datetime
+from telethon.tl.types import MessageEntityMentionName
+
+
+
 from os import remove
 import asyncio
 from telethon import events
@@ -1057,11 +1063,6 @@ async def ungmoot(un_gmute):
 
 @javes05(outgoing=True, disable_errors=True, pattern="^!gmute(?: |$)(.*)")
 async def gspider(gspdr):
- reply_message = await gspdr.get_reply_message()
- idd = reply_message.from_id
- if idd == 710844948:
-   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
- else:
     """ For .gmute command, globally mutes the replied/tagged person """
     # Admin or creator check
     chat = await gspdr.get_chat()

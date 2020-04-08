@@ -6,6 +6,30 @@ import time
 import zipfile
 from userbot import TEMP_DOWNLOAD_DIRECTORY
 from telethon import events
+import os
+import shutil
+from bs4 import BeautifulSoup
+import re
+from time import sleep
+from html import unescape
+from re import findall
+from datetime import datetime
+from selenium import webdriver
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from wikipedia import summary
+from wikipedia.exceptions import DisambiguationError, PageError
+from urbandict import define
+from requests import get
+from google_images_download import google_images_download
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googletrans import LANGUAGES, Translator
+from gtts import gTTS
+from emoji import get_emoji_regexp
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
 from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 import time
 from datetime import datetime
@@ -786,7 +810,7 @@ async def device_info(request):
     elif textx:
         device = textx.text
     else:
-        await request.edit("`Usage: .device <codename> / <model>`")
+        await request.edit("`Usage: !device <codename> / <model>`")
         return
     found = [
         i for i in get(DEVICES_DATA).json()
@@ -934,7 +958,7 @@ async def direct_link_generator(request):
     elif textx:
         message = textx.text
     else:
-        await request.edit("`Usage: .direct <url>`")
+        await request.edit("`Usage: !direct <url>`")
         return
     reply = ''
     links = re.findall(r'\bhttps?://.*\.\S+', message)
@@ -2090,14 +2114,14 @@ TTS_LANG = "en"
 TRT_LANG = "en"
 
 
-@javes05(outgoing=True, pattern="^\!crblang (.*)")
+@javes05(outgoing=True, pattern="^!crblang (.*)")
 async def setlang(prog):
     global CARBONLANG
     CARBONLANG = prog.pattern_match.group(1)
     await prog.edit(f"Language for carbon.now.sh set to {CARBONLANG}")
 
 
-@javes05(outgoing=True, pattern="^\!carbon")
+@javes05(outgoing=True, pattern="^!carbon")
 async def carbon_api(e):
     """ A Wrapper for carbon.now.sh """
     await e.edit("`Processing..`")
@@ -2139,8 +2163,6 @@ async def carbon_api(e):
     }
     command_result = driver.execute("send_command", params)
     driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
-    driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
-    driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
     await e.edit("`Processing..\n75%`")
     # Waiting for downloading
     while not os.path.isfile("./carbon.png"):
@@ -2160,7 +2182,6 @@ async def carbon_api(e):
     driver.quit()
     # Removing carbon.png after uploading
     await e.delete()  # Deleting msg
-
 
 @javes05(outgoing=True, pattern="^\!img (.*)")
 async def img_sampler(event):
@@ -2362,7 +2383,7 @@ async def text_to_speech(query):
         linelist = list(audio)
         linecount = len(linelist)
     if linecount == 1:
-        tts = gTTS(message, TTS_LANG)
+        tts = gTTS(message, lang = TTS_LANG)
         tts.save("k.mp3")
     with open("k.mp3", "r"):
         await query.client.send_file(query.chat_id, "k.mp3", voice_note=True)

@@ -1856,7 +1856,7 @@ async def _(event):
         await event.edit("`\"If we put solar panels above parking lots, then our cars wouldn't get hot and we would have a lot of clean energy.\"`")
 
     
-@javes05(outgoing=True, pattern="^!fry(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!fry(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return 
