@@ -5,19 +5,15 @@ FROM alpine:edge
 # We have to uncomment Community repo for some packages
 #
 RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
-
-
-RUN apk add --no-cache ca-certificates
-RUN apk add --no-cache g++ freetype-dev jpeg-dev
-RUN apk add nodejs 
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
-
+RUN apk add --no-cache g++ freetype-dev jpeg-dev 
 #
 # Installing Packages
 #
 RUN apk add --no-cache=true --update \
     coreutils \
     bash \
+    nodejs \
     build-base \
     bzip2-dev \
     curl \
@@ -60,7 +56,6 @@ RUN apk add --no-cache=true --update \
     zip \
     megatools \
     nodejs \
-    python \
     freetype-dev
 
 
