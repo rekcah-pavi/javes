@@ -45,8 +45,6 @@ RUN apk add --no-cache \
     pv \
     jq \
     wget \
-    python3 \
-    python3-dev \
     readline-dev \
     sqlite \
     ffmpeg \
@@ -57,8 +55,6 @@ RUN apk add --no-cache \
     zlib-dev \
     jpeg \
     zip \
-    megatools \
-    nodejs \
     freetype-dev
 
 RUN curl https://cli-assets.heroku.com/install.sh | sh
