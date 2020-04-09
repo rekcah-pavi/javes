@@ -12,7 +12,7 @@ RUN apk add nodejs
 RUN apk update
 RUN apk upgrade 
 RUN apk add nodejs 
-
+RUN echo -e "http://nl.alpinelinux.org/alpine/v3.5/main\nhttp://nl.alpinelinux.org/alpine/v3.5/community" > /etc/apk/repositories
 # Installing Packages
 RUN apk add --no-cache \
     coreutils \
