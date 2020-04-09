@@ -9,47 +9,60 @@ RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/r
 RUN apk add --no-cache ca-certificates
 RUN apk add --no-cache g++ freetype-dev jpeg-dev
 RUN apk add nodejs 
+RUN apk update
+RUN apk upgrade 
+RUN apk add nodejs 
 
 # Installing Packages
 RUN apk add --no-cache \
+    coreutils \
     bash \
     build-base \
     bzip2-dev \
     curl \
-    coreutils \
     figlet \
     gcc \
     g++ \
     git \
+    sudo \
     aria2 \
     util-linux \
     libevent \
-    libjpeg-turbo-dev \
-    chromium \
-    chromium-chromedriver \
     jpeg-dev \
-    libc-dev \
     libffi-dev \
     libpq \
     libwebp-dev \
+    libxml2 \
     libxml2-dev \
     libxslt-dev \
     linux-headers \
-    musl-dev \
+    musl \
     neofetch \
     openssl-dev \
+    postgresql \
     postgresql-client \
     postgresql-dev \
+    openssl \
     pv \
     jq \
     wget \
+    python \
+    python-dev \
+    python3 \
     python3-dev \
     readline-dev \
+    sqlite \
     ffmpeg \
     sqlite-dev \
     sudo \
+    chromium \
+    chromium-chromedriver \
     zlib-dev \
-    python-dev
+    jpeg \
+    zip \
+    megatools \
+    nodejs \
+    freetype-dev
 
 RUN curl https://cli-assets.heroku.com/install.sh | sh
 
