@@ -1,20 +1,22 @@
 # We're using Alpine Edge
 FROM alpine:edge
 
+#
 # We have to uncomment Community repo for some packages
-RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories 
+#
+RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
 
-# install ca-certificates so that HTTPS works consistently
-# other runtime dependencies for Python are installed later
+
 RUN apk add --no-cache ca-certificates
 RUN apk add --no-cache g++ freetype-dev jpeg-dev
 RUN apk add nodejs 
 RUN apk update
 RUN apk upgrade 
-RUN apk add nodejs 
+#
 # Installing Packages
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
-RUN apk add --no-cache \
+#
+RUN apk add --no-cache=true --update \
     coreutils \
     bash \
     build-base \
@@ -45,6 +47,8 @@ RUN apk add --no-cache \
     pv \
     jq \
     wget \
+    python3 \
+    python3-dev \
     readline-dev \
     sqlite \
     ffmpeg \
@@ -55,9 +59,11 @@ RUN apk add --no-cache \
     zlib-dev \
     jpeg \
     zip \
+    megatools \
+    nodejs \
+    python \
     freetype-dev
 
-RUN curl https://cli-assets.heroku.com/install.sh | sh
 
 RUN python3 -m ensurepip \
     && pip3 install --upgrade pip setuptools \
@@ -68,6 +74,7 @@ RUN python3 -m ensurepip \
 
 #
 # Clone repo and prepare working directory
+#
 RUN git clone https://github.com/rekcah-pavi/javes /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
