@@ -6,7 +6,6 @@ import os
 from sys import version_info
 from logging import basicConfig, getLogger, INFO, DEBUG
 from distutils.util import strtobool as sb
-
 from pylast import LastFMNetwork, md5
 from pySmartDL import SmartDL
 from dotenv import load_dotenv
@@ -63,8 +62,13 @@ LOGSPAMMER = sb(os.environ.get("LOGSPAMMER", "False"))
 GENIUS = os.environ.get("GENIUS_API_TOKEN", None)
 GENIUS_API_TOKEN = os.environ.get("GENIUS_API_TOKEN", None)
 
+
+
 # Bleep Blop, this is a bot ;)
 PM_AUTO_BAN = sb(os.environ.get("PM_PROTECTOR", "True"))
+
+
+
 
 # Heroku Credentials for updater.
 HEROKU_APPNAME = os.environ.get("HEROKU_APPNAME", None)
@@ -125,16 +129,22 @@ COUNTRY = str(os.environ.get("COUNTRY", ""))
 TZ_NUMBER = int(os.environ.get("TZ_NUMBER", 1))
 
 from userbot import ALIVE_NAME
+DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
+from userbot import DEFAULTUSER
+
 
 JAVES_MSG = (
-   f"Javes: ")
+   f"Javes ")
    
 ORI_MSG = (
    f"I can't allow you to {ALIVE_NAME}'s PM without his permissions please be patient,Thankyou ")
 
 
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
+AFK_MSG = (
+   f"{JAVES_NNAME}:` Hello Sir, {DEFAULTUSER} is offline Just leave Your message,Thankyou ")
 
-
+AFK_MESSAGE = os.environ.get("AFK_MESSAGE", None)
 
 
 # Clean Welcome
