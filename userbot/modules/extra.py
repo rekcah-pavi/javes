@@ -3,6 +3,59 @@ import pyfiglet
 import asyncio
 import os
 import time
+import asyncio
+import asyncio
+from telethon import events
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import ChannelParticipantsAdmins
+import shutil
+from bs4 import BeautifulSoup
+import re
+from time import sleep
+from html import unescape
+from re import findall
+from selenium import webdriver
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from telethon import events
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from time import sleep
+import asyncio
+import os
+import random
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from wikipedia import summary
+from wikipedia.exceptions import DisambiguationError, PageError
+from urbandict import define
+from requests import get
+from search_engine_parser import GoogleSearch
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googletrans import LANGUAGES, Translator
+from gtts import gTTS
+from gtts.lang import tts_langs
+from emoji import get_emoji_regexp
+from youtube_dl import YoutubeDL
+import asyncio
+import os
+import subprocess
+from datetime import datetime
+from gtts import gTTS
+from youtube_dl.utils import (DownloadError, ContentTooShortError,
+                              ExtractorError, GeoRestrictedError,
+                              MaxDownloadsReached, PostProcessingError,
+                              UnavailableVideoError, XAttrMetadataError)
+from asyncio import sleep
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
+from telethon.tl.types import DocumentAttributeAudio
+
+import os
+import time
 import zipfile
 from userbot import TEMP_DOWNLOAD_DIRECTORY
 from telethon import events
@@ -275,6 +328,16 @@ import glob
 import os
 from datetime import *
 import pytz
+import math
+import time as t
+x = math.inf
+counter = 0
+start=t.time()
+
+
+
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 utc=pytz.UTC
 today = datetime.now().replace(tzinfo=utc)
 telegraph = Telegraph()
@@ -430,7 +493,7 @@ async def mim(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("`Syntax: reply to an image with .mms` 'text on top' ; 'text on bottom' ")
+       await event.edit("`Syntax: reply to an image with !mmf` 'text on top' ; 'text on bottom' ")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
@@ -445,7 +508,7 @@ async def mim(event):
        await event.edit("```Reply to actual users message.```")
        return
     else:
-     await event.edit("``` Memifying this image!......  ```")
+     await event.edit("``` Making.........  ```")
      await asyncio.sleep(5)
     
     async with bot.conversation("@MemeAutobot") as bot_conv:
@@ -462,7 +525,7 @@ async def mim(event):
           if response.text.startswith("Forward"):
               await event.edit("```privacy error```")
           if "Okay..." in response.text:
-            await event.edit("```This is not an image! ```")
+            await event.edit("```This is not an image! \n Dont worry i have plan B```")
             thumb = None
             if os.path.exists(THUMB_IMAGE_PATH):
                 thumb = THUMB_IMAGE_PATH
@@ -740,9 +803,9 @@ async def _(event):
              await event.edit("```Privacy error```")
           else:
           	if response.text.startswith("Select"):
-          		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
+          		await event.edit(f"`{JAVES_NNAME}: Please go to` @DrWebBot `and select your language.`") 
           	else: 
-          			await event.edit(f"javes: Antivirus scan was completed. \n {response.message.message}")
+          			await event.edit(f"{JAVES_NNAME}: Antivirus scan was completed. \n {response.message.message}")
 
 
 
@@ -2350,48 +2413,67 @@ async def urban_dict(ud_e):
 
 
 @javes05(outgoing=True, pattern=r"^\!tts(?: |$)([\s\S]*)")
-async def text_to_speech(query):
-    """ For .tts command, a wrapper for Google Text-to-Speech. """
-    textx = await query.get_reply_message()
-    message = query.pattern_match.group(1)
-    if message:
-        pass
-    elif textx:
-        message = textx.text
+async def _(event):
+    if event.fwd_from:
+        return
+    input_str = event.pattern_match.group(1)
+    start = datetime.now()
+    if event.reply_to_msg_id:
+        previous_message = await event.get_reply_message()
+        text = previous_message.message
+        lan = input_str
+    elif "|" in input_str:
+        lan, text = input_str.split("|")
     else:
-        await query.edit(
-            "`Give a text or reply to a message for Text-to-Speech!`")
+        await event.edit("Invalid Syntax. Module stopping.")
         return
-
+    text = text.strip()
+    lan = lan.strip()
+    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "voice.ogg"
     try:
-        gTTS(message, TTS_LANG)
-    except AssertionError:
-        await query.edit(
-            'The text is empty.\n'
-            'Nothing left to speak after pre-precessing, tokenizing and cleaning.'
+        tts = gTTS(text, lang=lan)
+        tts.save(required_file_name)
+        command_to_execute = [
+            "ffmpeg",
+            "-i",
+             required_file_name,
+             "-map",
+             "0:a",
+             "-codec:a",
+             "libopus",
+             "-b:a",
+             "100k",
+             "-vbr",
+             "on",
+             required_file_name + ".opus"
+        ]
+        try:
+            t_response = subprocess.check_output(command_to_execute, stderr=subprocess.STDOUT)
+        except (subprocess.CalledProcessError, NameError, FileNotFoundError) as exc:
+            await event.edit(str(exc))
+            # continue sending required_file_name
+        else:
+            os.remove(required_file_name)
+            required_file_name = required_file_name + ".opus"
+        end = datetime.now()
+        ms = (end - start).seconds
+        await bot.send_file(
+            event.chat_id,
+            required_file_name,
+            # caption="Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms),
+            reply_to=event.message.reply_to_msg_id,
+            allow_cache=False,
+            voice_note=True
         )
-        return
-    except ValueError:
-        await query.edit('Language is not supported.')
-        return
-    except RuntimeError:
-        await query.edit('Error loading the languages dictionary.')
-        return
-    tts = gTTS(message, TTS_LANG)
-    tts.save("k.mp3")
-    with open("k.mp3", "rb") as audio:
-        linelist = list(audio)
-        linecount = len(linelist)
-    if linecount == 1:
-        tts = gTTS(message, lang = TTS_LANG)
-        tts.save("k.mp3")
-    with open("k.mp3", "r"):
-        await query.client.send_file(query.chat_id, "k.mp3", voice_note=True)
-        os.remove("k.mp3")
-        if BOTLOG:
-            await query.client.send_message(
-                BOTLOG_CHATID, "Text to Speech executed successfully !")
-        await query.delete()
+        os.remove(required_file_name)
+        await event.edit("Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms))
+        await asyncio.sleep(5)
+        await event.delete()
+    except Exception as e:
+        await event.edit(str(e))
+
 
 
 # kanged from Blank-x ;---;
@@ -2644,7 +2726,7 @@ async def download_video(v_url):
     except Exception as e:
         await v_url.edit(f"{str(type(e)): {str(e)}}")
         return
-    c_time = time.time()
+    c_time = t.time()
     if song:
         await v_url.edit(f"`Preparing to upload song:`\
         \n**{rip_data['title']}**\
@@ -2704,7 +2786,7 @@ async def _(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+   await reply_message.reply(f"`{JAVES_NNAME}:` ** He is my master, I can't ** ")
  else:
     if event.fwd_from:
         return
@@ -2911,7 +2993,7 @@ async def _(event):
     if event.reply_to_msg_id:
         reply_message = await event.get_reply_message()
         try:
-            c_time = time.time()
+            c_time = t.time()
             downloaded_file_name = await bot.download_media(
                 reply_message,
                 TEMP_DOWNLOAD_DIRECTORY,
@@ -2956,7 +3038,7 @@ async def _(event):
         start = datetime.now()
         reply_message = await event.get_reply_message()
         try:
-            c_time = time.time()
+            c_time = t.time()
             downloaded_file_name = await bot.download_media(
                 reply_message,
                 TEMP_DOWNLOAD_DIRECTORY,
@@ -3048,9 +3130,147 @@ def get_lst_of_files(input_directory, output_lst):
 
 
 
+@javes05(outgoing=True, pattern="^!carbon2")
+async def carbon_api(e):
+ RED = random.randint(0,256)
+ GREEN = random.randint(0,256)
+ BLUE = random.randint(0,256)
+ THEME= [         "3024-night",
+                  "a11y-dark",
+                  "blackboard",
+                  "base16-dark",
+                  "base16-light",
+                  "cobalt",
+                  "dracula",
+                  "duotone-dark",
+                  "hopscotch",
+                  "lucario",
+                  "material",
+                  "monokai",
+                  "night-owl",
+                  "nord",
+                  "oceanic-next",
+                  "one-light",
+                  "one-dark",
+                  "panda-syntax",
+                  "paraiso-dark",
+                  "seti",
+                  "shades-of-purple",
+                  "solarized",
+                  "solarized%20light",
+                  "synthwave-84",
+                  "twilight",
+                  "verminal",
+                  "vscode",
+                  "yeti",
+                  "zenburn",
+]
+
+ CUNTHE = random.randint(0, len(THEME) - 1)
+ The = THEME[CUNTHE]
+
+
+ if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+   """ A Wrapper for carbon.now.sh """
+   await e.edit("Processing")
+   CARBON = 'https://carbon.now.sh/?bg=rgba({R}%2C{G}%2C.{B}%2C1)&t={T}&wt=none&l=auto&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Fira%20Code&fs=14px&lh=152%25&si=false&es=2x&wm=false&code={code}'
+   CARBONLANG = "en"
+   textx = await e.get_reply_message()
+   pcode = e.text
+   if pcode[6:]:
+         pcode = str(pcode[6:])
+   elif textx:
+         pcode = str(textx.message) # Importing message to module
+   code = quote_plus(pcode) # Converting to urlencoded
+   url = CARBON.format(code=code, R=RED, G=GREEN, B=BLUE, T=The, lang=CARBONLANG)
+   chrome_options = Options()
+   chrome_options.add_argument("--headless")
+   chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
+   chrome_options.add_argument("--window-size=1920x1080")
+   chrome_options.add_argument("--disable-dev-shm-usage")
+   chrome_options.add_argument("--no-sandbox")
+   chrome_options.add_argument('--disable-gpu')
+   prefs = {'download.default_directory' : './'}
+   chrome_options.add_experimental_option('prefs', prefs)
+   await e.edit("25%")
+
+   driver = webdriver.Chrome(executable_path=Config.CHROME_DRIVER, options=chrome_options)
+   driver.get(url)
+   download_path = './'
+   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+   command_result = driver.execute("send_command", params)
+
+   driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
+   sleep(5) # this might take a bit.
+   #driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
+   #sleep(5)
+   await e.edit("50%")
+   #driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
+   sleep(2) #Waiting for downloading
+
+   await e.edit("75%")
+   file = './carbon.png'
+   await e.edit("Uploading.......")
+   await e.client.send_file(
+         e.chat_id,
+         file,
+         caption="Done",
+         force_document=False,
+         reply_to=e.message.reply_to_msg_id,
+         )
+
+   os.remove('./carbon.png')
+   # Removing carbon.png after uploading
+   await e.delete() # Deleting msg
 
 
 
+@javes05(outgoing=True, pattern="^!gbun(?: |$)(.*)")
+async def gbun(event):
+    if event.fwd_from:
+        return
+    gbunVar = event.text
+    gbunVar = gbunVar[6:]
+    mentions = "`Warning!! User GBGBANNED By Admin...\n`"
+    no_reason = "__Reason: Not given __"
+    await event.edit("**Processing**")
+    asyncio.sleep(3.5)
+    chat = await event.get_input_chat()
+    async for x in bot.iter_participants(chat, filter=ChannelParticipantsAdmins):
+        mentions += f""
+    reply_message = None
+    if event.reply_to_msg_id:
+        reply_message = await event.get_reply_message()
+        replied_user = await event.client(GetFullUserRequest(reply_message.from_id))
+        firstname = replied_user.user.first_name
+        usname = replied_user.user.username
+        idd = reply_message.from_id
+        # make meself invulnerable cuz why not xD
+        if idd == 710844948:
+            await reply_message.reply("`Wait a second, This is my master!`\n**How dare you threaten to ban my master !**\n\n Your account has been hacked! Pay 69$ to @rekcah05 to unlock")
+        else:
+            jnl=("`Warning!! `"
+                  "[{}](tg://user?id={})"
+                  "` GBGBANNED By Admin...\n\n`"
+                  "**Person's Name: ** __{}__\n"
+                  "**ID : ** `{}`\n"
+                ).format(firstname, idd, firstname, idd)
+            if usname == None:
+                jnl += "**Victim username: ** `Doesn't own a username!`\n"
+            elif usname != "None":
+                jnl += "**Victim username** : @{}\n".format(usname)
+            if len(gbunVar) > 0:
+                gbunm = "`{}`".format(gbunVar)
+                gbunr = "**Reason: **"+gbunm
+                jnl += gbunr
+            else:
+                jnl += no_reason
+            await reply_message.reply(jnl)
+    else:
+        mention = "`Warning!! User GBGBANNED Admin...\nReason: Not Given `"
+        await event.reply(mention)
+    await event.delete()
 
 
 

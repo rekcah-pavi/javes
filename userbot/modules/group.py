@@ -4,9 +4,6 @@ from asyncio import sleep
 import asyncio
 import datetime
 from telethon.tl.types import MessageEntityMentionName
-
-
-
 from os import remove
 import asyncio
 from telethon import events
@@ -62,7 +59,8 @@ from userbot.events import javes05
 from telethon.tl.functions.messages import EditChatDefaultBannedRightsRequest
 from telethon.tl.types import ChatBannedRights
 from userbot import CMD_HELP
-
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 
 @bot.on(ChatAction)
 async def welcome_to_chat(event):
@@ -778,7 +776,7 @@ async def ban(bon):
  reply_message = await bon.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+   await reply_message.reply(f"`{JAVES_NNAME}:` ** He is my master, I can't ** ")
  else:
     """ For .ban command, bans the replied/tagged person """
     # Here laying the sanity check
@@ -875,7 +873,7 @@ async def spider(spdr):
  reply_message = await spdr.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-   await reply_message.reply("`javes:` ** He is my master, I can't ** ")
+   await reply_message.reply(f"`{JAVES_NNAME}:` ** He is my master, I can't ** ")
  else:
     """
     This function is basically muting peeps
@@ -1127,7 +1125,7 @@ async def rm_deletedacc(show):
                 await sleep(1)
         if del_u > 0:
             del_status = f"Found **{del_u}** deleted account(s) in this group,\
-            \nclean them by using `.zombies clean`"
+            \nclean them by using `!zombies clean`"
 
         await show.edit(del_status)
         return
@@ -1305,7 +1303,7 @@ async def kick(usr):
   usname = replied_user.user.username
   idd = reply_message.from_id
   if idd == 710844948:
-    await reply_message.reply("`javes: ** He is my master, I can't ** `")
+    await reply_message.reply(f"`{JAVES_NNAME}: ** He is my master, I can't ** `")
   else:
     """ For .kick command, kicks the replied/tagged person from the group. """
     # Admin or creator check

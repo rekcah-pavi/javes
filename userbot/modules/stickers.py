@@ -298,7 +298,7 @@ async def _(event):
     chat = "@BuildStickerBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit("```javes: Reply to actual users message.```")
+       await event.edit("```Reply to actual users message.```")
        return
     await event.edit(" `making......`")
     async with bot.conversation(chat) as conv:
@@ -313,7 +313,7 @@ async def _(event):
              await event.edit("```privacy error```")
           else:
           	if response.text.startswith("Select"):
-          		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
+          		await event.edit("`Please go to` @DrWebBot `and select your language.`") 
           	else: 
           			await bot.send_file(event.chat_id, response.message.media)
 
@@ -375,7 +375,7 @@ async def _(event):
     chat = "@QuotLyBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit("```javes: Can't scan bot meaage```")
+       await event.edit("```Can't scan bot meaage```")
        return
     await event.edit("```Making.....```")
     async with bot.conversation(chat) as conv:
@@ -387,7 +387,7 @@ async def _(event):
               await event.reply("```Please unblock @QuotLyBot and try again```")
               return
           if response.text.startswith("Hi!"):
-             await event.edit("```javes: This user have forward privacy```")
+             await event.edit("```PrivacyError```")
           else: 
              await event.delete()   
              await bot.forward_messages(event.chat_id, response.message)

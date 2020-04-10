@@ -5,7 +5,8 @@ from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from userbot.events import javes05
 from userbot import bot, CMD_HELP
-
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 
 @javes05(outgoing=True, pattern="^!mail(?: |$)(.*)")
 async def _(event):
@@ -115,6 +116,7 @@ async def _(event):
           if response.text.startswith("Hello,"):
              await event.edit("```privacy error```")
           else: 
+             await asyncio.sleep(8)
              await event.edit(f"{response.message.message}")
 
 
@@ -134,7 +136,7 @@ async def _(event):
     chat = "@image_deepfrybot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit("```javes: Reply to actual users message.```")
+       await event.edit(f"```{JAVES_NNAME}: Reply to actual users message.```")
        return
     await event.edit(" `Making......`")
     async with bot.conversation(chat) as conv:
@@ -149,7 +151,7 @@ async def _(event):
              await event.edit("```privacy error```")
           else:
           	if response.text.startswith("Select"):
-          		await event.edit("`javes: Please go to` @DrWebBot `and select your language.`") 
+          		await event.edit(f"`{JAVES_NNAME}: Please go to` @DrWebBot `and select your language.`") 
           	else: 
           			await bot.send_file(event.chat_id, response.message.media)
 

@@ -69,14 +69,13 @@ from platform import python_version, uname
 from shutil import which
 from os import remove
 from telethon import version
-from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG, AFK_MESSAGE, AFK_MSG
 
 from sqlalchemy.exc import IntegrityError
 from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,LASTMSG, LOGS)
-
-
-
-JAVES_NAME = str(JAVES_NAME) if ALIVE_NAME else str(JAVES_MSG)
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
+AFK_MMSG = str(AFK_MESSAGE) if AFK_MESSAGE else str(AFK_MSG)
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 PM_MESSAGE = str(PM_MESSAGE) if PM_MESSAGE else str(ORI_MSG)
 # ========================= CONSTANTS ============================
@@ -130,7 +129,7 @@ async def permitpm(event):
 
                 if COUNT_PM[event.chat_id] > 3:
                     await event.respond(
-                             f"`javes`: ** I am not going to allow you to spam {DEFAULTUSER}'s PM, You have been blocked **")
+                             f"`{JAVES_NNAME}`: ** I am not going to allow you to spam {DEFAULTUSER}'s PM, You have been blocked **")
                 
 
                     try:
@@ -298,12 +297,12 @@ async def blockpm(block):
         aname = replied_user.id
         name0 = str(replied_user.first_name)
         await block.client(BlockRequest(replied_user.id))
-        await block.edit("`Javes: You've been blocked!`")
+        await block.edit(f"`{JAVES_NNAME}: You've been blocked!`")
         uid = replied_user.id
     else:
         await block.client(BlockRequest(block.chat_id))
         aname = await block.client.get_entity(block.chat_id)
-        await block.edit("`Javes: You've been blocked!`")
+        await block.edit(f"`{JAVES_NNAME}: You've been blocked!`")
         name0 = str(aname.first_name)
         uid = block.chat_id
 
@@ -328,7 +327,7 @@ async def unblockpm(unblock):
         replied_user = await unblock.client.get_entity(reply.from_id)
         name0 = str(replied_user.first_name)
         await unblock.client(UnblockRequest(replied_user.id))
-        await unblock.edit("`Javes: You have been unblocked.`")
+        await unblock.edit(f"`{JAVES_NNAME}: You have been unblocked.`")
 
     if BOTLOG:
         await unblock.client.send_message(
@@ -348,7 +347,7 @@ except AttributeError:
     afk_db = False
 
 # ========================= CONSTANTS ============================
-AFKSTR = [f"`Javes:` ** {DEFAULTUSER} is offline just leave your message i will tell him,Thankyou **"]
+AFKSTR = [f"`{JAVES_NNAME}:` ** {AFK_MMSG} **"]
 # =================================================================
 
 
@@ -369,7 +368,7 @@ async def mention_afk(mention):
         if ISAFK or ISAFK_SQL:
             if mention.sender_id not in USERS:
                 if EXCUSE:
-                    await mention.reply(f"`Javes: `{DEFAULTUSER} offline right now.\
+                    await mention.reply(f"`{JAVES_NNAME}: `{AFK_MMSG}\
                     \nReason: `{EXCUSE}`")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
@@ -379,7 +378,7 @@ async def mention_afk(mention):
                 if USERS[mention.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await mention.reply(
-                            f"`Javes: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
+                            f"`{JAVES_NNAME}: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await mention.reply(str(choice(AFKSTR)))
@@ -416,7 +415,7 @@ async def afk_on_pm(sender):
         if apprv and (ISAFK or ISAFK_SQL):
             if sender.sender_id not in USERS:
                 if EXCUSE:
-                    await sender.reply(f"`Javes:`{DEFAULTUSER} offline right now.\
+                    await sender.reply(f"`{JAVES_NNAME}:`{DEFAULTUSER} offline right now.\
                     \nReason: `{EXCUSE}`")
                 else:
                     await sender.reply(str(choice(AFKSTR)))
@@ -426,7 +425,7 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if EXCUSE:
                         await sender.reply(
-                            f"`Javes:: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
+                            f"`{JAVES_NNAME}: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
                         \nReason: `{EXCUSE}`")
                     else:
                         await sender.reply(str(choice(AFKSTR)))
@@ -505,7 +504,7 @@ async def who(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-  await reply_message.reply("`Javes: he is my master so i can't `")
+  await reply_message.reply(f"`{JAVES_NNAME}: he is my master so i can't `")
  else:
     await event.edit(
         "`Hacking database............`")
@@ -750,7 +749,7 @@ async def _(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-  await reply_message.reply("`Javes: he is my master so i can't `")
+  await reply_message.reply(f"`{JAVES_NNAME}: he is my master so i can't `")
  else:
     if event.fwd_from:
         return 

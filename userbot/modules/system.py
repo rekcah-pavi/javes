@@ -55,13 +55,13 @@ import math
 from userbot import CMD_HELP, HEROKU_APP_NAME, HEROKU_API_KEY
 from userbot.events import javes05
 from userbot.prettyjson import prettyjson
-
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
 
 
 # ================= CONSTANT =================
-JAVES_NAME = str(JAVES_NAME) if ALIVE_NAME else str(JAVES_MSG)
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
 
@@ -167,12 +167,14 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
     await alive.edit("`"
-                     " Javes:  Stay Alert from covid-19!`\n\n"                    
-                    f"✨ Javes:  : ** 1.5 **\n"
-                    f"✨ Telethon : ** {version.__version__} **\n"
-                    f"✨ Python : ** {python_version()} **\n"
-                    f"✨ User: ** {DEFAULTUSER} **"
-                     "")
+                    f" {JAVES_NNAME}:  Databases functioning normally!`\n\n"                    
+                    f"    🦠 {JAVES_NNAME}  : ** 2.0.0 **\n"
+                    f"    🦠 Telethon : ** {version.__version__} **\n"
+                    f"    🦠 Python : ** {python_version()} **\n"
+                    f"    🦠 User: ** {DEFAULTUSER} **\n"
+                    
+                    
+                                      "")
 
 
 
@@ -267,12 +269,12 @@ async def upstream(ups):
 
     if not changelog and not force_update:
         await ups.edit(
-            f'\n`Javes is`  **up-to-date**  \n')
+            f'\n`{JAVES_NNAME} is`  **up-to-date**  \n')
         repo.__del__()
         return
 
     if conf != "now" and not force_update:
-        changelog_str = f'**New UPDATE available for Javes\n\nCHANGELOG:**\n`{changelog}`'
+        changelog_str = f'**New UPDATE available for {JAVES_NNAME}\n\nCHANGELOG:**\n`{changelog}`'
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
             file = open("output.txt", "w+")
@@ -316,8 +318,8 @@ async def upstream(ups):
             )
             repo.__del__()
             return
-        await ups.edit('`[Updater]\
-                        Javes dyno build in progress, please wait for it to complete.\n It may take 10 minutes `'
+        await ups.edit(f'`[Updater]\
+                        {JAVES_NNAME} dyno build in progress, please wait for it to complete.\n It may take 10 minutes `'
                        )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
@@ -335,7 +337,7 @@ async def upstream(ups):
             repo.__del__()
             return
         await ups.edit('Successfully Updated!\n'
-                       'Restarting......., type !javes for check')
+                       'Restarting.......')
     else:
         # Classic Updater, pretty straightforward.
         try:
@@ -344,7 +346,7 @@ async def upstream(ups):
             repo.git.reset("--hard", "FETCH_HEAD")
         reqs_upgrade = await update_requirements()
         await ups.edit('`Successfully Updated!\n'
-                       'javes is restarting... Wait for a second!`')
+                       'restarting......`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "userbot"]
         execle(sys.executable, *args, environ)
@@ -814,7 +816,7 @@ async def randomise(items):
                      itemo[index] + "`")
 
 
-@javes05(outgoing=True, pattern="^\.sleep( [0-9]+)?$")
+@javes05(outgoing=True, pattern="^\!sleep( [0-9]+)?$")
 async def sleepybot(time):
     """ For .sleep command, let the userbot snooze for a few second. """
     message = time.text
@@ -890,7 +892,7 @@ async def raw(event):
     with io.BytesIO(str.encode(the_real_message)) as out_file:
         out_file.name = "raw_message_data.txt"
         await event.edit(
-            "`Javes:  `i have sent decoded message data in my chat!")
+            f"`{JAVES_NNAME}:  `i have sent decoded message data in my chat!")
         await event.client.send_file(
             BOTLOG_CHATID,
             out_file,
@@ -950,12 +952,12 @@ async def variable(var):
         try:
             val[1]
         except IndexError:
-            return await var.edit("`.set var <config name> <value>`")
+            return await var.edit("`!set var <config name> <value>`")
         await asyncio.sleep(1.5)
         if val[0] in heroku_var:
-            await var.edit(f"**{val[0]}**  `successfully changed to`  **{val[1]}**")
+            await var.edit(f"**{val[0]}**  `successfully changed to`  **{val[1]}**\n Restarting.....")
         else:
-            await var.edit(f"**{val[0]}**  `successfully added with value: **{val[1]}**")
+            await var.edit(f"**{val[0]}**  `successfully added with value:` **{val[1]}**\n Restarting.......")
         heroku_var[val[0]] = val[1]
     elif exe == "del":
         await var.edit("`Getting information to deleting vars...`")
@@ -965,7 +967,7 @@ async def variable(var):
             return await var.edit("`Please specify config vars you want to delete`")
         await asyncio.sleep(1.5)
         if val in heroku_var:
-            await var.edit(f"**{val}**  `successfully deleted`")
+            await var.edit(f"**{val}**  `successfully deleted`\n Restarting......")
             del heroku_var[val]
         else:
             return await var.edit(f"**{val}**  `is not exists`")
@@ -1019,7 +1021,7 @@ async def dyno_usage(dyno):
     await asyncio.sleep(1.5)
 
     return await dyno.edit("**Dyno Usage**:\n\n"
-                           f" -> `Dyno usage for`  **Javes**:\n"
+                           f" -> `Dyno usage for`  **{JAVES_NNAME}**:\n"
                            f"     •  `{AppHours}`**h**  `{AppMinutes}`**m**  "
                            f"**|**  [`{AppPercentage}`**%**]\n\n"
                            " -> `Dyno hours quota remaining this month`:\n"

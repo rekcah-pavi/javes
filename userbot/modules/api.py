@@ -60,7 +60,8 @@ from asyncio import sleep
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
 from telethon.tl.types import DocumentAttributeAudio
 from userbot.modules.system import progress, humanbytes, time_formatter
-
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 ACC_LYDIA = {}
 
 if LYDIA_API_KEY:
@@ -144,7 +145,7 @@ async def addcf(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
  if idd == 710844948:
-  await reply_message.reply("`javes: he is my master so i can't `")
+  await reply_message.reply(f"`{JAVES_NNAME}: he is my master so i can't `")
  else:
     if event.fwd_from:
         return
