@@ -142,7 +142,7 @@ ORI_MSG = (
 
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 AFK_MSG = (
-   f"{JAVES_NNAME}:` Hello Sir, {DEFAULTUSER} is offline Just leave Your message,Thankyou ")
+   f"` Hello Sir, {DEFAULTUSER} is offline Just leave Your message,Thankyou`")
 
 AFK_MESSAGE = os.environ.get("AFK_MESSAGE", None)
 
