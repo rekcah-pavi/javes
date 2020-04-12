@@ -110,7 +110,7 @@ WEATHER_DEFCITY = os.environ.get("WEATHER_DEFCITY", None)
 
 # Lydia API
 LYDIA_API_KEY = os.environ.get("LYDIA_API_KEY", None)
-PM_MESSAGE = os.environ.get("PM_MESSAGE", None)
+PM_MESSAGE = os.environ.get(f"PM_MESSAGE", None)
 JAVES_NAME = os.environ.get("JAVES_NAME", None)
 # Anti Spambot Config
 ANTI_SPAMBOT = sb(os.environ.get("ANTI_SPAMBOT", "False"))
@@ -122,7 +122,7 @@ YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", None)
 # Default .alive name
 ALIVE_NAME = os.environ.get("YOUR_SHORT_NAME", None)
 
-
+BLOCK_MESSAGE = os.environ.get("BLOCK_MESSAGE", None)
 
 # Time & Date - Country and Time Zone
 COUNTRY = str(os.environ.get("COUNTRY", ""))
@@ -133,18 +133,33 @@ DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 from userbot import DEFAULTUSER
 
 
+
 JAVES_MSG = (
    f"Javes ")
    
 ORI_MSG = (
-   f"I can't allow you to {ALIVE_NAME}'s PM without his permissions please be patient,Thankyou ")
-
+   f"Hello Sir, I can't allow you to {ALIVE_NAME}'s PM without his permissions please be patient, Thankyou ")
+   
+BLOCK_MSG = (
+   f"I am not going to allow you to spam {DEFAULTUSER}'s PM, You have been blocked ")
+   
+   
 
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 AFK_MSG = (
-   f"` Hello Sir, {DEFAULTUSER} is offline Just leave Your message,Thankyou`")
+   f"Hello Sir, {DEFAULTUSER} is offline Just leave Your message, Thankyou!")
 
 AFK_MESSAGE = os.environ.get("AFK_MESSAGE", None)
+
+ALIVE_S_MESSAGE = os.environ.get("ALIVE_S_MESSAGE", None)
+ALIVE_E_MESSAGE = os.environ.get("ALIVE_E_MESSAGE", None)
+
+
+ALIVE_S_MSG = (
+   f"Iam Alive!")
+
+ALIVE_E_MSG = (
+   f"Databases functioning normally!! ")
 
 
 # Clean Welcome
