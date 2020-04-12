@@ -3082,7 +3082,7 @@ async def insult(e):
         
         
         
-@javes05(outgoing=True, pattern="^!police$")
+@javes05(outgoing=True, pattern="^!abuse3$")
 
 async def _(event):
 
