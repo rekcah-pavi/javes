@@ -4,7 +4,16 @@ import asyncio
 import os
 import time
 import asyncio
+import time
+from telethon.tl import functions
+from telethon.errors import FloodWaitError
+from userbot import CMD_HELP, bot
+from telethon.tl.functions.account import UpdateProfileRequest
+import time
+from telethon import *
 import asyncio
+import asyncio
+from userbot.google_images_download import googleimagesdownload
 from telethon import events
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import ChannelParticipantsAdmins
@@ -60,6 +69,9 @@ import zipfile
 from userbot import TEMP_DOWNLOAD_DIRECTORY
 from telethon import events
 import os
+import requests
+import bs4
+import re
 import shutil
 from bs4 import BeautifulSoup
 import re
@@ -569,7 +581,7 @@ async def mim(event):
                 caption="Memifyed",
             )
             await event.delete()
-            #await bot.send_message(event.chat_id, "`☠️☠️Ah Shit... Here we go Again!🔥🔥`")
+            #await bot.send_message(event.chat_id, "`â ï¸â ï¸Ah Shit... Here we go Again!ð¥ð¥`")
           elif not is_message_image(reply_message):
             await event.edit("Invalid message type. Plz choose right message type u NIBBA.")
             return
@@ -832,7 +844,7 @@ async def figlet(event):
         result = pyfiglet.figlet_format(text, font=font)
     else:
         result = pyfiglet.figlet_format(text)
-    await event.respond("‌‌‎`{}`".format(result))
+    await event.respond("âââ`{}`".format(result))
     await event.delete()
     
 
@@ -2423,9 +2435,9 @@ async def _(event):
         text = previous_message.message
         lan = input_str
     elif "|" in input_str:
-        lan, text = input_str.split("|")
+        lan, text = input_str.split("|")        
     else:
-        await event.edit("Invalid Syntax. Module stopping.")
+        await event.edit("Error 6")
         return
     text = text.strip()
     lan = lan.strip()
@@ -3130,100 +3142,6 @@ def get_lst_of_files(input_directory, output_lst):
 
 
 
-@javes05(outgoing=True, pattern="^!carbon2")
-async def carbon_api(e):
- RED = random.randint(0,256)
- GREEN = random.randint(0,256)
- BLUE = random.randint(0,256)
- THEME= [         "3024-night",
-                  "a11y-dark",
-                  "blackboard",
-                  "base16-dark",
-                  "base16-light",
-                  "cobalt",
-                  "dracula",
-                  "duotone-dark",
-                  "hopscotch",
-                  "lucario",
-                  "material",
-                  "monokai",
-                  "night-owl",
-                  "nord",
-                  "oceanic-next",
-                  "one-light",
-                  "one-dark",
-                  "panda-syntax",
-                  "paraiso-dark",
-                  "seti",
-                  "shades-of-purple",
-                  "solarized",
-                  "solarized%20light",
-                  "synthwave-84",
-                  "twilight",
-                  "verminal",
-                  "vscode",
-                  "yeti",
-                  "zenburn",
-]
-
- CUNTHE = random.randint(0, len(THEME) - 1)
- The = THEME[CUNTHE]
-
-
- if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-   """ A Wrapper for carbon.now.sh """
-   await e.edit("Processing")
-   CARBON = 'https://carbon.now.sh/?bg=rgba({R}%2C{G}%2C.{B}%2C1)&t={T}&wt=none&l=auto&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Fira%20Code&fs=14px&lh=152%25&si=false&es=2x&wm=false&code={code}'
-   CARBONLANG = "en"
-   textx = await e.get_reply_message()
-   pcode = e.text
-   if pcode[6:]:
-         pcode = str(pcode[6:])
-   elif textx:
-         pcode = str(textx.message) # Importing message to module
-   code = quote_plus(pcode) # Converting to urlencoded
-   url = CARBON.format(code=code, R=RED, G=GREEN, B=BLUE, T=The, lang=CARBONLANG)
-   chrome_options = Options()
-   chrome_options.add_argument("--headless")
-   chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
-   chrome_options.add_argument("--window-size=1920x1080")
-   chrome_options.add_argument("--disable-dev-shm-usage")
-   chrome_options.add_argument("--no-sandbox")
-   chrome_options.add_argument('--disable-gpu')
-   prefs = {'download.default_directory' : './'}
-   chrome_options.add_experimental_option('prefs', prefs)
-   await e.edit("25%")
-
-   driver = webdriver.Chrome(executable_path=Config.CHROME_DRIVER, options=chrome_options)
-   driver.get(url)
-   download_path = './'
-   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
-   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
-   command_result = driver.execute("send_command", params)
-
-   driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
-   sleep(5) # this might take a bit.
-   #driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
-   #sleep(5)
-   await e.edit("50%")
-   #driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
-   sleep(2) #Waiting for downloading
-
-   await e.edit("75%")
-   file = './carbon.png'
-   await e.edit("Uploading.......")
-   await e.client.send_file(
-         e.chat_id,
-         file,
-         caption="Done",
-         force_document=False,
-         reply_to=e.message.reply_to_msg_id,
-         )
-
-   os.remove('./carbon.png')
-   # Removing carbon.png after uploading
-   await e.delete() # Deleting msg
-
 
 
 @javes05(outgoing=True, pattern="^!gbun(?: |$)(.*)")
@@ -3273,14 +3191,81 @@ async def gbun(event):
     await event.delete()
 
 
+@javes05(pattern="^!app (.*)")
+async def apk(e):
+    try:
+        app_name = e.pattern_match.group(1)
+        remove_space = app_name.split(' ')
+        final_name = '+'.join(remove_space)
+        page = requests.get("https://play.google.com/store/search?q="+final_name+"&c=apps")
+        lnk = str(page.status_code)
+        soup = bs4.BeautifulSoup(page.content,'lxml', from_encoding='utf-8')
+        results = soup.findAll("div","ZmHEEd")
+        app_name = results[0].findNext('div', 'Vpfmgd').findNext('div', 'WsMG1c nnK0zc').text
+        app_dev = results[0].findNext('div', 'Vpfmgd').findNext('div', 'KoLSrc').text
+        app_dev_link = "https://play.google.com"+results[0].findNext('div', 'Vpfmgd').findNext('a', 'mnKHRc')['href']
+        app_rating = results[0].findNext('div', 'Vpfmgd').findNext('div', 'pf5lIe').find('div')['aria-label']
+        app_link = "https://play.google.com"+results[0].findNext('div', 'Vpfmgd').findNext('div', 'vU6FJ p63iDd').a['href']
+        app_icon = results[0].findNext('div', 'Vpfmgd').findNext('div', 'uzcko').img['data-src']
+        app_details = "<a href='"+app_icon+"'>📲&#8203;</a>"
+        app_details += " <b>"+app_name+"</b>"
+        app_details += "\n\n<code>Developer :</code> <a href='"+app_dev_link+"'>"+app_dev+"</a>"
+        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "⭐ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "⭐ ").replace("five", "5")
+        app_details += "\n<code>Features :</code> <a href='"+app_link+"'>View in Play Store</a>"
+        await e.edit(app_details, link_preview = True, parse_mode = 'HTML')
+    except IndexError:
+        await e.edit("No result found in search. Please enter **Valid app name**")
+    except Exception as err:
+        await e.edit("Exception Occured:- "+str(err))
+
+
+
+import asyncio
+import time
+from telethon.tl import functions
+from telethon.errors import FloodWaitError
 
 
 
 
 
-
-
-
-
-
+@javes05(outgoing=True, pattern="^!autoname")
+async def update_name(name):
+    """ For .autoname command, change your first name in Telegram and shows a running timer beside your name """
+    newname = name.text[12:]
+    if " " not in newname:
+        firstname = newname
+        DMY = time.strftime("%d.%m.%Y")
+        HM = time.strftime("%H:%M")
+        lastname = f"{HM}[GMT]"
+    else:
+        namesplit = newname.split(" ", 1)
+        firstname = namesplit[0]
+        lastname = namesplit[1]
+    while True:
+               await bot(UpdateProfileRequest(last_name=lastname))
+               
+               
+               
+               
+@javes05(outgoing=True, pattern="^!autobio")
+async def _(event):
+    while True:
+        DMY = time.strftime("%d.%m.%Y")
+        HM = time.strftime("%H:%M:%S")
+        bio = f" {DMY} | {HM}"
+        try:
+            await bot(functions.account.UpdateProfileRequest(  # pylint:disable=E0602
+                about=bio
+            ))
+        except FloodWaitError as ex:
+            logger.warning(str(e))
+            await asyncio.sleep(ex.seconds)
+        # else:
+            # logger.info(r.stringify())
+            # await bot.send_message(  # pylint:disable=E0602
+            #     Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
+            #     "Changed Profile Picture"
+            # )
+        await asyncio.sleep(DEL_TIME_OUT)
 

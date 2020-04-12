@@ -93,6 +93,43 @@ METOOSTR = [
     "Me rn",
 ]
 
+
+NOOBSTR = [
+    "`YOU PRO NIMBA DONT MESS WIDH MEH`",
+    "`NOOB NIMBA TRYING TO BE FAMOUS KEK`",
+    "`Sometimes one middle finger isn’t enough to let someone know how you feel. That’s why you have two hands`",
+    "`Some Nimbas need to open their small minds instead of their big mouths`",
+    "`UH DONT KNOW MEH SO STAY AWAY LAWDE`",
+    "`Kysa kysaaaa haaan? Phir MAAR nhi Khayega tu?`",
+    "`Zikr Jinka hota hai galiyo meh woh bhosdika ajj paya gya naliyo me`",
+]
+
+ABUSE_STRINGS = [
+	   "`Chutiya he rah jaye ga`",
+	   "`Ja be Gaandu`",
+	   "`Muh Me Lega Bhosdike ?`",
+	   "`I Know Uh ez Rendi Bhay Dont show Your Randi Pesa Here`",
+      "`Jag Suna suna laage Sab #maderchod bhay`",
+     "`you talking behind meh wew uh iz my fan now bhay`",
+    "`Wanna pass in Life Goto BRAZZER.CAM BHAY`",
+    "`Uh iz Pro i iz noob your boob is landi uh are Randi`",
+    "`Sellers Nasa calling Uh bhay😆`",
+    "`Badwoo ki yojna behan bna ke ch*da uh iz badwa its your yozja?`",
+    "`CHAND PE CHADA HAI CHANDYAAN KA GHODA TERA NAAM HAI MANSUR TU HAI BEHAN KA LOD*😂`",
+    "`Jab se dil lga baithe tanhai me maa chu*da baithe wo kho gyi kisi aur ke pyar hum apne hi jaato me aag lga baithe`",
+    "`Chadii ke ander se lal pani kha se ata hai ky teri masuka ka bhosda bhi paan khata hai😂`",
+    "`Sun bhosdi ke By anonyCrew MOHABBAT KE SIWA AUR BHI GAM HAI JAMANE ME BSDK GAND PAHAT JATI HAI PAISA KAMANE ME`",
+    "`Thaan liya tha Sayri nhi krege Unka pichwada dekha Alfaaz nikal gye`",
+    "`Ravivaar ko dekha Chand Ka Tukra Itna Baar Dekha par Jaath na Ukra`",
+    "`Katal kro Tir se Talwar me Ky Rkkha hai Maal Chodo Sari Me Salwar me Ky Rkkha hai`",
+	   "`Kro Gandu giri kam nhi toh Gand Maar lenge tumhari hum😂`",
+       "`Suno Lodu Jyda muh na chalo be muh me lawda pel Diyaa jayega`",
+       "`Sharam aagyi toh aakhe juka lijia land me dam nhi hai apke toh Shilajit kha lijia`",
+       "`Kahe Rahiman Kaviraaj C**t Ki Mahima Aisi,L**d Murjha Jaaye Par Ch**t Waisi Ki Waisi`",
+       "`Chudakkad Raand Ki Ch**T Mein Pele L*Nd Kabeer, Par Aisa Bhi Kya Choda Ki Ban Gaye Fakeer`",
+]
+
+
 ZALG_LIST = [[
     "̖",
     " ̗",
@@ -2085,7 +2122,7 @@ async def _(event):
             
             "◼️◼️◼️◼️◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎",
             
-            "◼️◼️◼️◼️◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎",
+            "◼️◼️◼️◼️◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n??🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎",
    
             "◼️◼️◼️◼️◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️\n🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎🔴🔵🌕♓♎⛎◼️",
 
@@ -3025,7 +3062,62 @@ async def emoji_penis(e):
         titid = titid.replace('🍆', emoji)
     await e.edit(titid)  
 
+@javes05(outgoing=True, pattern="^!noob$")
+async def insult(e):
+    """ I make you cry !! """
+    await e.edit(choice(NOOBSTR))
+
+
+@javes05(outgoing=True, pattern="^!abuse2$")
+async def insult(e):
+    """ I make you cry !! """
+    await e.edit(choice(ABUSE_STRINGS))
 
 
 
 
+        
+        
+        
+        
+        
+        
+@javes05(outgoing=True, pattern="^!police$")
+
+async def _(event):
+
+    if event.fwd_from:
+
+        return
+
+    animation_interval = 0.5
+
+    animation_ttl = range(0, 10)
+
+    #input_str = event.pattern_match.group(1)
+
+    #if input_str == "ding":
+
+    await event.edit("Randi Founded")
+
+    animation_chars = [
+
+    
+            "`You Is Going To Fuck`",
+            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done... 0%\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ `",
+            "`Fucking You \n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 4%\n█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ `",
+            "`Fucking You\n\n\nYour  Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 8%\n██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ `",    
+            "`Fucking You\n\n\nYour  Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 20%\n█████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ `",
+            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 36%\n█████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ `",
+            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 52%\n█████████████▒▒▒▒▒▒▒▒▒▒▒▒ `",
+            "`Fucking You\n\n\nYour  Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 84%\n█████████████████████▒▒▒▒ `",
+            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 100%\n█████████████████████████ `",
+            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nYour mom get Pregnant\n\nResult: Now You Have 1 More Doughter`"
+        ]
+    for i in animation_ttl:
+
+        await asyncio.sleep(animation_interval)
+
+        await event.edit(animation_chars[i % 10])
+
+       

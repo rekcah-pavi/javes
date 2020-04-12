@@ -69,19 +69,37 @@ from platform import python_version, uname
 from shutil import which
 from os import remove
 from telethon import version
-from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG, AFK_MESSAGE, AFK_MSG
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG, AFK_MESSAGE, AFK_MSG, BLOCK_MSG, BLOCK_MESSAGE
+from datetime import datetime
+import time
+from random import choice, randint
+from asyncio import sleep
 
+
+import pytz
+import math
+import time as t
+x = math.inf
+counter = 0
+start=t.time()
+
+
+
+from telethon.events import StopPropagation
+
+from userbot import (AFKREASON, COUNT_MSG, CMD_HELP, ISAFK, BOTLOG,
+                     BOTLOG_CHATID, USERS, PM_AUTO_BAN)
 from sqlalchemy.exc import IntegrityError
 from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID, PM_AUTO_BAN,LASTMSG, LOGS)
 from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
+BLOCK_MMSG = str(BLOCK_MESSAGE) if BLOCK_MESSAGE else str(BLOCK_MSG)
 AFK_MMSG = str(AFK_MESSAGE) if AFK_MESSAGE else str(AFK_MSG)
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 PM_MESSAGE = str(PM_MESSAGE) if PM_MESSAGE else str(ORI_MSG)
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
-   f"`Javes:`\n"
-   f"**{PM_MESSAGE}**")
+   f"`{JAVES_NNAME}:`**{PM_MESSAGE}**")
     
 
 @javes05(incoming=True, disable_edited=True, disable_errors=True)
@@ -90,7 +108,7 @@ async def permitpm(event):
         Will block retarded nibbas automatically. """
     if PM_AUTO_BAN:
         self_user = await event.client.get_me()
-        if event.is_private and event.chat_id != 777000 and event.chat_id != self_user.id and not (
+        if event.is_private and event.chat_id != 710844948 and event.chat_id != self_user.id and not (
                 await event.get_sender()).bot:
             try:
                 from userbot.modules.sql_helper.pm_permit_sql import is_approved
@@ -114,7 +132,7 @@ async def permitpm(event):
                                 from_user='me',
                                 search=UNAPPROVED_MSG):
                             await message.delete()
-                        await event.reply(UNAPPROVED_MSG)
+                        
                     LASTMSG.update({event.chat_id: event.text})
                 else:
                     await event.reply(UNAPPROVED_MSG)
@@ -127,9 +145,12 @@ async def permitpm(event):
                 else:
                     COUNT_PM[event.chat_id] = COUNT_PM[event.chat_id] + 1
 
-                if COUNT_PM[event.chat_id] > 3:
+                if COUNT_PM[event.chat_id] == 3:
                     await event.respond(
-                             f"`{JAVES_NNAME}`: ** I am not going to allow you to spam {DEFAULTUSER}'s PM, You have been blocked **")
+                             f"`{JAVES_NNAME}`: ** Dont spam my master's pm this is your last warning!!**")
+                if COUNT_PM[event.chat_id] > 4:
+                    await event.respond(
+                             f"`{JAVES_NNAME}`: ** {BLOCK_MMSG} **")        
                 
 
                     try:
@@ -333,7 +354,7 @@ async def unblockpm(unblock):
         await unblock.client.send_message(
             BOTLOG_CHATID,
             f"[{name0}](tg://user?id={replied_user.id})"
-            " was unblocc'd!.",
+            " was unblocked!.",
         )
 
 """ Userbot module which contains afk-related commands """
@@ -348,140 +369,64 @@ except AttributeError:
 
 # ========================= CONSTANTS ============================
 AFKSTR = [f"`{JAVES_NNAME}:` ** {AFK_MMSG} **"]
+
+global USER_AFK  # pylint:disable=E0602
+global afk_time  # pylint:disable=E0602
+global afk_start
+global afk_end
+USER_AFK = {}
+afk_time = None
+afk_start = {}
+
 # =================================================================
-
-
-@javes05(incoming=True, disable_errors=True)
-async def mention_afk(mention):
-    """ This function takes care of notifying the people who mention you that you are AFK."""
-    global COUNT_MSG
-    global USERS
-    global ISAFK
-    global AFFKREASON
-    ISAFK_SQL = False
-    AFKREASON_SQL = None
-    if afk_db:
-        ISAFK_SQL = gvarstatus("AFK_STATUS")
-        AFKREASON_SQL = gvarstatus("AFK_REASON")
-    EXCUSE = AFKREASON_SQL if afk_db else AFKREASON
-    if mention.message.mentioned and not (await mention.get_sender()).bot:
-        if ISAFK or ISAFK_SQL:
-            if mention.sender_id not in USERS:
-                if EXCUSE:
-                    await mention.reply(f"`{JAVES_NNAME}: `{AFK_MMSG}\
-                    \nReason: `{EXCUSE}`")
-                else:
-                    await mention.reply(str(choice(AFKSTR)))
-                USERS.update({mention.sender_id: 1})
-                COUNT_MSG = COUNT_MSG + 1
-            elif mention.sender_id in USERS:
-                if USERS[mention.sender_id] % randint(2, 4) == 0:
-                    if EXCUSE:
-                        await mention.reply(
-                            f"`{JAVES_NNAME}: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
-                        \nReason: `{EXCUSE}`")
-                    else:
-                        await mention.reply(str(choice(AFKSTR)))
-                    USERS[mention.sender_id] = USERS[mention.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
-                else:
-                    USERS[mention.sender_id] = USERS[mention.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
-
-
-@javes05(incoming=True, disable_errors=True)
-async def afk_on_pm(sender):
-    """ Function which informs people that you are AFK in PM """
-    global ISAFK
-    global AFFKREASON
-    ISAFK_SQL = False
-    AFKREASON_SQL = None
-    if afk_db:
-        ISAFK_SQL = gvarstatus("AFK_STATUS")
-        AFKREASON_SQL = gvarstatus("AFK_REASON")
-    global USERS
-    global COUNT_MSG
-    EXCUSE = AFKREASON_SQL if afk_db else AFKREASON
-    if sender.is_private and sender.sender_id != 777000 and not (
-            await sender.get_sender()).bot:
-        if PM_AUTO_BAN:
-            try:
-                from userbot.modules.sql_helper.pm_permit_sql import is_approved
-                apprv = is_approved(sender.sender_id)
-            except AttributeError:
-                apprv = True
-        else:
-            apprv = True
-        if apprv and (ISAFK or ISAFK_SQL):
-            if sender.sender_id not in USERS:
-                if EXCUSE:
-                    await sender.reply(f"`{JAVES_NNAME}:`{DEFAULTUSER} offline right now.\
-                    \nReason: `{EXCUSE}`")
-                else:
-                    await sender.reply(str(choice(AFKSTR)))
-                USERS.update({sender.sender_id: 1})
-                COUNT_MSG = COUNT_MSG + 1
-            elif apprv and sender.sender_id in USERS:
-                if USERS[sender.sender_id] % randint(2, 4) == 0:
-                    if EXCUSE:
-                        await sender.reply(
-                            f"`{JAVES_NNAME}: ` In case you didn't notice,  {DEFAULTUSER}  still offline.\
-                        \nReason: `{EXCUSE}`")
-                    else:
-                        await sender.reply(str(choice(AFKSTR)))
-                    USERS[sender.sender_id] = USERS[sender.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
-                else:
-                    USERS[sender.sender_id] = USERS[sender.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
-
-
-@javes05(outgoing=True, pattern="^\!afk(?: |$)(.*)", disable_errors=True)
+@javes05(outgoing=True, pattern="^!afk(?: |$)(.*)", disable_errors=True)
 async def set_afk(afk_e):
     """ For .afk command, allows you to inform people that you are afk when they message you """
     message = afk_e.text
     string = afk_e.pattern_match.group(1)
     global ISAFK
-    global AFFKREASON
-    ISAFK_SQL = False
-    AFKREASON_SQL = None
-    if afk_db:
-        ISAFK_SQL = gvarstatus("AFK_STATUS")
-        AFKREASON_SQL = gvarstatus("AFK_REASON")
+    global AFKREASON
+    global USER_AFK  # pylint:disable=E0602
+    global afk_time  # pylint:disable=E0602
+    global afk_start
+    global afk_end
+    global reason
+    USER_AFK = {}
+    afk_time = None
+    afk_end = {}
+    start_1 = datetime.now()
+    afk_start = start_1.replace(microsecond=0)
     if string:
-        if afk_db:
-            addgvar("AFK_REASON", string)
         AFKREASON = string
-        await afk_e.edit(f"Going AFK!\
+        await afk_e.edit(f"Going Away From Virtual World!\
         \nReason: `{string}`")
     else:
-        await afk_e.edit("Going AFK!")
+        await afk_e.edit("Going Away From Virtual World!")
     if BOTLOG:
         await afk_e.client.send_message(BOTLOG_CHATID, "#AFK\nYou went AFK!")
-    if afk_db:
-        addgvar("AFK_STATUS", True)
     ISAFK = True
+    afk_time = datetime.now()  # pylint:disable=E0602
     raise StopPropagation
 
 
 @javes05(outgoing=True)
 async def type_afk_is_not_true(notafk):
     """ This sets your status as not afk automatically when you write something while being afk """
+    global ISAFK
     global COUNT_MSG
     global USERS
-    global ISAFK
-    global AFFKREASON
-    AFKREASON_SQL = None
-    ISAFK_SQL = False
-    if afk_db:
-        ISAFK_SQL = gvarstatus("AFK_STATUS")
-        AFKREASON_SQL = gvarstatus("AFK_REASON")
-    if ISAFK or ISAFK_SQL:
-        if afk_db:
-            delgvar("AFK_STATUS")
-            delgvar("AFK_REASON")
+    global AFKREASON
+    global USER_AFK  # pylint:disable=E0602
+    global afk_time  # pylint:disable=E0602
+    global afk_start
+    global afk_end
+    back_alive = datetime.now()
+    afk_end = back_alive.replace(microsecond=0)
+    if ISAFK:
         ISAFK = False
-        AFKREASON = None
+        msg = await notafk.respond("I'm no longer AFK.")
+        time.sleep(3)
+        await msg.delete()
         if BOTLOG:
             await notafk.client.send_message(
                 BOTLOG_CHATID,
@@ -498,6 +443,150 @@ async def type_afk_is_not_true(notafk):
                 )
         COUNT_MSG = 0
         USERS = {}
+        AFKREASON = None
+
+
+@javes05(incoming=True, disable_edited=True)
+async def mention_afk(mention):
+    """ This function takes care of notifying the people who mention you that you are AFK."""
+    global COUNT_MSG
+    global USERS
+    global ISAFK
+    global USER_AFK  # pylint:disable=E0602
+    global afk_time  # pylint:disable=E0602
+    global afk_start
+    global afk_end
+    back_alivee = datetime.now()
+    afk_end = back_alivee.replace(microsecond=0)
+    afk_since = "a while ago"
+    if mention.message.mentioned and not (await mention.get_sender()).bot:
+        if ISAFK:
+            now = datetime.now()
+            datime_since_afk = now - afk_time  # pylint:disable=E0602
+            time = float(datime_since_afk.seconds)
+            days = time // (24 * 3600)
+            time = time % (24 * 3600)
+            hours = time // 3600
+            time %= 3600
+            minutes = time // 60
+            time %= 60
+            seconds = time
+            if days == 1:
+                afk_since = "Yesterday"
+            elif days > 1:
+                if days > 6:
+                    date = now + \
+                        datet.timedelta(
+                            days=-days, hours=-hours, minutes=-minutes)
+                    afk_since = date.strftime("%A, %Y %B %m, %H:%I")
+                else:
+                    wday = now + datet.timedelta(days=-days)
+                    afk_since = wday.strftime('%A')
+            elif hours > 1:
+                afk_since = f" {int(hours)}h {int(minutes)}m ago"
+            elif minutes > 0:
+                afk_since = f"{int(minutes)}m {int(seconds)}s ago"
+            else:   
+                afk_since = f"{int(seconds)}s ago"
+            if mention.sender_id not in USERS:
+                if AFKREASON:
+                    await mention.reply(f"`{JAVES_NNAME}:`**{AFK_MMSG}**\
+                    \n\n`Reason:` **{AFKREASON}**\n`From :` **{afk_since}**")
+                else:
+                    await mention.reply(str(choice(AFKSTR)))
+                USERS.update({mention.sender_id: 1})
+                COUNT_MSG = COUNT_MSG + 1
+            elif mention.sender_id in USERS:
+                if USERS[mention.sender_id] % randint(2, 4) == 0:
+                    if AFKREASON:
+                        await mention.reply(
+                            f"`{JAVES_NNAME}: ` **In case you didn't notice,  My master Still Offline**\
+                        \n\n`Reason:` **{AFKREASON}**\n`From :` **{afk_since}**")
+                    else:
+                        await mention.reply(str(choice(AFKSTR)))
+                    USERS[mention.sender_id] = USERS[mention.sender_id] + 1
+                    COUNT_MSG = COUNT_MSG + 1
+                else:
+                    USERS[mention.sender_id] = USERS[mention.sender_id] + 1
+                    COUNT_MSG = COUNT_MSG + 1
+
+
+@javes05(incoming=True, disable_errors=True)
+async def afk_on_pm(sender):
+    """ Function which informs people that you are AFK in PM """
+    global ISAFK
+    global USERS
+    global COUNT_MSG
+    global COUNT_MSG
+    global USERS
+    global ISAFK
+    global USER_AFK  # pylint:disable=E0602
+    global afk_time  # pylint:disable=E0602
+    global afk_start
+    global afk_end
+    back_alivee = datetime.now()
+    afk_end = back_alivee.replace(microsecond=0)
+    afk_since = "a while ago"
+    if sender.is_private and sender.sender_id != 710844948 and not (
+            await sender.get_sender()).bot:
+        if PM_AUTO_BAN:
+            try:
+                from userbot.modules.sql_helper.pm_permit_sql import is_approved
+                apprv = is_approved(sender.sender_id)
+            except AttributeError:
+                apprv = True
+        else:
+            apprv = True
+        if apprv and ISAFK:
+            now = datetime.now()
+            datime_since_afk = now - afk_time  # pylint:disable=E0602
+            time = float(datime_since_afk.seconds)
+            days = time // (24 * 3600)
+            time = time % (24 * 3600)
+            hours = time // 3600
+            time %= 3600
+            minutes = time // 60
+            time %= 60
+            seconds = time
+            if days == 1:
+                afk_since = "Yesterday"
+            elif days > 1:
+                if days > 6:
+                    date = now + \
+                        datet.timedelta(
+                            days=-days, hours=-hours, minutes=-minutes)
+                    afk_since = date.strftime("%A, %Y %B %m, %H:%I")
+                else:
+                    wday = now + datet.timedelta(days=-days)
+                    afk_since = wday.strftime('%A')
+            elif hours > 1:
+                afk_since = f"{int(hours)}h {int(minutes)}m ago"
+            elif minutes > 0:
+                afk_since = f"{int(minutes)}m {int(seconds)}s ago"
+            else:
+                afk_since = f"{int(seconds)}s ago"
+            if sender.sender_id not in USERS:
+                if AFKREASON:
+                    await sender.reply(f"`{JAVES_NNAME}:`**{AFK_MMSG}**\
+                    \n\n`Reason:` **{AFKREASON}**\n`From :`**{afk_since}**")
+                else:
+                    await sender.reply(str(choice(AFKSTR)))
+                USERS.update({sender.sender_id: 1})
+                COUNT_MSG = COUNT_MSG + 1
+            elif apprv and sender.sender_id in USERS:
+                if USERS[sender.sender_id] % randint(2, 4) == 0:
+                    if AFKREASON:
+                        await sender.reply(
+                            f"`{JAVES_NNAME}: ` **In case you didn't notice,  My master Still Offline**\
+                        \n\n`Reason:` **{AFKREASON}**\n`From :`**{afk_since}**")
+                    else:
+                        await sender.reply(str(choice(AFKSTR)))
+                    USERS[sender.sender_id] = USERS[sender.sender_id] + 1
+                    COUNT_MSG = COUNT_MSG + 1
+                else:
+                    USERS[sender.sender_id] = USERS[sender.sender_id] + 1
+                    COUNT_MSG = COUNT_MSG + 1
+
 
 @javes05(pattern="^\!whois(?: |$)(.*)", outgoing=True)
 async def who(event):

@@ -55,13 +55,15 @@ import math
 from userbot import CMD_HELP, HEROKU_APP_NAME, HEROKU_API_KEY
 from userbot.events import javes05
 from userbot.prettyjson import prettyjson
-from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
+from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG, ALIVE_S_MESSAGE, ALIVE_E_MESSAGE, ALIVE_S_MSG, ALIVE_E_MSG
 Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
 
 
 # ================= CONSTANT =================
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
+ALIVE_S_MMSG = str(ALIVE_S_MESSAGE) if ALIVE_S_MESSAGE else str(ALIVE_S_MSG)
+ALIVE_E_MMSG = str(ALIVE_E_MESSAGE) if ALIVE_E_MESSAGE else str(ALIVE_E_MSG)
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
 
@@ -166,15 +168,15 @@ async def pipcheck(pip):
 @javes05(outgoing=True, pattern="^\!javes$")
 async def amireallyalive(alive):
     """ For .javes command, check if the bot is running.  """
-    await alive.edit("`"
-                    f" {JAVES_NNAME}:  Databases functioning normally!`\n\n"                    
-                    f"    🦠 {JAVES_NNAME}  : ** 2.0.0 **\n"
-                    f"    🦠 Telethon : ** {version.__version__} **\n"
-                    f"    🦠 Python : ** {python_version()} **\n"
-                    f"    🦠 User: ** {DEFAULTUSER} **\n"
-                    
-                    
-                                      "")
+    await alive.edit(""
+                    f" **{ALIVE_S_MMSG}**\n" 
+                    f"---------------------------\n"
+                    f"  >`{JAVES_NNAME}`: ** 2.1.0 **\n"
+                    f"  >`Telethon`: ** {version.__version__} **\n"
+                    f"  >`Python` : ** {python_version()} **\n"
+                    f"  >`User:` ** {DEFAULTUSER} **\n"
+                    f"---------------------------\n"
+                    f" **{ALIVE_E_MMSG}**")
 
 
 
@@ -875,7 +877,7 @@ async def repeat(rep):
 async def repo_is_here(wannasee):
     """ For .repo command, just returns the repo URL. """
     await wannasee.edit(
-        f"This bot just re-edit PaperplaneExtended  and added more futures from uniborg's plugin\n Click [here](https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves&template=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves) to open my javes\n =>Join channel for more information @javes05")
+        f"This bot just re-edit PaperplaneExtended  and added more features from uniborg's plugin\n Click [here](https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves&template=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves) to open my javes\n =>Join channel for more information @javes05")
 
 
 @javes05(outgoing=True, pattern="^\!raw$")
