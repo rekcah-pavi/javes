@@ -3112,7 +3112,7 @@ async def _(event):
             "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 52%\n█████████████▒▒▒▒▒▒▒▒▒▒▒▒ `",
             "`Fucking You\n\n\nYour  Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 84%\n█████████████████████▒▒▒▒ `",
             "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nAlmost Done...\n\nFucked Percentage... 100%\n█████████████████████████ `",
-            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nYour mom get Pregnant\n\nResult: Now You Have 1 More Doughter`"
+            "`Fucking You\n\n\nYour Pussy Get Red\nCumming On Pussy\n\nYou get Pregnant\n\nResult: Now You Have 1 More Doughter`"
         ]
     for i in animation_ttl:
 

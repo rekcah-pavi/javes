@@ -3227,7 +3227,7 @@ from telethon.errors import FloodWaitError
 
 
 
-
+DEL_TIME_OUT = 70
 
 @javes05(outgoing=True, pattern="^!autoname")
 async def update_name(name):
@@ -3237,7 +3237,7 @@ async def update_name(name):
         firstname = newname
         DMY = time.strftime("%d.%m.%Y")
         HM = time.strftime("%H:%M")
-        lastname = f"{HM}[GMT]"
+        lastname = f"{HM}"
     else:
         namesplit = newname.split(" ", 1)
         firstname = namesplit[0]
