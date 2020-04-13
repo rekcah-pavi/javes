@@ -335,7 +335,7 @@ from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotMo
 import io
 import asyncio
 import time
-from userbot import CMD_HELP, bot
+from userbot import CMD_HELP, bot, BIO_MESSAGE, BIO_MSG
 import glob
 import os
 from datetime import *
@@ -350,6 +350,7 @@ start=t.time()
 
 from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
+BIO_MMSG = str(BIO_MESSAGE) if BIO_MESSAGE else str(BIO_MSG)
 utc=pytz.UTC
 today = datetime.now().replace(tzinfo=utc)
 telegraph = Telegraph()
@@ -3171,13 +3172,13 @@ async def gbun(event):
             jnl=("`Warning!! `"
                   "[{}](tg://user?id={})"
                   "` GBGBANNED By Admin...\n\n`"
-                  "**Person's Name: ** __{}__\n"
+                  "**Name: ** __{}__\n"
                   "**ID : ** `{}`\n"
                 ).format(firstname, idd, firstname, idd)
             if usname == None:
-                jnl += "**Victim username: ** `Doesn't own a username!`\n"
+                jnl += "**username: ** `Doesn't own a username!`\n"
             elif usname != "None":
-                jnl += "**Victim username** : @{}\n".format(usname)
+                jnl += "**username** : @{}\n".format(usname)
             if len(gbunVar) > 0:
                 gbunm = "`{}`".format(gbunVar)
                 gbunr = "**Reason: **"+gbunm
@@ -3186,7 +3187,7 @@ async def gbun(event):
                 jnl += no_reason
             await reply_message.reply(jnl)
     else:
-        mention = "`Warning!! User GBGBANNED Admin...\nReason: Not Given `"
+        mention = "`Warning!! User GBANNED Admin...\nReason: Not Given `"
         await event.reply(mention)
     await event.delete()
 
@@ -3228,32 +3229,25 @@ from telethon.errors import FloodWaitError
 
 
 DEL_TIME_OUT = 70
+DDEL_TIME_OUT = 80
 
-@javes05(outgoing=True, pattern="^!autoname")
-async def update_name(name):
-    """ For .autoname command, change your first name in Telegram and shows a running timer beside your name """
-    newname = name.text[12:]
-    if " " not in newname:
-        firstname = newname
-        DMY = time.strftime("%d.%m.%Y")
-        HM = time.strftime("%H:%M")
-        lastname = f"{HM}"
-    else:
-        namesplit = newname.split(" ", 1)
-        firstname = namesplit[0]
-        lastname = namesplit[1]
-    while True:
-               await bot(UpdateProfileRequest(last_name=lastname))
+
                
                
                
-               
+
+from datetime import datetime,tzinfo,timedelta
+
+
+      
 @javes05(outgoing=True, pattern="^!autobio")
 async def _(event):
     while True:
-        DMY = time.strftime("%d.%m.%Y")
+    	
+        DMY = time.strftime("%Y-%m-%d ")
         HM = time.strftime("%H:%M:%S")
-        bio = f" {DMY} | {HM}"
+        bio = f" {BIO_MMSG} |{DMY}| {HM}[GMT]|"
+        await event.edit(f" `Sucesfully set auto bio with {BIO_MMSG} it will repeat every 70s`")
         try:
             await bot(functions.account.UpdateProfileRequest(  # pylint:disable=E0602
                 about=bio
@@ -3261,11 +3255,30 @@ async def _(event):
         except FloodWaitError as ex:
             logger.warning(str(e))
             await asyncio.sleep(ex.seconds)
-        # else:
-            # logger.info(r.stringify())
-            # await bot.send_message(  # pylint:disable=E0602
-            #     Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
-            #     "Changed Profile Picture"
-            # )
         await asyncio.sleep(DEL_TIME_OUT)
+
+
+
+@javes05(outgoing=True, pattern="^!autoname")
+async def _(event):
+    while True:    	        
+        HM = time.strftime("%H:%M")
+        nnmel = f"  |{HM}|"
+        await event.edit(f" `Sucesfully changed last name, it will repeat every 80s `")
+        try:
+        	
+            await bot(functions.account.UpdateProfileRequest(  # pylint:disable=E0602
+                last_name=nnmel
+            ))
+        except FloodWaitError as ex:
+            logger.warning(str(e))
+            await asyncio.sleep(ex.seconds)
+        await asyncio.sleep(DDEL_TIME_OUT)
+
+
+
+
+
+
+    
 
