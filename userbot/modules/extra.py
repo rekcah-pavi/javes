@@ -582,7 +582,7 @@ async def mim(event):
                 caption="Memifyed",
             )
             await event.delete()
-            #await bot.send_message(event.chat_id, "`â ï¸â ï¸Ah Shit... Here we go Again!ð¥ð¥`")
+            #await bot.send_message(event.chat_id, "`Ã¢ÂÂ Ã¯Â¸ÂÃ¢ÂÂ Ã¯Â¸ÂAh Shit... Here we go Again!Ã°ÂÂÂ¥Ã°ÂÂÂ¥`")
           elif not is_message_image(reply_message):
             await event.edit("Invalid message type. Plz choose right message type u NIBBA.")
             return
@@ -845,7 +845,7 @@ async def figlet(event):
         result = pyfiglet.figlet_format(text, font=font)
     else:
         result = pyfiglet.figlet_format(text)
-    await event.respond("âââ`{}`".format(result))
+    await event.respond("Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ`{}`".format(result))
     await event.delete()
     
 
@@ -3208,10 +3208,10 @@ async def apk(e):
         app_rating = results[0].findNext('div', 'Vpfmgd').findNext('div', 'pf5lIe').find('div')['aria-label']
         app_link = "https://play.google.com"+results[0].findNext('div', 'Vpfmgd').findNext('div', 'vU6FJ p63iDd').a['href']
         app_icon = results[0].findNext('div', 'Vpfmgd').findNext('div', 'uzcko').img['data-src']
-        app_details = "<a href='"+app_icon+"'>📲&#8203;</a>"
+        app_details = "<a href='"+app_icon+"'>ð²&#8203;</a>"
         app_details += " <b>"+app_name+"</b>"
         app_details += "\n\n<code>Developer :</code> <a href='"+app_dev_link+"'>"+app_dev+"</a>"
-        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "⭐ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "⭐ ").replace("five", "5")
+        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "â­ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "â­ ").replace("five", "5")
         app_details += "\n<code>Features :</code> <a href='"+app_link+"'>View in Play Store</a>"
         await e.edit(app_details, link_preview = True, parse_mode = 'HTML')
     except IndexError:
@@ -3242,12 +3242,15 @@ from datetime import datetime,tzinfo,timedelta
       
 @javes05(outgoing=True, pattern="^!autobio")
 async def _(event):
+  
     while True:
     	
-        DMY = time.strftime("%Y-%m-%d ")
+        DMY = time.strftime("%Y:%m:%d ")
         HM = time.strftime("%H:%M:%S")
-        bio = f" {BIO_MMSG} |{DMY}| {HM}[GMT]|"
-        await event.edit(f" `Sucesfully set auto bio with {BIO_MMSG} it will repeat every 70s`")
+        bio = f" {BIO_MMSG} {DMY}|{HM}"
+        await event.client.send_message(
+            BOTLOG_CHATID, f"`Sucesfully set auto bio with {BIO_MMSG} with {HM} [GlobelTime ]`")
+        
         try:
             await bot(functions.account.UpdateProfileRequest(  # pylint:disable=E0602
                 about=bio
@@ -3256,15 +3259,17 @@ async def _(event):
             logger.warning(str(e))
             await asyncio.sleep(ex.seconds)
         await asyncio.sleep(DEL_TIME_OUT)
-
+       
 
 
 @javes05(outgoing=True, pattern="^!autoname")
 async def _(event):
     while True:    	        
         HM = time.strftime("%H:%M")
-        nnmel = f"  |{HM}|"
-        await event.edit(f" `Sucesfully changed last name, it will repeat every 80s `")
+        nnmel = f"{HM}"
+        await event.client.send_message(
+            BOTLOG_CHATID, f"`Sucesfully changed your last name to {HM} [GlobelTime ]`")
+        
         try:
         	
             await bot(functions.account.UpdateProfileRequest(  # pylint:disable=E0602
