@@ -152,8 +152,11 @@ AFK_MSG = (
 AFK_MESSAGE = os.environ.get("AFK_MESSAGE", None)
 
 ALIVE_S_MESSAGE = os.environ.get("ALIVE_S_MESSAGE", None)
+BIO_MESSAGE = os.environ.get("BIO_MESSAGE", None)
 ALIVE_E_MESSAGE = os.environ.get("ALIVE_E_MESSAGE", None)
 
+BIO_MSG = (
+   f"")
 
 ALIVE_S_MSG = (
    f"Iam Alive!")
