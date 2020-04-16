@@ -289,11 +289,11 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```its bot i cant```")
+       await event.edit("```Reply to a Photo```")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
-       await event.edit("```reply to a photo```")
+       await event.edit("```Reply to a photo```")
        return
     chat = "@BuildStickerBot"
     sender = reply_message.sender
@@ -457,5 +457,8 @@ async def get_font_file(client, channel_id):
     font_file_message = random.choice(font_file_message_s)
     # download and return the file path
     return await client.download_media(font_file_message)
+
+
+
 
 
