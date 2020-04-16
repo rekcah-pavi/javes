@@ -23,7 +23,7 @@ except PhoneNumberInvalidError:
 for module_name in ALL_MODULES:
     imported_module = import_module("userbot.modules." + module_name)
 
-LOGS.info("You are running Javes [v1.2]")
+LOGS.info("You are running Javes")
 
 LOGS.info("Congratulations, javes is now running !!\
           \nTest it by typing !javes in any chat.")
