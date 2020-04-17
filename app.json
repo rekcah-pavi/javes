@@ -149,7 +149,7 @@
       "required": false
       
       },
-    "BIO_MSG": {
+    "BIO_MESSAGE": {
       "description": "custom bio message while u using !autobio command",
       "value": "Current date",
       "required": false
@@ -170,7 +170,7 @@
     },
     "AFK_MESSAGE": {
       "description": "Edit if you want!",
-      "value": "Hello Sir, I can't allow you to my master's PM without his permissions please be patient, Thankyou!",
+      "value": "Hello Sir, My master offline just leave your message, Thankyou!",
       "required": false
            
       
