@@ -72,11 +72,11 @@ def javes05(**args):
                     text += "Send this to @rekcah05 if you cant find issue\n"
 
                     ftext = "========== DISCLAIMER =========="
-                    ftext += "\nThis file uploaded ONLY here,"                
-                    ftext += "\nyou may not report this error if you've"
-                    ftext += "\nany confidential data here, no one will see your data\n"
+                    ftext += "\nThis file uploaded only logchat,"                
+                    ftext += "\nreport to admin this error if you cant find any issue"
+                    ftext += "\n---------------------------------\n"
                     ftext += "================================\n\n"
-                    ftext += "--------BEGIN USERBOT TRACEBACK LOG--------\n"
+                    ftext += "--------BEGIN LOG--------\n"
                     ftext += "\nDate: " + date
                     ftext += "\nChat ID: " + str(check.chat_id)
                     ftext += "\nSender ID: " + str(check.sender_id)
@@ -86,7 +86,7 @@ def javes05(**args):
                     ftext += str(format_exc())
                     ftext += "\n\nError text:\n"
                     ftext += str(sys.exc_info()[1])
-                    ftext += "\n\n--------END USERBOT TRACEBACK LOG--------"
+                    ftext += "\n\n--------END  LOG--------"
 
                     command = "git log --pretty=format:\"%an: %s\" -10"
 
@@ -101,20 +101,19 @@ def javes05(**args):
 
                     ftext += result
 
-                    file = open("error.log", "w+")
+                    file = open("javes_error.log", "w+")
                     file.write(ftext)
                     file.close()
 
-                    if LOGSPAMMER:
-                        await check.respond("`Error 4O4`")
-
+               
+                    
                     await check.client.send_file(send_to,
-                                                 "error.log",
+                                                 "javes_error.log",
                                                  caption=text)
                     remove("error.log")
             else:
                 pass
-
+                
         if not disable_edited:
             bot.add_event_handler(wrapper, events.MessageEdited(**args))
         bot.add_event_handler(wrapper, events.NewMessage(**args))
