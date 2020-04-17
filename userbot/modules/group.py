@@ -69,7 +69,7 @@ JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
 # =================== CONSTANT ===================
 PP_TOO_SMOL = f"`{JAVES_NNAME}:`**The image is too small**"
 PP_ERROR = f"`{JAVES_NNAME}:`**Failure while processing the image**"
-NO_ADMIN = f"`{JAVES_NNAME}:`**I am not an admin!**"
+NO_ADMIN = f"`{JAVES_NNAME}:`**Sorry, I can't able to get admin rights here!**"
 NO_PERM = f"`{JAVES_NNAME}:`**I don't have sufficient permissions!**"
 NO_SQL = f"`{JAVES_NNAME}:`**Running on Non-SQL mode!**"
 CHAT_PP_CHANGED = f"`{JAVES_NNAME}:`**Chat Picture Changed**"
@@ -224,7 +224,7 @@ async def on_new_message(event):
 
 
 
-@javes05(incoming=True)
+@javes05(incoming=True, disable_errors=True)
 async def muter(moot):
     """ gban logic"""
     try:
@@ -486,7 +486,7 @@ async def incom_note(getnt):
 
 
 
-@javes05(outgoing=True, pattern=r"^\!savewelcome(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern=r"^\!savewelcome(?: |$)(.*)")
 async def save_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import add_welcome_setting
@@ -524,7 +524,7 @@ async def save_welcome(event):
         await event.edit(success.format('updated'))
 
 
-@javes05(outgoing=True, pattern="^\!checkwelcome$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!checkwelcome$")
 async def show_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings
@@ -547,7 +547,7 @@ async def show_welcome(event):
         await event.reply(cws.reply)
 
 
-@javes05(outgoing=True, pattern="^\!clearwelcome$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!clearwelcome$")
 async def del_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import rm_welcome_setting
@@ -565,7 +565,7 @@ async def del_welcome(event):
 
 
 
-@javes05(outgoing=True, pattern="^\!checknote$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!checknote$")
 async def notes_active(svd):
     """ For .notes command, list all of the notes saved in a chat. """
     try:
@@ -584,7 +584,7 @@ async def notes_active(svd):
     await svd.edit(message)
 
 
-@javes05(outgoing=True, pattern=r"^\!clearnote (\w*)")
+@javes05(outgoing=True, disable_errors=True, pattern=r"^\!clearnote (\w*)")
 async def remove_notes(clr):
     """ For .clear command, clear note with the given name."""
     try:
@@ -600,7 +600,7 @@ async def remove_notes(clr):
            "Successfully deleted note: **{}**".format(notename))
 
 
-@javes05(outgoing=True, pattern=r"^\!savenote (\w*)")
+@javes05(outgoing=True, disable_errors=True, pattern=r"^\!savenote (\w*)")
 async def add_note(fltr):
     """ For .save command, saves notes in a chat. """
     try:
@@ -644,7 +644,7 @@ async def add_note(fltr):
 
 
 
-@javes05(outgoing=True, pattern=r"^\!lock ?(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern=r"^\!lock ?(.*)")
 async def locks(event):
     input_str = event.pattern_match.group(1).lower()
     peer_id = event.chat_id
@@ -732,7 +732,7 @@ async def locks(event):
         return
 
 
-@javes05(outgoing=True, pattern=r"^!unlock ?(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern=r"^!unlock ?(.*)")
 async def rem_locks(event):
     input_str = event.pattern_match.group(1).lower()
     peer_id = event.chat_id
@@ -827,7 +827,7 @@ async def rem_locks(event):
 
 
 
-@javes05(outgoing=True, pattern="^\!userid$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!userid$")
 async def useridgetter(target):
     """ For .userid command, returns the ID of the target user. """
     message = await target.get_reply_message()
@@ -848,7 +848,7 @@ async def useridgetter(target):
             name, user_id))
 
 
-@javes05(outgoing=True, pattern="^\!link(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!link(?: |$)(.*)")
 async def permalink(mention):
     """ For .link command, generates a link to the user's PM with a custom text. """
     user, custom = await get_user_from_event(mention)
@@ -862,13 +862,13 @@ async def permalink(mention):
         await mention.edit(f"`{JAVES_NNAME}`: [{tag}](tg://user?id={user.id})")
 
 
-@javes05(outgoing=True, pattern="^\!chatid$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!chatid$")
 async def chatidgetter(chat):
     """ For .chatid, returns the ID of the chat you are in at that moment. """
     await chat.edit(f"`{JAVES_NNAME}`: Chat ID: `" + str(chat.chat_id) + "`")
 
 
-@javes05(outgoing=True, pattern=r"^\!log(?: |$)([\s\S]*)")
+@javes05(outgoing=True, disable_errors=True, pattern=r"^\!log(?: |$)([\s\S]*)")
 async def log(log_text):
     """ For .log command, forwards a message or the command argument to the bot logs group """
     if BOTLOG:
@@ -889,7 +889,7 @@ async def log(log_text):
     await log_text.delete()
 
 
-@javes05(outgoing=True, pattern="^\!kickme$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!kickme$")
 async def kickme(leave):
     """ Basically it's .kickme command """
     await leave.edit(f"`{JAVES_NNAME}`: **My master Didnt like this place......GoodBye!**")
@@ -903,7 +903,7 @@ async def kickme(leave):
 
 
 
-@javes05(outgoing=True, pattern="^\!setgpic$", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!setgpic$", groups_only=True)
 async def set_group_photo(gpic):
     if not gpic.is_group:
         await gpic.edit(f"`{JAVES_NNAME}:` **I don't think this is a group.**")
@@ -936,7 +936,7 @@ async def set_group_photo(gpic):
             await gpic.edit(PP_ERROR)
 
 
-@javes05(outgoing=True, pattern="^\!promote(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!promote(?: |$)(.*)", groups_only=True)
 async def promote(promt):
     """ For .promote command, promotes the replied/tagged person """
     # Get targeted chat
@@ -987,7 +987,7 @@ async def promote(promt):
             f"CHAT: {promt.chat.title}({promt.chat_id})")
 
 
-@javes05(outgoing=True, pattern="^\!demote(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!demote(?: |$)(.*)", groups_only=True)
 async def demote(dmod):
     """ For .demote command, demotes the replied/tagged person """
     # Admin right check
@@ -1040,7 +1040,7 @@ async def demote(dmod):
 
 
 
-@javes05(outgoing=True, pattern="^\!ban(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!ban(?: |$)(.*)", groups_only=True)
 async def ban(bon):
     """ For .ban command, bans the replied/tagged person """
     # Here laying the sanity check
@@ -1095,7 +1095,7 @@ async def ban(bon):
             f"CHAT: {bon.chat.title}(`{bon.chat_id}`)")
 
 
-@javes05(outgoing=True, pattern="^\!unban(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!unban(?: |$)(.*)", groups_only=True)
 async def nothanos(unbon):
     """ For .unban command, unbans the replied/tagged person """
     # Here laying the sanity check
@@ -1131,7 +1131,7 @@ async def nothanos(unbon):
     except UserIdInvalidError:
         await unbon.edit(f"`{JAVES_NNAME}:` **Uh oh my unban logic broke!**")
 
-@javes05(outgoing=True, pattern="^\!mute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!mute(?: |$)(.*)", groups_only=True)
 async def spider(spdr):
     """
     This function is basically muting peeps
@@ -1196,7 +1196,7 @@ async def spider(spdr):
       
 
 
-@javes05(outgoing=True, pattern="^\!unmute(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!unmute(?: |$)(.*)", groups_only=True)
 async def unmoot(unmot):
     """ For .unmute command, unmute the replied/tagged person """
     # Admin or creator check
@@ -1248,7 +1248,7 @@ async def unmoot(unmot):
 
 
 
-@javes05(outgoing=True, pattern="^!ungban(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!ungban(?: |$)(.*)")
 async def ungmoot(un_gmute):
     """ For .ungmute command, ungmutes the target in the userbot """
     # Admin or creator check
@@ -1299,7 +1299,7 @@ async def ungmoot(un_gmute):
                 f"USER: [{user.first_name}](tg://user?id={user.id})\n"
                 f"CHAT: {un_gmute.chat.title}(`{un_gmute.chat_id}`)")
         
-@javes05(outgoing=True, pattern="^!gban(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!gban(?: |$)(.*)")
 async def gspider(gspdr):
     """ For .gmute command, globally mutes the replied/tagged person """
     # Admin or creator check
@@ -1353,7 +1353,7 @@ async def gspider(gspdr):
                      f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
                      f"**Victim ID** : `{user.id}`\n"                     
                      f"**Chat** :  `{gspdr.chat.title}`\n"
-                     f"**Reason**  : `{reason}`")
+                     f"**Reason**  : `Private!`")
             if BOTLOG:
                   await gspdr.client.send_message(
                      BOTLOG_CHATID, "#GBAN\n"
@@ -1366,7 +1366,7 @@ async def gspider(gspdr):
 
 
 
-@javes05(outgoing=True, pattern="^\!delusers(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!delusers(?: |$)(.*)", groups_only=True)
 async def rm_deletedacc(show):
     """ For .delusers command, list all the ghost/deleted accounts in a chat. """
     if not show.is_group:
@@ -1437,7 +1437,7 @@ async def rm_deletedacc(show):
 
     
 
-@javes05(outgoing=True, pattern="^\!admins$", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!admins$", groups_only=True)
 async def get_admin(show):
     """ For .admins command, list all of the admins of the chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -1471,7 +1471,7 @@ async def get_admin(show):
         remove("adminlist.txt")
 
 
-@javes05(outgoing=True, pattern="^\!bots$", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!bots$", groups_only=True)
 async def get_bots(show):
     """ For .bots command, list all of the bots of the chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -1509,7 +1509,7 @@ async def get_bots(show):
         remove("botlist.txt")
 
 
-@javes05(outgoing=True, pattern="^\!pin(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!pin(?: |$)(.*)", groups_only=True)
 async def pin(msg):
     """ For .pin command, pins the replied/tagged message on the top the chat. """
     # Admin or creator check
@@ -1554,7 +1554,7 @@ async def pin(msg):
             f"LOUD: {not is_silent}")
 
 
-@javes05(outgoing=True, pattern="^\!kick(?: |$)(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!kick(?: |$)(.*)", groups_only=True)
 async def kick(usr):
     """ For .kick command, kicks the replied/tagged person from the group. """
     # Admin or creator check
@@ -1596,7 +1596,7 @@ async def kick(usr):
             f"CHAT: {usr.chat.title}(`{usr.chat_id}`)\n")
 
 
-@javes05(outgoing=True, pattern="^\!users ?(.*)", groups_only=True)
+@javes05(outgoing=True, disable_errors=True, pattern="^\!users ?(.*)", groups_only=True)
 async def get_users(show):
     """ For .users command, list all of the users in a chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -1693,7 +1693,7 @@ async def get_user_from_id(user, event):
 
 
 
-@javes05(outgoing=True, pattern="^\!savefilter (\w*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!savefilter (\w*)")
 async def add_new_filter(new_handler):
     """ For .filter command, allows adding new filters in a chat """
     try:
@@ -1734,7 +1734,7 @@ async def add_new_filter(new_handler):
         await new_handler.edit(success.format(keyword, 'updated'))
 
 
-@javes05(outgoing=True, pattern="^\!clearfilter (\w*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!clearfilter (\w*)")
 async def remove_a_filter(r_handler):
     """ For .stop command, allows you to remove a filter from a chat. """
     try:
@@ -1753,7 +1753,7 @@ async def remove_a_filter(r_handler):
 
 
 
-@javes05(outgoing=True, pattern="^\!checkfilter$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!checkfilter$")
 async def filters_active(event):
     """ For .filters command, lists all of the active filters in a chat. """
     try:
@@ -1777,7 +1777,7 @@ async def filters_active(event):
 
 
 
-@javes05(outgoing=True, pattern="^!saveblacklist(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!saveblacklist(?: |$)(.*)")
 async def on_add_black_list(addbl):
     text = addbl.pattern_match.group(1)
     to_blacklist = list(set(trigger.strip() for trigger in text.split("\n") if trigger.strip()))
@@ -1786,7 +1786,7 @@ async def on_add_black_list(addbl):
     await addbl.edit("** Added {} triggers to the blacklist in the current chat**".format(len(to_blacklist)))
 
 
-@javes05(outgoing=True, pattern="^!checkblacklist(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!checkblacklist(?: |$)(.*)")
 async def on_view_blacklist(listbl):
     all_blacklisted = sql.get_chat_blacklist(listbl.chat_id)
     OUT_STR = f"`{JAVES_NNAME}`: ** Blacklists in the Current Chat:**\n"
@@ -1811,7 +1811,7 @@ async def on_view_blacklist(listbl):
         await listbl.edit(OUT_STR)
 
 
-@javes05(outgoing=True, pattern="^!clearblacklist(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!clearblacklist(?: |$)(.*)")
 async def on_delete_blacklist(rmbl):
     text = rmbl.pattern_match.group(1)
     to_unblacklist = list(set(trigger.strip() for trigger in text.split("\n") if trigger.strip()))
@@ -2006,7 +2006,7 @@ async def fetch_info(chat, event):
 
 import userbot.modules.sql_helper.warns_sql as sql
 
-@javes05(outgoing=True, pattern="^!warn(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!warn(?: |$)(.*)")
 async def _(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
@@ -2035,7 +2035,7 @@ async def _(event):
     await event.edit(reply, parse_mode="html")
 
 
-@javes05(outgoing=True, pattern="^!warns(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!warns(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return
@@ -2055,7 +2055,7 @@ async def _(event):
         await event.edit("this user hasn't got any warnings!")
 
 
-@javes05(outgoing=True, pattern="^!resetwarns(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!resetwarns(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return
@@ -2069,7 +2069,7 @@ async def _(event):
 
 
 
-@javes05(outgoing=True, pattern="^!invite(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^!invite(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
         return

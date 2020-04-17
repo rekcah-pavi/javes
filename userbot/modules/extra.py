@@ -3070,7 +3070,7 @@ async def _(event):
     	
         DMY = time.strftime("%Y:%m:%d ")
         HM = time.strftime("%H:%M:%S")
-        bio = f" {BIO_MMSG}|{DMY}|{HM}"
+        bio = f" {BIO_MMSG} {DMY} {HM}"
         await event.reply(f"**{JAVES_NAME}**:`Sucesfully set auto bio with {BIO_MMSG} with {HM} [GlobelTime ]\n Sleeping 60s.......`")
         
         try:
