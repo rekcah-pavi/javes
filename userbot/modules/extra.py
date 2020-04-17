@@ -584,7 +584,7 @@ async def mim(event):
                 caption="Memifyed",
             )
             await event.delete()
-            #await bot.send_message(event.chat_id, "`Ã¢ÂÂ Ã¯Â¸ÂÃ¢ÂÂ Ã¯Â¸ÂAh Shit... Here we go Again!Ã°ÂÂÂ¥Ã°ÂÂÂ¥`")
+            #await bot.send_message(event.chat_id, "`â ï¸â ï¸Ah Shit... Here we go Again!ð¥ð¥`")
           elif not is_message_image(reply_message):
             await event.edit("Invalid message type. Plz choose right message type u NIBBA.")
             return
@@ -668,7 +668,7 @@ async def figlet(event):
         result = pyfiglet.figlet_format(text, font=font)
     else:
         result = pyfiglet.figlet_format(text)
-    await event.respond("Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ`{}`".format(result))
+    await event.respond("âââ`{}`".format(result))
     await event.delete()
     
 
@@ -2267,7 +2267,7 @@ async def _(event):
     lan = lan.strip()
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "voice.ogg"
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "voice.tts"
     try:
         tts = gTTS(text, lang=lan)
         tts.save(required_file_name)
@@ -3031,10 +3031,10 @@ async def apk(e):
         app_rating = results[0].findNext('div', 'Vpfmgd').findNext('div', 'pf5lIe').find('div')['aria-label']
         app_link = "https://play.google.com"+results[0].findNext('div', 'Vpfmgd').findNext('div', 'vU6FJ p63iDd').a['href']
         app_icon = results[0].findNext('div', 'Vpfmgd').findNext('div', 'uzcko').img['data-src']
-        app_details = "<a href='"+app_icon+"'>ð²&#8203;</a>"
+        app_details = "<a href='"+app_icon+"'>📲&#8203;</a>"
         app_details += " <b>"+app_name+"</b>"
         app_details += "\n\n<code>Developer :</code> <a href='"+app_dev_link+"'>"+app_dev+"</a>"
-        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "â­ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "â­ ").replace("five", "5")
+        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "⭐ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "⭐ ").replace("five", "5")
         app_details += "\n<code>Features :</code> <a href='"+app_link+"'>View in Play Store</a>"
         await e.edit(app_details, link_preview = True, parse_mode = 'HTML')
     except IndexError:

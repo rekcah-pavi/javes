@@ -1044,10 +1044,7 @@ async def iqless(e):
 async def iqless(e):
     await e.edit("Antivirus scan was completed \n⚠️ Warning! This  donkey has Corona Virus")      
 
-
-@javes05(outgoing=True, pattern="^!help$")
-async def iqless(e):
-    await e.edit("Please check my channel for get help\n https://t.me/javes05/12")      
+   
 
 
                      

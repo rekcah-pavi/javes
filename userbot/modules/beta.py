@@ -30,11 +30,11 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```type & send your link then tag it type !ushort```")
+       await event.edit("```Reply to a link```")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.text:
-       await event.edit("```reply to text message```")
+       await event.edit("```reply to a link```")
        return
     chat = "@LinkGeneratorBot"
     sender = reply_message.sender
@@ -97,7 +97,7 @@ async def _(event):
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.text:
-       await event.edit("```type & send song then tag it type !llyrics```")
+       await event.edit("```type & send song then tag it type !lyrics2```")
        return
     chat = "@iLyricsBot"
     sender = reply_message.sender
@@ -127,7 +127,7 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```its bot i cant```")
+       await event.edit("```reply to a sticker```")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
@@ -162,7 +162,7 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```Its bot i cant```")
+       await event.edit("```Reply to a photo/Sticker```")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:

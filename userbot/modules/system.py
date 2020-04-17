@@ -171,7 +171,7 @@ async def amireallyalive(alive):
     await alive.edit(""
                     f" **{ALIVE_S_MMSG}**\n" 
                     f"---------------------------\n"
-                    f"  >`{JAVES_NNAME}`: ** 2.1.1**\n"
+                    f"  >`{JAVES_NNAME}`: ** 2.1.2**\n"
                     f"  >`Telethon`: ** {version.__version__} **\n"
                     f"  >`Python` : ** {python_version()} **\n"
                     f"  >`User:` ** {DEFAULTUSER} **\n"

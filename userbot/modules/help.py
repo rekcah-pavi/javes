@@ -24,15 +24,15 @@ async def help(event):
         
 CMD_HELP.update({
     "admin":
-    "!promote <username/reply> <custom name>\
+    "!promote <username/reply/userid> <custom name>\
 \nUsage: Provides admin rights to the person in the chat.\
-\n\n!demote <username/reply>\
+\n\n!demote <username/reply/userid>\
 \nUsage: Revokes the person's admin permissions in the chat.\
 \n\n!ban <reply> <reason (optional)>\
 \nUsage: Bans the person off your chat.\
-\n\n!unban <username/reply>\
+\n\n!unban <username/reply/userid>\
 \nUsage: Removes the ban from the person in the chat.\
-\n\n!mute <username/reply> <reason (optional)>\
+\n\n!mute <username/reply/userid> <reason (optional)>\
 \nUsage: Mutes the person in the chat, works on admins too.\
 \n\n!warn <reply to a message > <reason (optional)>\
 \nUsage: warn the person\
@@ -40,11 +40,11 @@ CMD_HELP.update({
 \nUsage: reset the target person's warns\
 \n\n!warns <reply to a user > \
 \nUsage: get warnings of the targeted person\
-\n\n!unmute <username/reply>\
+\n\n!unmute <username/reply/userid>\
 \nUsage: Removes the person from the muted list.\
-\n\n!gban <username/reply> <reason (optional)>\
+\n\n!gban <username/reply/userid> <reason (optional)>\
 \nUsage: Ban the person in all groups you have in common with them. and mute user in your pm too!\
-\n\n!unban <username/reply>\
+\n\n!unban <username/reply/userid>\
 \nUsage: Reply someone's message with !ungban to remove them from the gban list.\
 \n\n!delusers\
 \nUsage: Searches for deleted accounts in a group. Use !delusers clean to remove deleted accounts from the group.\
@@ -86,6 +86,8 @@ CMD_HELP.update({
 \nUsage: Check whether you have a welcome note in the chat.\
 \n\n!clearwelcome\
 \nUsage: Deletes the welcome note for the current chat.\
+\n\n!savewelcome2,!checkwelcome2,!clearwelcome2\
+\nUsage: same like welcome \
 "
 })
 
@@ -126,7 +128,11 @@ CMD_HELP.update({
     \nThe bot will reply to the message whenever 'keyword' is mentioned.\
     \nWorks with everything from files to stickers.\
     \n\n!clearfilter <filter>\
-    \nUsage: Stops the specified filter. "
+    \nUsage: Stops the specified filter. \
+    \n\n!clearallfilter <filter>\
+    \nUsage: Stops all filters.\
+    \n\n!savefilter2 , !checkfilter2, clearfilter2 <filter>\
+    \nUsage: same like filter "
 })
 
 

@@ -2,6 +2,16 @@ from asyncio import sleep
 from os import remove
 from asyncio import sleep
 import asyncio
+from telethon import events
+from telethon.utils import pack_bot_file_id
+from userbot.modules.sql_helper.rkwelcome_sql import get_current_rkwelcome_settings, \
+    add_rkwelcome_setting, rm_rkwelcome_setting, update_previous_rkwelcome
+from telethon import events, utils
+from telethon.tl import types
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
+from userbot.events import javes05
+from userbot import CMD_HELP, bot, LOGS, CLEAN_WELCOME, BOTLOG_CHATID
+from telethon.events import ChatAction
 import datetime
 from datetime import datetime
 from emoji import emojize
@@ -52,6 +62,12 @@ from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
 from requests import get
 from telethon.events import ChatAction
 from telethon.tl.types import ChannelParticipantsAdmins, Message
+import asyncio
+import re
+from userbot.events import javes05
+from telethon import events, utils
+from telethon.tl import types
+from userbot.modules.sql_helper.rkfilter_sql import get_filter, add_filter, remove_filter, get_all_rkfilters, remove_all_rkfilters
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, ANTI_SPAMBOT, ANTI_SPAMBOT_SHOUT, bot
 from telethon.errors import (BadRequestError, ChatAdminRequiredError,ImageProcessFailedError, PhotoCropSizeSmallError,UserAdminInvalidError)
 from telethon.errors.rpcerrorlist import (UserIdInvalidError,MessageTooLongError)
@@ -107,6 +123,57 @@ UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 # ================================================
 
 
+
+DELETE_TIMEOUT = 0
+TYPE_TEXT = 0
+TYPE_PHOTO = 1
+TYPE_DOCUMENT = 2
+
+
+global last_triggered_rkfilters
+last_triggered_rkfilters = {}  # pylint:disable=E0602
+
+
+@javes05(incoming=True, disable_errors=True)
+async def on_snip(event):
+    global last_triggered_rkfilters
+    name = event.raw_text
+    if event.chat_id in last_triggered_rkfilters:
+        if name in last_triggered_rkfilters[event.chat_id]:
+            # avoid userbot spam
+            # "I demand rights for us bots, we are equal to you humans." -Henri Koivuneva (t.me/UserbotTesting/2698)
+            return False
+    snips = get_all_rkfilters(event.chat_id)
+    if snips:
+        for snip in snips:
+            pattern = r"( |^|[^\w])" + re.escape(snip.keyword) + r"( |$|[^\w])"
+            if re.search(pattern, name, flags=re.IGNORECASE):
+                if snip.snip_type == TYPE_PHOTO:
+                    media = types.InputPhoto(
+                        int(snip.media_id),
+                        int(snip.media_access_hash),
+                        snip.media_file_reference
+                    )
+                elif snip.snip_type == TYPE_DOCUMENT:
+                    media = types.InputDocument(
+                        int(snip.media_id),
+                        int(snip.media_access_hash),
+                        snip.media_file_reference
+                    )
+                else:
+                    media = None
+                message_id = event.message.id
+                if event.reply_to_msg_id:
+                    message_id = event.reply_to_msg_id
+                await event.reply(
+                    snip.reply,
+                    file=media
+                )
+                if event.chat_id not in last_triggered_rkfilters:
+                    last_triggered_rkfilters[event.chat_id] = []
+                last_triggered_rkfilters[event.chat_id].append(name)
+                await asyncio.sleep(DELETE_TIMEOUT)
+                last_triggered_rkfilters[event.chat_id].remove(name)
 
 @bot.on(ChatAction)
 async def welcome_to_chat(event):
@@ -189,7 +256,7 @@ async def filter_incoming_handler(handler):
             try:
                 from userbot.modules.sql_helper.filter_sql import get_filters
             except AttributeError:
-                await handler.edit(f"`{JAVES_NNAME}`: **Running on Non-SQL mode!**")
+                await handler.edit("`Running on Non-SQL mode!`")
                 return
             name = handler.raw_text
             filters = get_filters(handler.chat_id)
@@ -222,6 +289,37 @@ async def on_new_message(event):
             break
         pass
 
+@bot.on(ChatAction)  # pylint:disable=E0602
+async def _(event):
+    cws = get_current_rkwelcome_settings(event.chat_id)
+    if cws:
+        # logger.info(event.stringify())
+        """user_added=False,
+        user_joined=True,
+        user_left=False,
+        user_kicked=False,"""
+        if event.user_joined or event.user_added:
+            if cws.should_clean_rkwelcome:
+                try:
+                    await event.client.delete_messages(
+                        event.chat_id,
+                        cws.previous_rkwelcome
+                    )
+                except Exception as e:  # pylint:disable=C0103,W0703
+                    logger.warn(str(e))  # pylint:disable=E0602
+            a_user = await event.get_user()
+            msg_o = await event.client.get_messages(
+                entity=BOTLOG_CHATID,
+                ids=int(cws.f_mesg_id)
+            )
+            current_saved_rkwelcome_message = msg_o.message
+            mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
+            file_media = msg_o.media
+            current_message = await event.reply(
+                current_saved_rkwelcome_message.format(mention=mention),
+                file=file_media
+            )
+            update_previous_rkwelcome(event.chat_id, current_message.id)
 
 
 @javes05(incoming=True, disable_errors=True)
@@ -1282,13 +1380,13 @@ async def ungmoot(un_gmute):
     await un_gmute.edit(f"`{JAVES_NNAME}:` **UnGbaning User !! **")
 
     if ungmute(user.id) is False:
-        await un_gmute.edit(f"`{JAVES_NNAME}:` **Error! User probably not gbaned.**")
+        await un_gmute.edit(f"`{JAVES_NNAME}:` **Error! User probably not gbanned.**")
     else:    	
         try:
             await un_gmute.client(
                 EditBannedRequest(un_gmute.chat_id, user.id, UNBAN_RIGHTS))
         # Inform about success
-            await un_gmute.edit(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbaned [{user.first_name}](tg://user?id={user.id})**")
+            await un_gmute.edit(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")
         except UserIdInvalidError:
             return await un_gmute.edit(f"`{JAVES_NNAME}:` ** unGban failed!! ** ")
 
@@ -1693,7 +1791,7 @@ async def get_user_from_id(user, event):
 
 
 
-@javes05(outgoing=True, disable_errors=True, pattern="^\!savefilter (\w*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!savefilter2 (\w*)")
 async def add_new_filter(new_handler):
     """ For .filter command, allows adding new filters in a chat """
     try:
@@ -1734,7 +1832,7 @@ async def add_new_filter(new_handler):
         await new_handler.edit(success.format(keyword, 'updated'))
 
 
-@javes05(outgoing=True, disable_errors=True, pattern="^\!clearfilter (\w*)")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!clearfilter2 (\w*)")
 async def remove_a_filter(r_handler):
     """ For .stop command, allows you to remove a filter from a chat. """
     try:
@@ -1753,7 +1851,7 @@ async def remove_a_filter(r_handler):
 
 
 
-@javes05(outgoing=True, disable_errors=True, pattern="^\!checkfilter$")
+@javes05(outgoing=True, disable_errors=True, pattern="^\!checkfilter2$")
 async def filters_active(event):
     """ For .filters command, lists all of the active filters in a chat. """
     try:
@@ -2102,4 +2200,118 @@ async def _(event):
             await event.edit(f"**{JAVES_NNAME}:** Invited Successfully")
 
 
+
+
+@javes05(outgoing=True, disable_errors=True, pattern="^!savefilter(?: |$)(.*)")
+async def on_snip_save(event):
+    name = event.pattern_match.group(1)
+    msg = await event.get_reply_message()
+    if msg:
+        snip = {'type': TYPE_TEXT, 'text': msg.message or ''}
+        if msg.media:
+            media = None
+            if isinstance(msg.media, types.MessageMediaPhoto):
+                media = utils.get_input_photo(msg.media.photo)
+                snip['type'] = TYPE_PHOTO
+            elif isinstance(msg.media, types.MessageMediaDocument):
+                media = utils.get_input_document(msg.media.document)
+                snip['type'] = TYPE_DOCUMENT
+            if media:
+                snip['id'] = media.id
+                snip['hash'] = media.access_hash
+                snip['fr'] = media.file_reference
+        add_filter(event.chat_id, name, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr'))
+        await event.edit(f"`{JAVES_NNAME}`: filter {name} saved successfully. Get it with {name}")
+    else:
+        await event.edit(f"`{JAVES_NNAME}`: **Reply to a message with `!savefilter keyword` to save the filter**")
+
+
+@javes05(outgoing=True, disable_errors=True, pattern="^\!checkfilter$")
+async def on_snip_list(event):
+    all_snips = get_all_rkfilters(event.chat_id)
+    OUT_STR = f"`{JAVES_NNAME}`: Available filters in the Current Chat:\n"
+    if len(all_snips) > 0:
+        for a_snip in all_snips:
+            OUT_STR += f"~> {a_snip.keyword} \n"
+    else:
+        OUT_STR = f"`{JAVES_NNAME}`: No filters. Start Saving using `!savefilter`"
+    if len(OUT_STR) > 4096:
+        with io.BytesIO(str.encode(OUT_STR)) as out_file:
+            out_file.name = "filters.text"
+            await bot.send_file(
+                event.chat_id,
+                out_file,
+                force_document=True,
+                allow_cache=False,
+                caption=f"`{JAVES_NNAME}`: **Available filters in the Current Chat**",
+                reply_to=event
+            )
+            await event.delete()
+    else:
+        await event.edit(OUT_STR)
+
+
+@javes05(outgoing=True, disable_errors=True, pattern="^\!clearfilter (\w*)")
+async def on_snip_delete(event):
+    name = event.pattern_match.group(1)
+    remove_filter(event.chat_id, name)
+    await event.edit(f"`{JAVES_NNAME}`: filter {name} deleted successfully")
+
+
+@javes05(outgoing=True, disable_errors=True, pattern="^\!clearallfilter$")
+async def on_all_snip_delete(event):
+    remove_all_rkfilters(event.chat_id)
+    await event.edit(f"`{JAVES_NNAME}`: filters **in current chat** deleted successfully")
+
+
+
+
+@javes05(outgoing=True, pattern=r"^!savewelcome2(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    msg = await event.get_reply_message()
+    if msg:
+        msg_o = await event.client.forward_messages(
+            entity=BOTLOG_CHATID,
+            messages=msg,
+            from_peer=event.chat_id,
+            silent=True
+        )
+        add_rkwelcome_setting(event.chat_id, True, 0, msg_o.id)
+        await event.edit(f"`{JAVES_MMSG}`: **welcome note saved.** ")
+
+
+@javes05(outgoing=True, pattern="^!clearwelcome2$") # pylint:disable=E0602
+async def _(event):
+    if event.fwd_from:
+        return
+    cws = get_current_rkwelcome_settings(event.chat_id)
+    rm_rkwelcome_setting(event.chat_id)
+    await event.edit(
+        f"`{JAVES_MMSG}`: **welcome note cleared. **" + \
+        "[This](https://t.me/c/{}/{}) was your previous rkwelcome message.".format(
+            str(BOTLOG_CHATID)[4:],
+            cws.f_mesg_id
+        )
+    )
+
+
+
+@javes05(outgoing=True, pattern="^!checkwelcome2$")
+async def _(event):
+    if event.fwd_from:
+        return
+    cws = get_current_rkwelcome_settings(event.chat_id)
+    if hasattr(cws, 'custom_rkwelcome_message'):
+        await event.edit(
+            f"`{JAVES_MMSG}`:welcome note found. " + \
+        "Your rkwelcome message is\n\n`{}`.".format(cws.custom_rkwelcome_message)
+    )
+    else:
+        await event.edit(
+            f"`{JAVES_MMSG}`:No rkwelcome Message found"
+        )
+    
+    
     
