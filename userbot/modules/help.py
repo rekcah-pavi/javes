@@ -137,6 +137,37 @@ CMD_HELP.update({
 
 
 CMD_HELP.update({
+    "stickers":
+    "!kang\
+\nUsage: Reply !kang to a sticker or an image to kang it to your userbot pack.\
+\n\n!kang [emoji('s)]\
+\nUsage: Works just like !kang but uses the emoji('s) you picked.\
+\n\n!kang [number]\
+\nUsage: Kang's the sticker/image to the specified pack but uses ?? as emoji.\
+\n\n!kang [emoji('s)] [number]\
+\nUsage: Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
+\n\n!stickerinfo\
+\nUsage: Gets info about the sticker pack.\
+\n\n!ss\
+\nUsage: convert user text to sticker like a sticker screenshot\
+\n\n!ss2\
+\nUsage: Convert picture to sticker\
+\n\n!text\
+\nUsage: text to sticker\
+\n\n!text2\
+\nUsage: same like !text but can use custom fonts like !text font | message ex -  !text2 font | lol \
+"
+})
+
+
+
+
+
+
+
+
+
+CMD_HELP.update({
     "blacklist":
     "!checkblacklist\
     \nUsage: Lists all active userbot blacklists in a chat.\
@@ -151,7 +182,7 @@ CMD_HELP.update({
 
 CMD_HELP.update({
     "others":
-    "!comming soon!\
+    "comming soon!\
     \n check Channel @javes05 for now"
 })
 
