@@ -78,7 +78,7 @@ CMD_HELP.update({
 CMD_HELP.update({
     "welcome":
     "\
-!savewelcome <welcome message> or reply to a message with !savewelcome\
+!savewelcome reply to a message with !savewelcome\
 \nUsage: Saves the message as a welcome note in the chat.\
 \n\nAvailable variables for formatting welcome messages :\
 \n`{mention}, {title}, {count}, {first}, {last}, {fullname}, {userid}, {username}, {my_first}, {my_fullname}, {my_last}, {my_mention}, {my_username}`\
@@ -87,7 +87,7 @@ CMD_HELP.update({
 \n\n!clearwelcome\
 \nUsage: Deletes the welcome note for the current chat.\
 \n\n!savewelcome2,!checkwelcome2,!clearwelcome2\
-\nUsage: same like welcome \
+\nUsage: same like welcome  ex !savewelcome2 welcme to our group!\
 "
 })
 
@@ -123,7 +123,7 @@ CMD_HELP.update({
     "filter":
     "!checkfilter\
     \nUsage: Lists all active userbot filters in a chat.\
-    \n\n!savefilter <keyword> <reply text> or reply to a message with !savefilter <keyword>\
+    \n\n!savefilter reply to a message with !savefilter <keyword>\
     \nUsage: Saves the replied message as a reply to the 'keyword'.\
     \nThe bot will reply to the message whenever 'keyword' is mentioned.\
     \nWorks with everything from files to stickers.\
@@ -131,8 +131,8 @@ CMD_HELP.update({
     \nUsage: Stops the specified filter. \
     \n\n!clearallfilter <filter>\
     \nUsage: Stops all filters.\
-    \n\n!savefilter2 , !checkfilter2, clearfilter2 <filter>\
-    \nUsage: same like filter "
+    \n\n!savefilter2 ,  !checkfilter2,  clearfilter2\
+    \nUsage: same like filter ex :- !savefilter2 hi hello"
 })
 
 
@@ -143,7 +143,7 @@ CMD_HELP.update({
 \n\n!kang [emoji('s)]\
 \nUsage: Works just like !kang but uses the emoji('s) you picked.\
 \n\n!kang [number]\
-\nUsage: Kang's the sticker/image to the specified pack but uses ?? as emoji.\
+\nUsage: Kang's the sticker/image to the specified pack \
 \n\n!kang [emoji('s)] [number]\
 \nUsage: Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
 \n\n!stickerinfo\
@@ -160,7 +160,22 @@ CMD_HELP.update({
 })
 
 
-
+CMD_HELP.update({
+    "beta":
+    "!mail\
+\nUsage: Create a fake  main and list it \
+\n\n!ushort \
+\nUsage: shorten the url.\
+\n\n!song2\
+\nUsage: find the target song \
+\n\n!lyrics2 [emoji('s)] [number]\
+\nUsage: get lyrics of song\
+\n\n!fry\
+\nUsage: fry stickers,photes.\
+\n\n!mask\
+\nUsage: make mask for tagged photo/sticker\
+"
+})
 
 
 

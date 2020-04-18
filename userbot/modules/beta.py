@@ -14,7 +14,7 @@ async def _(event):
       return 
    chat = "@fakemailbot"
    command = "/id"
-   await event.edit("```Fakemail list getting```")
+   await event.edit(f"`{JAVES_NNAME}: ` **Fakemail list getting check @fakemailbot **")
    async with bot.conversation(chat) as conv:
         try:
             m = await event.client.send_message("@fakemailbot","/id")     
@@ -30,18 +30,18 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```Reply to a link```")
+       await event.edit(f"`{JAVES_NNAME}: ` ** Reply to a link**")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.text:
-       await event.edit("```reply to a link```")
+       await event.edit(f"`{JAVES_NNAME}: ` **reply to a link**")
        return
     chat = "@LinkGeneratorBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
        await event.edit("```Reply to actual users message.```")
        return
-    await event.edit("```Processing \n ?? Url must start with http:// or https:// and it should have no white spaces in it.```")
+    await event.edit(f"`{JAVES_NNAME}: ` **Processing \n Url must start with http:// or https:// and it should have no white spaces in it.**")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=355705793))
@@ -51,7 +51,7 @@ async def _(event):
               await event.reply("```Please unblock @LinkGeneratorBot and try again```")
               return
           if response.text.startswith("Hi!,"):
-             await event.edit("```privacy error ```")
+             await event.edit(f"`{JAVES_NNAME}: ` **privacy error **")
           else: 
              await event.edit(f"{response.message.message}")
 
@@ -62,25 +62,25 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```Tag any message and type```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Tag any message and type**")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.text:
-       await event.edit("```reply to text message```")
+       await event.edit(f"`{JAVES_NNAME}: ` **reply to text message**")
        return
     chat = "@SpotifyMusicDownloaderBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit("```Reply to actual users message.```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to actual users message.**")
        return
-    await event.edit("```Processing```")
+    await event.edit(f"`{JAVES_NNAME}: ` **Serching song.....**")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=752979930))
               await bot.forward_messages(chat, reply_message)
               response = await response 
           except YouBlockedUserError: 
-              await event.reply("```error1```")
+              await event.reply(f"`{JAVES_NNAME}: ` **error1**")
               return
           if response.text.startswith("Hello,"):
              await event.edit("```privacy error```")
@@ -93,30 +93,30 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```Reply to any user message.```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to any user message.**")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.text:
-       await event.edit("```type & send song then tag it type !lyrics2```")
+       await event.edit(f"`{JAVES_NNAME}: ` **ype & send song then tag it type !lyrics2**")
        return
     chat = "@iLyricsBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit("```Reply to actual users message.```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to actual users message.**")
        return
-    await event.edit("```Processing```")
+    await event.edit(f"`{JAVES_NNAME}: ` **Processing please check @iLyricsBot**")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=232268607))
               await bot.forward_messages(chat, reply_message)
               response = await response 
           except YouBlockedUserError: 
-              await event.reply("```error1```")
+              await event.reply(f"`{JAVES_NNAME}: ` **error1**")
               return
           if response.text.startswith("Hello,"):
-             await event.edit("```privacy error```")
+             await event.edit(f"`{JAVES_NNAME}: ` **privacy error**")
           else: 
-             await asyncio.sleep(8)
+             await asyncio.sleep(10)
              await event.edit(f"{response.message.message}")
 
 
@@ -127,18 +127,18 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```reply to a sticker```")
+       await event.edit(f"`{JAVES_NNAME}: ` **reply to a sticker**")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
-       await event.edit("```reply to a sticker```")
+       await event.edit(f"`{JAVES_NNAME}: ` **reply to a sticker**")
        return
     chat = "@image_deepfrybot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit(f"```{JAVES_NNAME}: Reply to actual users message.```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to actual users message.***")
        return
-    await event.edit(" `Making......`")
+    await event.edit(f"`{JAVES_NNAME}: ` **Frying image...**")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=432858024))
@@ -148,7 +148,7 @@ async def _(event):
               await event.reply("```Please unblock @image_deepfrybot and try again```")
               return
           if response.text.startswith("Forward"):
-             await event.edit("```privacy error```")
+             await event.edit(f"`{JAVES_NNAME}: ` **privacy error**")
           else:
           	if response.text.startswith("Select"):
           		await event.edit(f"`{JAVES_NNAME}: Please go to` @DrWebBot `and select your language.`") 
@@ -162,18 +162,18 @@ async def _(event):
     if event.fwd_from:
         return 
     if not event.reply_to_msg_id:
-       await event.edit("```Reply to a photo/Sticker```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to a photo/Sticker**")
        return
     reply_message = await event.get_reply_message() 
     if not reply_message.media:
-       await event.edit("```Reply to a sticker/photo```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to a sticker/photo**")
        return
     chat = "@hazmat_suit_bot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await event.edit(f"``` Reply to actual users message.```")
+       await event.edit(f"`{JAVES_NNAME}: ` **Reply to actual users message.**")
        return
-    await event.edit(" `Making......`")
+    await event.edit(f"`{JAVES_NNAME}: ` **Making mask.....**")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=905164246))
@@ -183,7 +183,7 @@ async def _(event):
               await event.reply("```Please unblock @hazmat_suit_bot and try again```")
               return
           if response.text.startswith("Forward"):
-             await event.edit("```privacy error```")
+             await event.edit(f"`{JAVES_NNAME}: ` **privacy error**")
           else:
           	if response.text.startswith("Select"):
           		await event.edit(f"`{JAVES_NNAME}: Please go to` @DrWebBot `and select your language.`") 
