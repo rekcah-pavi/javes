@@ -1,3 +1,178 @@
+from userbot import bot
+from telethon import events
+from var import Var
+from pathlib import Path
+from userbot.config import Config
+from userbot import LOAD_PLUG
+from userbot import CMD_LIST
+import re
+import logging
+import inspect
+
+from typing import List
+
+def command(**args):
+    stack = inspect.stack()
+    previous_stack_frame = stack[1]
+    file_test = Path(previous_stack_frame.filename)
+    file_test = file_test.stem.replace(".py", "")
+    if 1 == 0:
+        return print("processing......")
+    else:
+        pattern = args.get("pattern", None)
+        allow_sudo = args.get("allow_sudo", None)
+        allow_edited_updates = args.get('allow_edited_updates', False)
+        args["incoming"] = args.get("incoming", False)
+        args["outgoing"] = True
+        if bool(args["incoming"]):
+            args["outgoing"] = False
+
+        try:
+            if pattern is not None and not pattern.startswith('(?i)'):
+                args['pattern'] = '(?i)' + pattern
+        except:
+            pass
+
+        reg = re.compile('(.*)')
+        if not pattern == None:
+            try:
+                cmd = re.search(reg, pattern)
+                try:
+                    cmd = cmd.group(1).replace("$", "").replace("\\", "").replace("^", "")
+                except:
+                    pass
+
+                try:
+                    CMD_LIST[file_test].append(cmd)
+                except:
+                    CMD_LIST.update({file_test: [cmd]})
+            except:
+                pass
+
+        if allow_sudo:
+            args["from_users"] = list(Var.SUDO_USERS)
+            # Mutually exclusive with outgoing (can only set one of either).
+            args["incoming"] = True
+        del allow_sudo
+        try:
+            del args["allow_sudo"]
+        except:
+            pass
+
+        if "allow_edited_updates" in args:
+            del args['allow_edited_updates']
+
+        def decorator(func):
+            if allow_edited_updates:
+                bot.add_event_handler(func, events.MessageEdited(**args))
+            bot.add_event_handler(func, events.NewMessage(**args))
+            try:
+                LOAD_PLUG[file_test].append(func)
+            except:
+                LOAD_PLUG.update({file_test: [func]})
+            return func
+
+        return decorator
+
+
+def load_module(shortname):
+    if shortname.startswith("__"):
+        pass
+    elif shortname.endswith("_"):
+        import userbot.events
+        import sys
+        import importlib
+        from pathlib import Path
+        path = Path(f"userbot/modules/{shortname}.py")
+        name = "userbot.modules.{}".format(shortname)
+        spec = importlib.util.spec_from_file_location(name, path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        print("Successfully (re)imported "+shortname)
+    else:
+        import userbot.events
+        import sys
+        import importlib
+        from pathlib import Path
+        path = Path(f"userbot/modules/{shortname}.py")
+        name = "userbot.modules.{}".format(shortname)
+        spec = importlib.util.spec_from_file_location(name, path)
+        mod = importlib.util.module_from_spec(spec)
+        mod.bot = bot
+        mod.tgbot = bot.tgbot
+        mod.Var = Var
+        mod.command = command
+        mod.logger = logging.getLogger(shortname)
+        # support for uniborg
+        sys.modules["uniborg.util"] = userbot.events
+        mod.Config = Config
+        mod.borg = bot
+        # support for paperplaneextended
+        sys.modules["userbot.events"] = userbot.events
+        spec.loader.exec_module(mod)
+        # for imports
+        sys.modules["userbot.modules."+shortname] = mod
+        print("Successfully (re)imported "+shortname)
+
+def remove_plugin(shortname):
+    try:
+        try:
+            for i in LOAD_PLUG[shortname]:
+                bot.remove_event_handler(i)
+            del LOAD_PLUG[shortname]
+
+        except:
+            name = f"userbot.modules.{shortname}"
+
+            for i in reversed(range(len(bot._event_builders))):
+                ev, cb = bot._event_builders[i]
+                if cb.__module__ == name:
+                    del bot._event_builders[i]
+    except:
+        raise ValueError
+
+def admin_cmd(pattern=None, **args):
+    stack = inspect.stack()
+    previous_stack_frame = stack[1]
+    file_test = Path(previous_stack_frame.filename)
+    file_test = file_test.stem.replace(".py", "")
+    allow_sudo = args.get("allow_sudo", False)
+
+    # get the pattern from the decorator
+    if pattern is not None:
+        if pattern.startswith("\#"):
+            # special fix for snip.py
+            args["pattern"] = re.compile(pattern)
+        else:
+            args["pattern"] = re.compile("\." + pattern)
+            cmd = "." + pattern
+            try:
+                CMD_LIST[file_test].append(cmd)
+            except:
+                CMD_LIST.update({file_test: [cmd]})
+
+    args["outgoing"] = True
+    # should this command be available for other users?
+    if allow_sudo:
+        args["from_users"] = list(Config.SUDO_USERS)
+        # Mutually exclusive with outgoing (can only set one of either).
+        args["incoming"] = True
+        del args["allow_sudo"]
+
+    # error handling condition check
+    elif "incoming" in args and not args["incoming"]:
+        args["outgoing"] = True
+
+    # add blacklist chats, UB should not respond in these chats
+    allow_edited_updates = False
+    if "allow_edited_updates" in args and args["allow_edited_updates"]:
+        allow_edited_updates = args["allow_edited_updates"]
+        del args["allow_edited_updates"]
+
+    # check if the plugin should listen for outgoing 'messages'
+    is_message_enabled = True
+
+    return events.NewMessage(**args)
 
 
 import sys

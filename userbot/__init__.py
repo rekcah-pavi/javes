@@ -12,8 +12,46 @@ from dotenv import load_dotenv
 from requests import get
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-
+from var import Var
 load_dotenv("config.env")
+
+
+
+
+
+os.system("pip install --upgrade pip")
+if Var.STRING_SESSION:
+    session_name = str(Var.STRING_SESSION)
+    bot = TelegramClient(StringSession(session_name), Var.APP_ID, Var.API_HASH)
+else:
+    session_name = "startup"
+    bot = TelegramClient(session_name, Var.APP_ID, Var.API_HASH)
+
+
+CMD_LIST = {}
+# for later purposes
+CMD_HELP = {}
+INT_PLUG = ""
+LOAD_PLUG = {}
+
+# PaperPlaneExtended Support Vars
+ENV = os.environ.get("ENV", False)
+""" PPE initialization. """
+
+from logging import basicConfig, getLogger, INFO, DEBUG
+from distutils.util import strtobool as sb
+import asyncio
+
+import pylast
+from pySmartDL import SmartDL
+from requests import get
+
+
+
+
+
+
+
 
 # Bot Logs setup:
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
