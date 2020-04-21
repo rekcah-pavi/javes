@@ -137,13 +137,13 @@
       "required": false
       
       },
-    "ALIVE_S_MSG": {
+    "ALIVE_S_MESSAGE": {
       "description": "Edit if you want",
       "value": "Iam Alive!",
       "required": false
       
       },
-    "ALIVE_E_MSG": {
+    "ALIVE_E_MESSAGE": {
       "description": "Edit if you want",
       "value": "Databases functioning normally!!",
       "required": false
@@ -165,6 +165,15 @@
       "description": "you can edit what pm_protecter message!",
       "value": "Hello Sir, I can't allow you to my master's PM without his permissions please be patient, Thankyou",
       "required": false
+      
+    },
+    "SUDO_USERS": {
+      "description": "give sudo user's id , he can controll your javes like groupmanaging bots!!",
+      "value": "",
+      "required": false
+      
+      
+      
       
       
     },
