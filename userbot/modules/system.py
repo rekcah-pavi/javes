@@ -4,6 +4,8 @@ from asyncio import sleep
 from os import execl
 import sys
 import os
+from userbot import bot
+from userbot.events import admin_cmd, command
 import io
 import heroku3
 from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
@@ -171,7 +173,7 @@ async def amireallyalive(alive):
     await alive.edit(""
                     f" **{ALIVE_S_MMSG}**\n" 
                     f"---------------------------\n"
-                    f"  >`{JAVES_NNAME}`: ** 2.1.2**\n"
+                    f"  >`{JAVES_NNAME}`: ** 2.2.0**\n"
                     f"  >`Telethon`: ** {version.__version__} **\n"
                     f"  >`Python` : ** {python_version()} **\n"
                     f"  >`User:` ** {DEFAULTUSER} **\n"
@@ -181,6 +183,16 @@ async def amireallyalive(alive):
 
 
 
+@bot.on(admin_cmd(pattern=f"sudo$", allow_sudo=True))
+async def iqless(e):
+    await e.reply(""
+                    f" **Hello Sir Iam Alive!**\n" 
+                    f"---------------------------\n"
+                    f"  >`{JAVES_NNAME}`: ** 2.2.0**\n"
+                    f"  >`Telethon`: ** {version.__version__} **\n"
+                    f"  >`Python` : ** {python_version()} **\n"
+                    f"  >`User:` ** Sudo **\n"
+                    f"---------------------------")
 
 
 
