@@ -11,7 +11,7 @@ import inspect
 
 from typing import List
 
-def command(**args):
+def zzaacckkyy(**args):
     stack = inspect.stack()
     previous_stack_frame = stack[1]
     file_test = Path(previous_stack_frame.filename)
@@ -131,7 +131,7 @@ def remove_plugin(shortname):
     except:
         raise ValueError
 
-def admin_cmd(pattern=None, **args):
+def rekcah05(pattern=None, **args):
     stack = inspect.stack()
     previous_stack_frame = stack[1]
     file_test = Path(previous_stack_frame.filename)
