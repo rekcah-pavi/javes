@@ -295,5 +295,8 @@ def javes05(**args):
         return wrapper
 
     return decorator
-    
-
+from userbot import bot    
+borg = bot
+admin_cmd = rekcah05
+command = zzaacckkyy
+register = javes05
