@@ -2011,7 +2011,7 @@ async def date_func(dat):
 CARBONLANG = "auto"
 TTS_LANG = "en"
 TRT_LANG = "en"
-
+LANG = "en"
 
 @javes05(outgoing=True, pattern="^!crblang (.*)")
 async def setlang(prog):
@@ -2082,7 +2082,9 @@ async def carbon_api(e):
     # Removing carbon.png after uploading
     await e.delete()  # Deleting msg
 
-@javes05(outgoing=True, pattern="^\!img (.*)")
+
+
+@javes05(outgoing=True, pattern="^!img (.*)")
 async def img_sampler(event):
     """ For .img command, search and return images matching the query. """
     await event.edit("Processing...")
@@ -2093,7 +2095,7 @@ async def img_sampler(event):
         lim = lim.replace("lim=", "")
         query = query.replace("lim=" + lim[0], "")
     except IndexError:
-        lim = 3
+        lim = 2
     response = google_images_download.googleimagesdownload()
 
     # creating list of arguments
@@ -2109,7 +2111,7 @@ async def img_sampler(event):
     lst = paths[0][query]
     await event.client.send_file(
         await event.client.get_input_entity(event.chat_id), lst)
-    shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
+    rmtree(os.path.dirname(os.path.abspath(lst[0])))
     await event.delete()
 
 
