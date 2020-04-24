@@ -1,6 +1,8 @@
 
 from userbot import CMD_HELP
 from userbot.events import javes05
+from userbot.events import rekcah05, command
+from userbot import bot as javes
 
 
 @javes05(outgoing=True, pattern="^!help(?: |$)(.*)")
@@ -20,7 +22,33 @@ async def help(event):
             string += "`" + str(i)
             string += "`, "
         await event.reply(string)
-        
+ 
+
+
+
+
+@javes.on(rekcah05(pattern=f"help(?: |$)(.*)", allow_sudo=True))
+async def help(event):
+    """ For .help command,"""
+    args = event.pattern_match.group(1).lower()
+    if args:
+        if args in CMD_HELP:
+            await event.reply(str(CMD_HELP[args]))
+        else:
+            await event.reply("Please specify a valid module name.")
+    else:
+        await event.reply("Usage: !help <module name>\
+            \n Example - !help admin")
+        string = ""
+        for i in CMD_HELP:
+            string += "`" + str(i)
+            string += "`, "
+        await event.reply(string)
+
+
+
+
+
         
 CMD_HELP.update({
     "admin":
@@ -86,8 +114,6 @@ CMD_HELP.update({
 \nUsage: Check whether you have a welcome note in the chat.\
 \n\n!clearwelcome\
 \nUsage: Deletes the welcome note for the current chat.\
-\n\n!savewelcome2,!checkwelcome2,!clearwelcome2\
-\nUsage: same like welcome  ex !savewelcome2 welcme to our group!\
 "
 })
 
@@ -129,10 +155,10 @@ CMD_HELP.update({
     \nWorks with everything from files to stickers.\
     \n\n!clearfilter <filter>\
     \nUsage: Stops the specified filter. \
-    \n\n!clearallfilter <filter>\
+    \n\n!clearallfilter \
     \nUsage: Stops all filters.\
     \n\n!savefilter2 ,  !checkfilter2,  clearfilter2\
-    \nUsage: same like filter ex :- !savefilter2 hi hello"
+    \nUsage: same like filter "
 })
 
 
@@ -156,6 +182,8 @@ CMD_HELP.update({
 \nUsage: text to sticker\
 \n\n!text2\
 \nUsage: same like !text but can use custom fonts like !text font | message ex -  !text2 font | lol \
+\n\n!fry\
+\nUsage: make given image funny\
 "
 })
 
@@ -170,8 +198,6 @@ CMD_HELP.update({
 \nUsage: find the target song \
 \n\n!lyrics2 [emoji('s)] [number]\
 \nUsage: get lyrics of song\
-\n\n!fry\
-\nUsage: fry stickers,photes.\
 \n\n!mask\
 \nUsage: make mask for tagged photo/sticker\
 "
@@ -189,7 +215,18 @@ CMD_HELP.update({
     \n\n!saveblacklist <keyword> <reply text> or reply to a message with !saveblacklist <keyword>\
     \nUsage: Delete then non admins blacklisted wards.\
     \n\n!clearblacklist <ward>\
-    \nUsage: Stops the specified blacklist ward. "
+    \nUsage: Stops the specified blacklist ward."
+})
+
+
+CMD_HELP.update({
+    "sudo":
+    "if you active sudo , sudo users can controll your javes like you controll groupmanaging bots\
+    \nyou can active sudo by !set var SUDO_USERS <your sudo user's id>\
+    \n\nyou can active multiple sudo users by space \
+    \ncheck sudo by .sudo in sudo user's accoint\
+    \n(!) command for bot owner , (.) command for sudo users like !ban for owner , .ban for sudo users\
+"
 })
 
 
@@ -198,6 +235,7 @@ CMD_HELP.update({
 CMD_HELP.update({
     "others":
     "comming soon!\
-    \n check Channel @javes05 for now"
+    \n you can see other help commands in @javes05 for now\
+"
 })
 

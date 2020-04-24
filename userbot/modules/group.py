@@ -88,7 +88,7 @@ from telethon.tl.types import ChatBannedRights
 from userbot import CMD_HELP
 from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
-
+javes = bot
 # =================== CONSTANT ===================
 PP_TOO_SMOL = f"`{JAVES_NNAME}:`**The image is too small**"
 PP_ERROR = f"`{JAVES_NNAME}:`**Failure while processing the image**"
@@ -140,7 +140,7 @@ TYPE_DOCUMENT = 2
 global last_triggered_rkfilters
 last_triggered_rkfilters = {}  # pylint:disable=E0602
 #filters logic
-@bot.on(events.NewMessage(incoming=True))
+@javes.on(events.NewMessage(incoming=True))
 async def on_snip(event):
     global last_triggered_rkfilters
     name = event.raw_text
@@ -181,7 +181,7 @@ async def on_snip(event):
                 await asyncio.sleep(DELETE_TIMEOUT)
                 last_triggered_rkfilters[event.chat_id].remove(name)
 
-@bot.on(ChatAction)
+@javes.on(ChatAction)
 async def welcome_to_chat(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings
@@ -254,7 +254,7 @@ async def welcome_to_chat(event):
             update_previous_welcome(event.chat_id, current_message.id)
 
 
-@bot.on(events.NewMessage(incoming=True))
+@javes.on(events.NewMessage(incoming=True))
 async def filter_incoming_handler(handler):
     """ Checks if the incoming message contains handler of a filter """
     try:
@@ -281,7 +281,7 @@ async def filter_incoming_handler(handler):
 
 
 
-@bot.on(events.NewMessage(incoming=True))
+@javes.on(events.NewMessage(incoming=True))
 async def muter(moot):
     """ gban logic"""
     try:
@@ -341,7 +341,7 @@ async def muter(moot):
 
 
 
-@bot.on(ChatAction)
+@javes.on(ChatAction)
 async def ANTI_SPAMBOT(welcm):
     try:
         ''' Ban a recently joined user if it
@@ -552,7 +552,7 @@ async def save_welcome(event):
 
 
 
-@bot.on(rekcah05(pattern=f"savewelcome(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"savewelcome(?: |$)(.*)", allow_sudo=True))
 async def save_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import add_welcome_setting
@@ -623,7 +623,7 @@ async def show_welcome(event):
 
 
 
-@bot.on(rekcah05(pattern=f"checkwelcome$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"checkwelcome$", allow_sudo=True))
 async def show_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings
@@ -664,7 +664,7 @@ async def del_welcome(event):
         await event.edit(f"`{JAVES_NNAME}`: ** I Didnt have any welcome messages here **")
 
 
-@bot.on(rekcah05(pattern=f"clearwelcome$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"clearwelcome$", allow_sudo=True))
 async def del_welcome(event):
     try:
         from userbot.modules.sql_helper.welcome_sql import rm_welcome_setting
@@ -773,7 +773,7 @@ async def locks(event):
 
 
 
-@bot.on(rekcah05(pattern=f"lock ?(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"lock ?(.*)", allow_sudo=True))
 async def locks(event):
     input_str = event.pattern_match.group(1).lower()
     peer_id = event.chat_id
@@ -950,7 +950,7 @@ async def rem_locks(event):
         return
 
 
-@bot.on(rekcah05(pattern=f"unlock ?(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"unlock ?(.*)", allow_sudo=True))
 async def rem_locks(event):
     input_str = event.pattern_match.group(1).lower()
     peer_id = event.chat_id
@@ -1064,7 +1064,7 @@ async def useridgetter(target):
             name, user_id))
 
 
-@bot.on(rekcah05(pattern=f"userid$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"userid$", allow_sudo=True))
 async def useridgetter(target):
     """ For .userid command, returns the ID of the target user. """
     message = await target.get_reply_message()
@@ -1100,7 +1100,7 @@ async def permalink(mention):
         await mention.edit(f"`{JAVES_NNAME}`: [{tag}](tg://user?id={user.id})")
 
 
-@bot.on(rekcah05(pattern=f"link(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"link(?: |$)(.*)", allow_sudo=True))
 async def permalink(mention):
     """ For .link command, generates a link to the user's PM with a custom text. """
     user, custom = await get_user_from_event(mention)
@@ -1121,7 +1121,7 @@ async def chatidgetter(chat):
     await chat.edit(f"`{JAVES_NNAME}`: Chat ID: `" + str(chat.chat_id) + "`")
 
 
-@bot.on(rekcah05(pattern=f"chatid$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"chatid$", allow_sudo=True))
 async def chatidgetter(chat):
     """ For .chatid, returns the ID of the chat you are in at that moment. """
     await chat.reply(f"`{JAVES_NNAME}`: Chat ID: `" + str(chat.chat_id) + "`")
@@ -1149,7 +1149,7 @@ async def log(log_text):
     await sleep(2)
     await log_text.delete()
 
-@bot.on(rekcah05(pattern=f"log$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"log$", allow_sudo=True))
 async def iqless(e):
     await e.reply(f"`{JAVES_NNAME}`: **Privacy error! , Sorry sudo users dont have permission to access it!**")
 
@@ -1164,7 +1164,7 @@ async def kickme(leave):
     await leave.edit(f"`{JAVES_NNAME}`: **My master Didnt like this place......GoodBye!**")
     await leave.client.kick_participant(leave.chat_id, 'me')
 
-@bot.on(rekcah05(pattern=f"kickme$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"kickme$", allow_sudo=True))
 async def iqless(e):
     await e.reply(f"`{JAVES_NNAME}`: **Privacy error! , Sorry sudo users dont have permission to access it!**")
 
@@ -1208,7 +1208,7 @@ async def set_group_photo(gpic):
 
 
 
-@bot.on(rekcah05(pattern=f"setgpic$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"setgpic$", allow_sudo=True))
 async def set_group_photo(gpic):
     if not gpic.is_group:
         await gpic.reply(f"`{JAVES_NNAME}:` **I don't think this is a group.**")
@@ -1295,7 +1295,7 @@ async def promote(promt):
 
 
 
-@bot.on(rekcah05(pattern=f"promote(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"promote(?: |$)(.*)", allow_sudo=True))
 async def promote(promt):
     """ For .promote command, promotes the replied/tagged person """
     # Get targeted chat
@@ -1402,7 +1402,7 @@ async def demote(dmod):
             f"USER: [{user.first_name}](tg://user?id={user.id})\n"
             f"CHAT: {dmod.chat.title}(`{dmod.chat_id}`)")
 
-@bot.on(rekcah05(pattern=f"demote(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"demote(?: |$)(.*)", allow_sudo=True))
 async def demote(dmod):
     """ For .demote command, demotes the replied/tagged person """
     # Admin right check
@@ -1511,7 +1511,7 @@ async def ban(bon):
 
 
 
-@bot.on(rekcah05(pattern=f"ban(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"ban(?: |$)(.*)", allow_sudo=True))
 async def ban(bon):
     """ For .ban command, bans the replied/tagged person """
     # Here laying the sanity check
@@ -1605,7 +1605,7 @@ async def nothanos(unbon):
         await unbon.edit(f"`{JAVES_NNAME}:` **Uh oh my unban logic broke!**")
 
 
-@bot.on(rekcah05(pattern=f"unban(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"unban(?: |$)(.*)", allow_sudo=True))
 async def nothanos(unbon):
     """ For .unban command, unbans the replied/tagged person """
     # Here laying the sanity check
@@ -1705,7 +1705,7 @@ async def spider(spdr):
         except UserIdInvalidError:
             return await spdr.edit("`Uh oh my mute logic broke!`")
 
-@bot.on(rekcah05(pattern=f"mute(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"mute(?: |$)(.*)", allow_sudo=True))
 async def spider(spdr):
     """
     This function is basically muting peeps
@@ -1818,7 +1818,7 @@ async def unmoot(unmot):
                 f"CHAT: {unmot.chat.title}(`{unmot.chat_id}`)")
 
 
-@bot.on(rekcah05(pattern=f"unmute(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"unmute(?: |$)(.*)", allow_sudo=True))
 async def unmoot(unmot):
     """ For .unmute command, unmute the replied/tagged person """
     # Admin or creator check
@@ -1922,7 +1922,7 @@ async def ungmoot(un_gmute):
                 f"CHAT: {un_gmute.chat.title}(`{un_gmute.chat_id}`)")
         
 
-@bot.on(rekcah05(pattern=f"ungban(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"ungban(?: |$)(.*)", allow_sudo=True))
 async def ungmoot(un_gmute):
     """ For .ungmute command, ungmutes the target in the userbot """
     # Admin or creator check
@@ -2040,7 +2040,7 @@ async def gspider(gspdr):
         except UserIdInvalidError:
             return await gspdr.edit(f"`{JAVES_NNAME}:` ** Gban failed!! ** ")
 
-@bot.on(rekcah05(pattern=f"gban(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"gban(?: |$)(.*)", allow_sudo=True))
 async def gspider(gspdr):
     """ For .gmute command, globally mutes the replied/tagged person """
     # Admin or creator check
@@ -2177,7 +2177,7 @@ async def rm_deletedacc(show):
             \nCHAT: {show.chat.title}(`{show.chat_id}`)")
 
 
-@bot.on(rekcah05(pattern=f"delusers(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"delusers(?: |$)(.*)", allow_sudo=True))
 async def rm_deletedacc(show):
     """ For .delusers command, list all the ghost/deleted accounts in a chat. """
     if not show.is_group:
@@ -2284,7 +2284,7 @@ async def get_admin(show):
         remove("adminlist.txt")
 
 
-@bot.on(rekcah05(pattern=f"admins$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"admins$", allow_sudo=True))
 async def get_admin(show):
     """ For .admins command, list all of the admins of the chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -2357,7 +2357,7 @@ async def get_bots(show):
         )
         remove("botlist.txt")
 
-@bot.on(rekcah05(pattern=f"bots$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"bots$", allow_sudo=True))
 async def get_bots(show):
     """ For .bots command, list all of the bots of the chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -2442,7 +2442,7 @@ async def pin(msg):
             f"LOUD: {not is_silent}")
 
 
-@bot.on(rekcah05(pattern=f"pin(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"pin(?: |$)(.*)", allow_sudo=True))
 async def pin(msg):
     """ For .pin command, pins the replied/tagged message on the top the chat. """
     # Admin or creator check
@@ -2532,7 +2532,7 @@ async def kick(usr):
             f"CHAT: {usr.chat.title}(`{usr.chat_id}`)\n")
 
 
-@bot.on(rekcah05(pattern=f"kick(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"kick(?: |$)(.*)", allow_sudo=True))
 async def kick(usr):
     """ For .kick command, kicks the replied/tagged person from the group. """
     # Admin or creator check
@@ -2668,7 +2668,7 @@ async def get_user_from_id(user, event):
     return user_obj
 
 
-@bot.on(rekcah05(pattern=f"users ?(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"users ?(.*)", allow_sudo=True))
 async def get_users(show):
     """ For .users command, list all of the users in a chat. """
     info = await show.client.get_entity(show.chat_id)
@@ -2805,7 +2805,7 @@ async def add_new_filter(new_handler):
 
 
 
-@bot.on(rekcah05(pattern=f"savefilter2 (\w*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"savefilter2 (\w*)", allow_sudo=True))
 async def add_new_filter(new_handler):
     """ For .filter command, allows adding new filters in a chat """
     try:
@@ -2867,7 +2867,7 @@ async def remove_a_filter(r_handler):
             "`Filter` **{}** `was deleted successfully`".format(filt))
 
 
-@bot.on(rekcah05(pattern=f"clearfilter2 ?(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"clearfilter2 ?(.*)", allow_sudo=True))
 async def remove_a_filter(r_handler):
     """ For .stop command, allows you to remove a filter from a chat. """
     try:
@@ -2904,7 +2904,7 @@ async def filters_active(event):
     await event.edit(transact)
 
 
-@bot.on(rekcah05(pattern=f"checkfilter2$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"checkfilter2$", allow_sudo=True))
 async def filters_active(event):
     """ For .filters command, lists all of the active filters in a chat. """
     try:
@@ -3111,7 +3111,7 @@ async def fetch_info(chat, event):
 
 
 
-@bot.on(rekcah05(pattern=f"chatinfo(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"chatinfo(?: |$)(.*)", allow_sudo=True))
 async def info(event):
     await event.reply("`Analysing the chat...`")
     chat = await get_chatinfo(event)
@@ -3328,7 +3328,7 @@ async def _(event):
     await event.edit(reply, parse_mode="html")
 
 
-@bot.on(rekcah05(pattern=f"warn(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"warn(?: |$)(.*)", allow_sudo=True))
 async def _(event):
  reply_message = await event.get_reply_message()
  idd = reply_message.from_id
@@ -3376,7 +3376,7 @@ async def _(event):
     else:
         await event.edit("this user hasn't got any warnings!")
 
-@bot.on(rekcah05(pattern=f"warns(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"warns(?: |$)(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -3405,7 +3405,7 @@ async def _(event):
     await event.edit("Warnings have been reset!")
 
 
-@bot.on(rekcah05(pattern=f"resetwarns(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"resetwarns(?: |$)(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -3451,7 +3451,7 @@ async def _(event):
                     await event.reply(str(e))
             await event.edit(f"**{JAVES_NNAME}:** Invited Successfully")
 
-@bot.on(rekcah05(pattern=f"invite(?: |$)(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"invite(?: |$)(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -3510,7 +3510,7 @@ async def on_snip_save(event):
         await event.edit(f"`{JAVES_NNAME}`: **Reply to a message with `!savefilter keyword` to save the filter**")
 
 
-@bot.on(rekcah05(pattern=f"savefilter (.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"savefilter (.*)", allow_sudo=True))
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
     msg = await event.get_reply_message()
@@ -3558,7 +3558,7 @@ async def on_snip_list(event):
     else:
         await event.edit(OUT_STR)
 
-@bot.on(rekcah05(pattern=f"checkfilter$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"checkfilter$", allow_sudo=True))
 async def on_snip_list(event):
     all_snips = get_all_rkfilters(event.chat_id)
     OUT_STR = f"`{JAVES_NNAME}`: Available filters in the Current Chat:\n"
@@ -3589,7 +3589,7 @@ async def on_snip_delete(event):
     remove_filter(event.chat_id, name)
     await event.edit(f"`{JAVES_NNAME}`: filter {name} deleted successfully")
 
-@bot.on(rekcah05(pattern=f"clearfilter (.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"clearfilter (.*)", allow_sudo=True))
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
     remove_filter(event.chat_id, name)
@@ -3606,7 +3606,7 @@ async def on_all_snip_delete(event):
 
 
 
-@bot.on(rekcah05(pattern=f"clearallfilter$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"clearallfilter$", allow_sudo=True))
 async def on_all_snip_delete(event):
     remove_all_rkfilters(event.chat_id)
     await event.reply(f"`{JAVES_NNAME}`: filters **in current chat** deleted successfully")
@@ -3619,7 +3619,7 @@ from telethon.tl import types, functions
 
 
 
-@bot.on(events.NewMessage(incoming=True))
+@javes.on(events.NewMessage(incoming=True))
 async def on_new_message(event):
     # TODO: exempt admins from locks
     name = event.raw_text
@@ -3645,7 +3645,7 @@ async def on_add_black_list(event):
 
 
 
-@bot.on(rekcah05(pattern=f"saveblacklist ((.|\n)*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"saveblacklist ((.|\n)*)", allow_sudo=True))
 async def on_add_black_list(event):
     text = event.pattern_match.group(1)
     to_blacklist = list(set(trigger.strip() for trigger in text.split("\n") if trigger.strip()))
@@ -3681,7 +3681,7 @@ async def on_view_blacklist(listbl):
         
         
         
-@bot.on(rekcah05(pattern=f"checkblacklist$", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"checkblacklist$", allow_sudo=True))
 async def on_view_blacklist(listbl):
     all_blacklisted = sql.get_chat_blacklist(listbl.chat_id)
     OUT_STR = "Blacklists in the Current Chat:\n"
@@ -3719,7 +3719,7 @@ async def on_delete_blacklist(event):
     await event.edit(f"Removed {successful} / {len(to_unblacklist)} from the blacklist")
         
 
-@bot.on(rekcah05(pattern=f"clearblacklist ((.|\n)*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"clearblacklist ((.|\n)*)", allow_sudo=True))
 async def on_delete_blacklist(event):
     text = event.pattern_match.group(1)
     to_unblacklist = list(set(trigger.strip() for trigger in text.split("\n") if trigger.strip()))
@@ -3762,7 +3762,7 @@ async def _(event):
 
 
 
-@bot.on(rekcah05(pattern=f"unbanall ?(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"unbanall ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -3947,7 +3947,7 @@ async def ban_user(chat_id, i, rights):
 
 
 
-@bot.on(rekcah05(pattern=f"akick ?(.*)", allow_sudo=True))
+@javes.on(rekcah05(pattern=f"akick ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return

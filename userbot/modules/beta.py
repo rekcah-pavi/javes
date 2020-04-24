@@ -122,41 +122,6 @@ async def _(event):
 
 
 
-@javes05(outgoing=True, disable_errors=True, pattern="^!fry(?: |$)(.*)")
-async def _(event):
-    if event.fwd_from:
-        return 
-    if not event.reply_to_msg_id:
-       await event.edit(f"`{JAVES_NNAME}: ` **reply to a sticker**")
-       return
-    reply_message = await event.get_reply_message() 
-    if not reply_message.media:
-       await event.edit(f"`{JAVES_NNAME}: ` **reply to a sticker**")
-       return
-    chat = "@image_deepfrybot"
-    sender = reply_message.sender
-    if reply_message.sender.bot:
-       await event.edit(f"`{JAVES_NNAME}: ` **Reply to actual users message.***")
-       return
-    await event.edit(f"`{JAVES_NNAME}: ` **Frying image...**")
-    async with bot.conversation(chat) as conv:
-          try:     
-              response = conv.wait_event(events.NewMessage(incoming=True,from_users=432858024))
-              await bot.forward_messages(chat, reply_message)
-              response = await response 
-          except YouBlockedUserError: 
-              await event.reply("```Please unblock @image_deepfrybot and try again```")
-              return
-          if response.text.startswith("Forward"):
-             await event.edit(f"`{JAVES_NNAME}: ` **privacy error**")
-          else:
-          	if response.text.startswith("Select"):
-          		await event.edit(f"`{JAVES_NNAME}: Please go to` @DrWebBot `and select your language.`") 
-          	else: 
-          			await bot.send_file(event.chat_id, response.message.media)
-
-
-
 @javes05(outgoing=True, disable_errors=True, pattern="^!mask(?: |$)(.*)")
 async def _(event):
     if event.fwd_from:
@@ -189,6 +154,5 @@ async def _(event):
           		await event.edit(f"`{JAVES_NNAME}: Please go to` @DrWebBot `and select your language.`") 
           	else: 
           			await bot.send_file(event.chat_id, response.message.media)
-
 
 

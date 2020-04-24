@@ -668,7 +668,7 @@ async def figlet(event):
         result = pyfiglet.figlet_format(text, font=font)
     else:
         result = pyfiglet.figlet_format(text)
-    await event.respond("âââ`{}`".format(result))
+    await event.respond("`{}`".format(result))
     await event.delete()
     
 
