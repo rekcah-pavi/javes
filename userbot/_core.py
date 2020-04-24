@@ -54,7 +54,7 @@ async def install(event):
         try:
             downloaded_file_name = await event.client.download_media(  # pylint:disable=E0602
                 await event.get_reply_message(),
-                "/root/userbot/userbot/modules/sql_helper/"  # pylint:disable=E0602
+                "/root/userbot/userbot/modules/sql_helper"  # pylint:disable=E0602
             )
             if "(" not in downloaded_file_name:
                 path1 = Path(downloaded_file_name)
