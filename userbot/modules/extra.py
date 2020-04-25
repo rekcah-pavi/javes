@@ -1,155 +1,349 @@
-from youtube_dl.utils import (DownloadError, ContentTooShortError, ExtractorError, GeoRestrictedError, MaxDownloadsReached, PostProcessingError, UnavailableVideoError, XAttrMetadataError)
-from asyncio import sleep
-from asyncio import wait, sleep
-from barcode.writer import ImageWriter
+import asyncio
+import pyfiglet
+import asyncio
+import os
+import time
+import asyncio
+import time
+from telethon.tl import functions
+from telethon.errors import FloodWaitError
+from userbot import CMD_HELP, bot
+from telethon.tl.functions.account import UpdateProfileRequest
+import time
+import random
+from telethon import *
+import asyncio
+import asyncio
+from userbot.google_images_download import googleimagesdownload
+from telethon import events
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import ChannelParticipantsAdmins
+import shutil
 from bs4 import BeautifulSoup
-from collections import defaultdict
-from datetime import *
-from datetime import datetime
-from datetime import datetime as dt
-from emoji import emojize
+import re
+from time import sleep
+from html import unescape
+from re import findall
+from selenium import webdriver
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from telethon import events
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from time import sleep
+import asyncio
+import os
+import random
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from wikipedia import summary
+from wikipedia.exceptions import DisambiguationError, PageError
+from urbandict import define
+from requests import get
+from search_engine_parser import GoogleSearch
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googletrans import LANGUAGES, Translator
+from gtts import gTTS
+from gtts.lang import tts_langs
 from emoji import get_emoji_regexp
-from getpass import getuser
+from youtube_dl import YoutubeDL
+import asyncio
+import os
+import subprocess
+from datetime import datetime
+from gtts import gTTS
+from youtube_dl.utils import (DownloadError, ContentTooShortError,
+                              ExtractorError, GeoRestrictedError,
+                              MaxDownloadsReached, PostProcessingError,
+                              UnavailableVideoError, XAttrMetadataError)
+from asyncio import sleep
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
+from telethon.tl.types import DocumentAttributeAudio
+
+import os
+import time
+import zipfile
+from userbot import TEMP_DOWNLOAD_DIRECTORY
+from telethon import events
+import os
+import requests
+import bs4
+import re
+import shutil
+from bs4 import BeautifulSoup
+import re
+from time import sleep
+from html import unescape
+from re import findall
+from datetime import datetime
+from selenium import webdriver
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from wikipedia import summary
+from wikipedia.exceptions import DisambiguationError, PageError
+from urbandict import define
+from requests import get
+from google_images_download import google_images_download
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googletrans import LANGUAGES, Translator
+from gtts import gTTS
+from emoji import get_emoji_regexp
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
+from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
+import time
+from datetime import datetime
+from pySmartDL import SmartDL
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+from zipfile import ZipFile
+import asyncio
+from telethon import events
+import subprocess
+from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotModifiedError
+import io
+import asyncio
+import time
+from userbot import bot
+import glob
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
+from telethon import events
+from userbot.events import javes05
+import logging
+from userbot import bot, CMD_HELP
+from telethon.tl.functions.photos import GetUserPhotosRequest
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import MessageEntityMentionName
+from telethon.utils import get_input_location
+import os
+import instantmusic , subprocess
+import asyncio
+import json
+import re
+from userbot.events import javes05
+import aiohttp
+from bs4 import BeautifulSoup
+from telethon.utils import get_inner_text
+from youtube_dl import YoutubeDL
+import eyed3
+import requests
+import os
+import lyricsgenius
+from userbot import GENIUS
+from userbot import GENIUS_API_TOKEN
+import os
+from telethon import events
+import datetime
+import asyncio
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from userbot.events import javes05
+from userbot import bot, CMD_HELP
+import asyncio
+import asyncio
+from telethon import events
+from telethon.tl.types import ChannelParticipantsAdmins
+import html
+from telethon.tl.functions.channels import EditBannedRequest
+import userbot.modules.sql_helper.warns_sql as sql
+from userbot.events import javes05
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
+from asyncio import sleep
+from os import remove
+from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
+from telethon import events
+import random
+from userbot import CMD_HELP, GENIUS
+import os
+from telethon import events
+import os
+import requests
+import json
+import time
+from datetime import datetime
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon import events
+from io import BytesIO
+from PIL import Image
+import asyncio
+import time
+from datetime import datetime
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+from pySmartDL import SmartDL
+from telethon.tl.types import DocumentAttributeVideo
+from userbot.modules.system import progress, humanbytes, time_formatter
+from userbot import (TEMP_DOWNLOAD_DIRECTORY, CMD_HELP, bot)
+
+import datetime
+from collections import defaultdict
+import math
+import os
+import requests
+import zipfile
+from telethon.errors.rpcerrorlist import StickersetInvalidError
+from telethon.errors import MessageNotModifiedError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from telethon.tl.functions.messages import GetStickerSetRequest
+from telethon.tl.types import (DocumentAttributeFilename, DocumentAttributeSticker,
+                               InputMediaUploadedDocument, InputPeerNotifySettings,
+                               InputStickerSetID, InputStickerSetShortName,
+                               MessageMediaPhoto)
+from emoji import emojize
+from math import sqrt
+from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
+from telethon.tl.functions.messages import GetHistoryRequest, CheckChatInviteRequest, GetFullChatRequest
+from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
+from telethon.errors import (ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, InviteHashEmptyError, InviteHashExpiredError, InviteHashInvalidError)
+from telethon.utils import get_input_location
+from userbot import CMD_HELP
+import asyncio
+import shutil
+from bs4 import BeautifulSoup
+import re
+from time import sleep
+from html import unescape
+from userbot.events import javes05
+from re import findall
+from selenium import webdriver
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from wikipedia import summary
+from wikipedia.exceptions import DisambiguationError, PageError
+import asyncurban
+from requests import get
+from search_engine_parser import GoogleSearch
 from google_images_download import google_images_download
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googletrans import LANGUAGES, Translator
 from gtts import gTTS
 from gtts.lang import tts_langs
-from hachoir.metadata import extractMetadata
-from hachoir.parser import createParser
-from html import unescape
-from humanize import naturalsize
-from io import BytesIO
-from math import sqrt
-from os import environ
-from os import popen
-from os import remove
-from PIL import Image
-from pylast import User, WSError
+from emoji import get_emoji_regexp
+from youtube_dl import YoutubeDL
+from youtube_dl.utils import (DownloadError, ContentTooShortError,ExtractorError, GeoRestrictedError,MaxDownloadsReached, PostProcessingError,UnavailableVideoError, XAttrMetadataError)
+from asyncio import sleep
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
+from telethon.tl.types import DocumentAttributeAudio
+from userbot.modules.system import progress, humanbytes, time_formatter
+import io
+from telethon import events
+import asyncio
+import zipfile
 from pySmartDL import SmartDL
+import time
+import os
+from userbot.modules.system import progress, humanbytes, time_formatter
+from telethon import events
+import os
+from PIL import Image
+from datetime import datetime
+from telegraph import Telegraph, upload_file, exceptions
+from userbot import (TELEGRAPH_SHORT_NAME, TEMP_DOWNLOAD_DIRECTORY, BOTLOG_CHATID, CMD_HELP, bot)
+from datetime import datetime as dt
 from pytz import country_names as c_n
 from pytz import country_timezones as c_tz
 from pytz import timezone as tz
-from random import choice
-from random import choice, getrandbits, randint
-from re import findall
+from userbot import CMD_HELP, COUNTRY, TZ_NUMBER
+import asyncio
+from asyncio import wait, sleep
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
+import traceback
 from re import match
-from re import sub
-from requests import get
-from requests import get, post, exceptions
-from search_engine_parser import GoogleSearch
 from selenium import webdriver
+from asyncio import sleep
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import Select
+from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
+import io
+import os
+import urllib
+from urllib.request import urlopen
+import requests
+from bs4 import BeautifulSoup
+import re
+from telethon.tl.types import MessageMediaPhoto
+from PIL import Image
+from asyncio import sleep
+from pylast import User, WSError
+from re import sub
+from urllib import parse
+from os import environ
+from sys import setrecursionlimit
+import os
+import asyncio
+import qrcode
+import barcode
+from barcode.writer import ImageWriter
+from bs4 import BeautifulSoup
+from telethon.errors import AboutTooLongError
+from telethon.tl.functions.account import UpdateProfileRequest
+from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import User as Userbot
+from telethon.errors.rpcerrorlist import FloodWaitError
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, DEFAULT_BIO, BIO_PREFIX, lastfm, LASTFM_USERNAME, bot
 from subprocess import PIPE
 from subprocess import run as runapp
-from sys import executable
-from sys import setrecursionlimit
-from telegraph import Telegraph, upload_file, exceptions
-from telethon import *
-from telethon import events
-from telethon import events, functions
-from telethon.errors import (ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, InviteHashEmptyError, InviteHashExpiredError, InviteHashInvalidError)
-from telethon.errors import AboutTooLongError
-from telethon.errors import FloodWaitError
-from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotModifiedError
-from telethon.errors import MessageNotModifiedError
-from telethon.errors.rpcerrorlist import FloodWaitError
-from telethon.errors.rpcerrorlist import StickersetInvalidError
-from telethon.errors.rpcerrorlist import YouBlockedUserError
-from telethon.tl import functions
-from telethon.tl.functions.account import UpdateNotifySettingsRequest
-from telethon.tl.functions.account import UpdateProfileRequest
-from telethon.tl.functions.channels import EditBannedRequest
-from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
-from telethon.tl.functions.messages import GetHistoryRequest, CheckChatInviteRequest, GetFullChatRequest
-from telethon.tl.functions.messages import GetStickerSetRequest
-from telethon.tl.functions.photos import GetUserPhotosRequest
-from telethon.tl.functions.users import GetFullUserRequest
-from telethon.tl.types import DocumentAttributeFilename, DocumentAttributeSticker, ChannelParticipantsAdmins
-#from telethon.tl.types import DocumentAttributeAudio
-from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
-from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
-from telethon.tl.types import DocumentAttributeVideo
-from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
-from telethon.tl.types import MessageEntityMentionName
-#from telethon.tl.types import MessageMediaPhoto
-from telethon.tl.types import User as Userbot
-from telethon.utils import get_inner_text
-from telethon.utils import get_input_location
-from time import sleep
-from urbandict import define
-from urllib import parse
-from urllib.error import HTTPError
-from urllib.parse import quote_plus
-from urllib.request import urlopen
-from userbot import (TELEGRAPH_SHORT_NAME, TEMP_DOWNLOAD_DIRECTORY, BOTLOG_CHATID, CMD_HELP, bot)
-from userbot import (TEMP_DOWNLOAD_DIRECTORY, CMD_HELP, bot)
-from userbot import bot
-from userbot import bot, CMD_HELP
-from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
-from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
-from userbot import CMD_HELP
-from userbot import CMD_HELP, bot
-from userbot import CMD_HELP, bot, BIO_MESSAGE, BIO_MSG
-from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID
-from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, DEFAULT_BIO, BIO_PREFIX, lastfm, LASTFM_USERNAME, bot
-from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
-from userbot import CMD_HELP, COUNTRY, TZ_NUMBER
-from userbot import CMD_HELP, GENIUS
-from userbot import GENIUS
-from userbot import GENIUS_API_TOKEN
-from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
-from userbot import TEMP_DOWNLOAD_DIRECTORY
-from userbot.events import javes05
-from userbot.google_images_download import googleimagesdownload
-from userbot.modules.system import progress, humanbytes, time_formatter
-from wikipedia import summary
-from wikipedia.exceptions import DisambiguationError, PageError
-from youtube_dl import YoutubeDL
-#from youtube_dl.utils import DownloadError, ContentTooShortError
-from youtube_dl.utils import DownloadError, ContentTooShortError, ExtractorError, GeoRestrictedError, MaxDownloadsReached, PostProcessingError, UnavailableVideoError, XAttrMetadataError
-from zipfile import ZipFile
-import aiohttp
-import asyncio
-import asyncurban
-import barcode
-import bs4
-import datetime
-import eyed3
-import glob
-import html
-import instantmusic , subprocess
-import io
-import json
-import logging
-import lyricsgenius
-import math
-import os
 import pybase64
-import pyfiglet
-import pytz
-import qrcode
-import random
-import re
-import requests
-import shutil
-import subprocess
+from userbot import CMD_HELP
+from getpass import getuser
+from os import remove
+from sys import executable
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID
+from telethon import events, functions
+from userbot import CMD_HELP
 import sys
-import time
-import time as t
-import traceback
-import urllib
+from requests import get, post, exceptions
+import asyncio
+import os
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
+from os import popen
+import re
 import urllib.parse
-import userbot.modules.sql_helper.warns_sql as sql
-import zipfile
-InputMediaUploadedDocument, InputPeerNotifySettings,
-InputStickerSetID, InputStickerSetShortName,
-logger = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
-logging.basicConfig(level=logging.INFO)
-
-from youtube_dl.utils import (DownloadError, ContentTooShortError,ExtractorError, GeoRestrictedError,MaxDownloadsReached, PostProcessingError,UnavailableVideoError, XAttrMetadataError)
+import json
+from random import choice, getrandbits, randint
+from random import choice
+import requests
+from bs4 import BeautifulSoup
+from humanize import naturalsize
+import re
+from requests import get
+from bs4 import BeautifulSoup
+from userbot import CMD_HELP
+import datetime
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from userbot import bot, CMD_HELP
+from requests import get, post, exceptions
+import asyncio
+import os
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
+from telethon import events
+import subprocess
+from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotModifiedError
+import io
+import asyncio
+import time
+from userbot import CMD_HELP, bot, BIO_MESSAGE, BIO_MSG
+import glob
+import os
+from datetime import *
+import pytz
+import math
+import time as t
 x = math.inf
 counter = 0
 start=t.time()
@@ -390,7 +584,7 @@ async def mim(event):
                 caption="Memifyed",
             )
             await event.delete()
-            #await bot.send_message(event.chat_id, "`â ï¸â ï¸Ah Shit... Here we go Again!ð¥ð¥`")
+            #await bot.send_message(event.chat_id, "`Ã¢ÂÂ Ã¯Â¸ÂÃ¢ÂÂ Ã¯Â¸ÂAh Shit... Here we go Again!Ã°ÂÂÂ¥Ã°ÂÂÂ¥`")
           elif not is_message_image(reply_message):
             await event.edit("Invalid message type. Plz choose right message type u NIBBA.")
             return
@@ -1892,17 +2086,25 @@ async def carbon_api(e):
 
 @javes05(outgoing=True, pattern="^!img (.*)")
 async def img_sampler(event):
-    """ For .img command, search and return images matching the query. """
-    await event.edit("Processing...")
-    query = event.pattern_match.group(1)
-    lim = findall(r"lim=\d+", query)
+    await event.edit(f"`{JAVES_NNAME}` : **Searching image......**")
+    query = await event.get_reply_message()
+    if event.pattern_match.group(1):
+        query = event.pattern_match.group(1)
+    elif query:
+        query = reply.message
+    else:
+    	await event.edit(f"`{JAVES_NNAME}` : **I  need Something to Search **")
+    	return
+        
+    lim = findall(r"max\d+", query)
+    # lim = event.pattern_match.group(1)
     try:
         lim = lim[0]
-        lim = lim.replace("lim=", "")
-        query = query.replace("lim=" + lim[0], "")
+        lim = lim.replace("max", "")
+        query = query.replace("max" + lim[0], "")
     except IndexError:
-        lim = 2
-    response = google_images_download.googleimagesdownload()
+        lim = 3
+    response = googleimagesdownload()
 
     # creating list of arguments
     arguments = {
@@ -1915,10 +2117,10 @@ async def img_sampler(event):
     # passing the arguments to the function
     paths = response.download(arguments)
     lst = paths[0][query]
-    await event.client.send_file(
-        await event.client.get_input_entity(event.chat_id), lst)
-    rmtree(os.path.dirname(os.path.abspath(lst[0])))
-    await event.delete()
+    await event.client.send_file(await event.client.get_input_entity(event.chat_id), lst)
+    shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
+  
+
 
 
 @javes05(outgoing=True, pattern="^\!currency (.*)")
@@ -2839,10 +3041,10 @@ async def apk(e):
         app_rating = results[0].findNext('div', 'Vpfmgd').findNext('div', 'pf5lIe').find('div')['aria-label']
         app_link = "https://play.google.com"+results[0].findNext('div', 'Vpfmgd').findNext('div', 'vU6FJ p63iDd').a['href']
         app_icon = results[0].findNext('div', 'Vpfmgd').findNext('div', 'uzcko').img['data-src']
-        app_details = "<a href='"+app_icon+"'>📲&#8203;</a>"
+        app_details = "<a href='"+app_icon+"'>ð²&#8203;</a>"
         app_details += " <b>"+app_name+"</b>"
         app_details += "\n\n<code>Developer :</code> <a href='"+app_dev_link+"'>"+app_dev+"</a>"
-        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "⭐ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "⭐ ").replace("five", "5")
+        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "â­ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "â­ ").replace("five", "5")
         app_details += "\n<code>Features :</code> <a href='"+app_link+"'>View in Play Store</a>"
         await e.edit(app_details, link_preview = True, parse_mode = 'HTML')
     except IndexError:
