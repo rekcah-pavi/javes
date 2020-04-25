@@ -1,4 +1,4 @@
-ExtractorError, GeoRestrictedError,
+from youtube_dl.utils import (DownloadError, ContentTooShortError, ExtractorError, GeoRestrictedError, MaxDownloadsReached, PostProcessingError, UnavailableVideoError, XAttrMetadataError)
 from asyncio import sleep
 from asyncio import wait, sleep
 from barcode.writer import ImageWriter
@@ -67,15 +67,14 @@ from telethon.tl.functions.messages import GetHistoryRequest, CheckChatInviteReq
 from telethon.tl.functions.messages import GetStickerSetRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from telethon.tl.functions.users import GetFullUserRequest
-from telethon.tl.types import (DocumentAttributeFilename, DocumentAttributeSticker,
-from telethon.tl.types import ChannelParticipantsAdmins
-from telethon.tl.types import DocumentAttributeAudio
+from telethon.tl.types import DocumentAttributeFilename, DocumentAttributeSticker, ChannelParticipantsAdmins
+#from telethon.tl.types import DocumentAttributeAudio
 from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 from telethon.tl.types import DocumentAttributeFilename, MessageMediaPhoto
 from telethon.tl.types import DocumentAttributeVideo
 from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
 from telethon.tl.types import MessageEntityMentionName
-from telethon.tl.types import MessageMediaPhoto
+#from telethon.tl.types import MessageMediaPhoto
 from telethon.tl.types import User as Userbot
 from telethon.utils import get_inner_text
 from telethon.utils import get_input_location
@@ -109,8 +108,8 @@ from userbot.modules.system import progress, humanbytes, time_formatter
 from wikipedia import summary
 from wikipedia.exceptions import DisambiguationError, PageError
 from youtube_dl import YoutubeDL
-from youtube_dl.utils import (DownloadError, ContentTooShortError,
-from youtube_dl.utils import (DownloadError, ContentTooShortError,ExtractorError, GeoRestrictedError,MaxDownloadsReached, PostProcessingError,UnavailableVideoError, XAttrMetadataError)
+#from youtube_dl.utils import DownloadError, ContentTooShortError
+from youtube_dl.utils import DownloadError, ContentTooShortError, ExtractorError, GeoRestrictedError, MaxDownloadsReached, PostProcessingError, UnavailableVideoError, XAttrMetadataError
 from zipfile import ZipFile
 import aiohttp
 import asyncio
@@ -149,9 +148,8 @@ InputMediaUploadedDocument, InputPeerNotifySettings,
 InputStickerSetID, InputStickerSetShortName,
 logger = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
 logging.basicConfig(level=logging.INFO)
-MaxDownloadsReached, PostProcessingError,
-MessageMediaPhoto)
-UnavailableVideoError, XAttrMetadataError)
+
+from youtube_dl.utils import (DownloadError, ContentTooShortError,ExtractorError, GeoRestrictedError,MaxDownloadsReached, PostProcessingError,UnavailableVideoError, XAttrMetadataError)
 x = math.inf
 counter = 0
 start=t.time()
