@@ -1,6 +1,7 @@
 from asyncio import sleep
 from os import remove
 from asyncio import sleep
+from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 import asyncio
 from telethon import events
 from datetime import datetime, timedelta
@@ -137,6 +138,7 @@ TYPE_PHOTO = 1
 TYPE_DOCUMENT = 2
 
 
+
 global last_triggered_rkfilters
 last_triggered_rkfilters = {}  # pylint:disable=E0602
 #filters logic
@@ -183,6 +185,7 @@ async def on_snip(event):
 
 @javes.on(ChatAction)
 async def welcome_to_chat(event):
+	#welcome logic
     try:
         from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings
         from userbot.modules.sql_helper.welcome_sql import update_previous_welcome
@@ -256,7 +259,7 @@ async def welcome_to_chat(event):
 
 @javes.on(events.NewMessage(incoming=True))
 async def filter_incoming_handler(handler):
-    """ Checks if the incoming message contains handler of a filter """
+    #filters logic
     try:
         if not (await handler.get_sender()).bot:
             try:
@@ -283,7 +286,7 @@ async def filter_incoming_handler(handler):
 
 @javes.on(events.NewMessage(incoming=True))
 async def muter(moot):
-    """ gban logic"""
+#gban logic
     try:
         from userbot.modules.sql_helper.spam_mute_sql import is_muted
         from userbot.modules.sql_helper.gmute_sql import is_gmuted
@@ -314,196 +317,48 @@ async def muter(moot):
         send_games=True,
         send_inline=True,
         embed_links=True,
-    )
-    if muted:
-        for i in muted:
-            if str(i.sender) == str(moot.sender_id):
-                try:
-                    await moot.delete()
-                    await moot.client(EditBannedRequest(moot.chat_id, moot.sender_id,rights))          
-                except (BadRequestError, UserAdminInvalidError,ChatAdminRequiredError, UserIdInvalidError):
-                    await moot.client.send_read_acknowledge(
-                        moot.chat_id, moot.id)
+    )    
     if gmuted:
         for i in gmuted:
             if i.sender == str(moot.sender_id):
+            	#fix bug , block gbaned user in pm
+                if moot.is_private:       
+                    #await moot.delete()  let him send last message :0
+                    await moot.client(BlockRequest(moot.sender_id))
+                    await moot.reply(
+                     f"`{JAVES_NNAME}:` ** Gban User Found!!** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Id**: [{moot.sender_id}](tg://user?id={moot.sender_id})\n"
+                     #f"**Victim ID** : `{user.id}`\n"                     
+                     #f"**Chat** :  `{gspdr.chat.title}`\n"
+                     #f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n")
+                     #f"**Add user gban list **  : `True`\n")
+                    return 
+                chat = await moot.get_chat()
+                admin = chat.admin_rights
+                creator = chat.creator   
+                if not admin and not creator:
+                	return
                 try:
                     await moot.delete()
                     await moot.client(EditBannedRequest(moot.chat_id, moot.sender_id,BANNED_RIGHTS))
                     await moot.reply(
-                     f"`{JAVES_NNAME}:` ** Gbanned user found in this group, Sucessfully banned user!! **\n\n"            
-                     f" `Victim ID:`  **{moot.sender_id}**\n"
-                     f" `Gban Admin:`**{my_username}**")
+                     f"`{JAVES_NNAME}:` ** Gban User Found!!** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Id**: [{moot.sender_id}](tg://user?id={moot.sender_id})\n"
+                     #f"**Victim ID** : `{user.id}`\n"                     
+                     #f"**Chat** :  `{gspdr.chat.title}`\n"
+                     #f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `True`\n"
+                     f"**block user **  : `False`\n"
+                     f"**Report user **  : `True`\n")
+                     #f"**Add user gban list **  : `True`\n")
                 except (BadRequestError, UserAdminInvalidError,ChatAdminRequiredError, UserIdInvalidError):
                     await moot.client.send_read_acknowledge(
                         moot.chat_id, moot.id)
-
-
-
-
-@javes.on(ChatAction)
-async def ANTI_SPAMBOT(welcm):
-    try:
-        ''' Ban a recently joined user if it
-           matches the spammer checking algorithm. '''
-        if not ANTI_SPAMBOT:
-            return
-        if welcm.user_joined or welcm.user_added:
-            adder = None
-            ignore = False
-            users = None
-
-            if welcm.user_added:
-                ignore = False
-                try:
-                    adder = welcm.action_message.from_id
-                except AttributeError:
-                    return
-
-            async for admin in bot.iter_participants(
-                    welcm.chat_id, filter=ChannelParticipantsAdmins):
-                if admin.id == adder:
-                    ignore = True
-                    break
-
-            if ignore:
-                return
-
-            elif welcm.user_joined:
-                users_list = hasattr(welcm.action_message.action, "users")
-                if users_list:
-                    users = welcm.action_message.action.users
-                else:
-                    users = [welcm.action_message.from_id]
-
-            await sleep(5)
-            spambot = False
-
-            if not users:
-                return
-
-            for user_id in users:
-                async for message in bot.iter_messages(welcm.chat_id,
-                                                       from_user=user_id):
-
-                    correct_type = isinstance(message, Message)
-                    if not message or not correct_type:
-                        break
-
-                    join_time = welcm.action_message.date
-                    message_date = message.date
-
-                    if message_date < join_time:
-                        continue  # The message was sent before the user joined, thus ignore it
-
-                    check_user = await welcm.client.get_entity(user_id)
-
-                    # DEBUGGING. LEAVING IT HERE FOR SOME TIME ###
-                    print(
-                        f"User Joined: {check_user.first_name} [ID: {check_user.id}]"
-                    )
-                    print(f"Chat: {welcm.chat.title}")
-                    print(f"Time: {join_time}")
-                    print(
-                        f"Message Sent: {message.text}\n\n[Time: {message_date}]"
-                    )
-                    ##############################################
-
-                    try:
-                        cas_url = f"https://combot.org/api/cas/check?user_id={check_user.id}"
-                        r = get(cas_url, timeout=3)
-                        data = r.json()
-                    except BaseException:
-                        print(
-                            "CAS check failed, falling back to legacy anti_spambot behaviour."
-                        )
-                        data = None
-                        pass
-
-                    if data and data['ok']:
-                        reason = f"[Banned by Combot Anti Spam](https://combot.org/cas/query?u={check_user.id})"
-                        spambot = True
-                    elif "t.cn/" in message.text:
-                        reason = "Match on `t.cn` URLs"
-                        spambot = True
-                    elif "t.me/joinchat" in message.text:
-                        reason = "Potential Promotion Message"
-                        spambot = True
-                    elif message.fwd_from:
-                        reason = "Forwarded Message"
-                        spambot = True
-                    elif "?start=" in message.text:
-                        reason = "Telegram bot `start` link"
-                        spambot = True
-                    elif "bit.ly/" in message.text:
-                        reason = "Match on `bit.ly` URLs"
-                        spambot = True
-                    else:
-                        if check_user.first_name in ("Bitmex", "Promotion",
-                                                     "Information", "Dex",
-                                                     "Announcements", "Info"):
-                            if user.last_name == "Bot":
-                                reason = "Known spambot"
-                                spambot = True
-
-                    if spambot:
-                        print(f"Potential Spam Message: {message.text}")
-                        await message.delete()
-                        break
-
-                    continue  # Check the next messsage
-
-            if spambot:
-                chat = await welcm.get_chat()
-                admin = chat.admin_rights
-                creator = chat.creator
-                if not admin and not creator:
-                    if ANTI_SPAMBOT_SHOUT:
-                        await welcm.reply(
-                            f"`{JAVES_NNAME}`: @admins\n"
-                            "`Warning! There is a SPAMBOT Joined In group`\n"                           
-                            f"SpamBot Type: {reason}")
-                        kicked = False
-                        reported = True
-                else:
-                    try:
-
-                        await welcm.reply(
-                            f"`{JAVES_NNAME}`: ** Spambot Detected !!**\n"
-                            f"`REASON:` {reason}\n"
-                            "Kicking away for now, will log the ID for further purposes.\n"
-                            f"`USER:` [{check_user.first_name}](tg://user?id={check_user.id})"
-                        )
-
-                        await welcm.client.kick_participant(
-                            welcm.chat_id, check_user.id)
-                        kicked = True
-                        reported = False
-
-                    except BaseException:
-                        if ANTI_SPAMBOT_SHOUT:
-                            await welcm.reply(
-                            f"`{JAVES_NNAME}`: @admins\n"
-                            "`Warning! There is a SPAMBOT Joined In group`\n"                           
-                            f"SpamBot Type: {reason}")
-                            kicked = False
-                            reported = True
-
-                if BOTLOG:
-                    if kicked or reported:
-                        await welcm.client.send_message(
-                            BOTLOG_CHATID, "#ANTI_SPAMBOT REPORT\n"
-                            f"USER: [{user.first_name}](tg://user?id={check_user.id})\n"
-                            f"USER ID: `{check_user.id}`\n"
-                            f"CHAT: {welcm.chat.title}\n"
-                            f"CHAT ID: `{welcm.chat_id}`\n"
-                            f"REASON: {reason}\n"
-                            f"MESSAGE:\n\n{message.text}")
-    except ValueError:
-        pass
-
-
-
 
 
 
@@ -1870,21 +1725,62 @@ async def unmoot(unmot):
 
 
 
-@javes05(outgoing=True, disable_errors=True, pattern="^!ungban(?: |$)(.*)")
+@javes05(outgoing=True, disable_errors=False, pattern="^!ungban(?: |$)(.*)")
 async def ungmoot(un_gmute):
     """ For .ungmute command, ungmutes the target in the userbot """
     # Admin or creator check
-    chat = await un_gmute.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
     me = await un_gmute.client.get_me()
     my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
     my_username = f"@{me.username}" if me.username else my_mention
+    chat = await un_gmute.get_chat()
+    if un_gmute.is_private:       
+       #await un_gmute.edit(f"`{JAVES_NNAME}:` **Gban user in group!!**")
+       try:
+            from userbot.modules.sql_helper.gmute_sql import ungmute
+       except AttributeError:
+            await un_gmute.edit(NO_SQL)
+            return
 
-    # If not admin and not creator, return
+       user, reason = await get_user_from_event(un_gmute)
+       if user:
+            pass
+       else:
+            return    
+       await un_gmute.edit(f"`{JAVES_NNAME}:` **unGbaning User !! **")
+       if ungmute(user.id) is False:
+           await un_gmute.edit(
+            f"`{JAVES_NNAME}:`**Error! User probably already ungbanned.**")
+       else:
+          if reason:
+              await un_gmute.edit(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")
+          else:
+              await un_gmute.edit(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")      
+       return                
+    # If not admin and not creator, remove user from gbanned list
+    admin = chat.admin_rights
+    creator = chat.creator   
     if not admin and not creator:
-        await un_gmute.edit(NO_ADMIN)
-        return
+        try:
+            from userbot.modules.sql_helper.gmute_sql import ungmute
+        except AttributeError:
+            await un_gmute.edit(NO_SQL)
+            return
+
+        user, reason = await get_user_from_event(un_gmute)
+        if user:
+            pass
+        else:
+            return    
+        await un_gmute.edit(f"`{JAVES_NNAME}:` **unGbaning User !! **")
+        if ungmute(user.id) is False:
+           await un_gmute.edit(
+            f"`{JAVES_NNAME}:`**Error! User probably already ungbanned.**")
+        else:
+          if reason:
+              await un_gmute.edit(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")
+          else:
+              await un_gmute.edit(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")      
+        return                
 
     # Check if the function running under SQL mode
     try:
@@ -1904,7 +1800,7 @@ async def ungmoot(un_gmute):
     await un_gmute.edit(f"`{JAVES_NNAME}:` **UnGbaning User !! **")
 
     if ungmute(user.id) is False:
-        await un_gmute.edit(f"`{JAVES_NNAME}:` **Error! User probably not gbanned.**")
+        await un_gmute.edit(f"`{JAVES_NNAME}:` **Error! User probably not ungbanned.**")
     else:    	
         try:
             await un_gmute.client(
@@ -1926,17 +1822,58 @@ async def ungmoot(un_gmute):
 async def ungmoot(un_gmute):
     """ For .ungmute command, ungmutes the target in the userbot """
     # Admin or creator check
-    chat = await un_gmute.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
     me = await un_gmute.client.get_me()
     my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
     my_username = f"@{me.username}" if me.username else my_mention
+    chat = await un_gmute.get_chat()
+    if un_gmute.is_private:       
+       #await un_gmute.reply(f"`{JAVES_NNAME}:` **Gban user in group!!**")
+       try:
+            from userbot.modules.sql_helper.gmute_sql import ungmute
+       except AttributeError:
+            await un_gmute.reply(NO_SQL)
+            return
 
-    # If not admin and not creator, return
+       user, reason = await get_user_from_event(un_gmute)
+       if user:
+            pass
+       else:
+            return    
+       await un_gmute.reply(f"`{JAVES_NNAME}:` **UnGbaning User !! **")
+       if ungmute(user.id) is False:
+           await un_gmute.reply(
+            f"`{JAVES_NNAME}:`**Error! User probably already ungbanned.**")
+       else:
+          if reason:
+              await un_gmute.reply(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")
+          else:
+              await un_gmute.reply(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")      
+       return                
+    # If not admin and not creator, remove user from gbanned list
+    admin = chat.admin_rights
+    creator = chat.creator   
     if not admin and not creator:
-        await un_gmute.reply(NO_ADMIN)
-        return
+        try:
+            from userbot.modules.sql_helper.gmute_sql import ungmute
+        except AttributeError:
+            await un_gmute.reply(NO_SQL)
+            return
+
+        user, reason = await get_user_from_event(un_gmute)
+        if user:
+            pass
+        else:
+            return    
+        await un_gmute.reply(f"`{JAVES_NNAME}:` **unGbaning User !! **")
+        if ungmute(user.id) is False:
+           await un_gmute.reply(
+            f"`{JAVES_NNAME}:`**Error! User probably already ungbanned.**")
+        else:
+          if reason:
+              await un_gmute.reply(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")
+          else:
+              await un_gmute.reply(f"`{JAVES_NNAME}:` **Admin {my_username} UnGbanned [{user.first_name}](tg://user?id={user.id})**")      
+        return                
 
     # Check if the function running under SQL mode
     try:
@@ -1977,20 +1914,101 @@ async def ungmoot(un_gmute):
 
 
        
-@javes05(outgoing=True, disable_errors=True, pattern="^!gban(?: |$)(.*)")
-async def gspider(gspdr):
-    """ For .gmute command, globally mutes the replied/tagged person """
-    # Admin or creator check
+@javes05(outgoing=True, disable_errors=False, pattern="^!gban(?: |$)(.*)")
+async def gspider(gspdr):    
+    me = await gspdr.client.get_me()
+    my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
+    my_username = f"@{me.username}" if me.username else my_mention
     chat = await gspdr.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    
-    # If not admin and not creator, return
-    if not admin and not creator:
-        await gspdr.edit(NO_ADMIN)
-        return
+    if gspdr.is_private:       
+       #await gspdr.edit(f"`{JAVES_NNAME}:` **Gban user in group!!**")
+       try:
+            from userbot.modules.sql_helper.gmute_sql import gmute
+       except AttributeError:
+            await gspdr.edit(NO_SQL)
+            return
 
-    # Check if the function running under SQL mode
+       user, reason = await get_user_from_event(gspdr)
+       if user:
+            pass
+       else:
+            return    
+       await gspdr.edit(f"`{JAVES_NNAME}:` **Gbaning User !! **")
+       if gmute(user.id) is False:
+           await gspdr.edit(
+            f"`{JAVES_NNAME}:`**Error! User probably already gbanned.**")
+       else:
+          if reason:
+              await gspdr.edit(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                   #  f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
+                    
+          else:
+              await gspdr.edit(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                     #f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `Private!`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")       
+       return                
+    admin = chat.admin_rights
+    creator = chat.creator   
+    # If not admin and not creator add user in gban list
+    if not admin and not creator:
+        try:
+            from userbot.modules.sql_helper.gmute_sql import gmute
+        except AttributeError:
+            await gspdr.edit(NO_SQL)
+            return
+
+        user, reason = await get_user_from_event(gspdr)
+        if user:
+            pass
+        else:
+            return    
+        await gspdr.edit(f"`{JAVES_NNAME}:` **Gbaning User !! **")
+        if gmute(user.id) is False:
+           await gspdr.edit(
+            f"`{JAVES_NNAME}:`**Error! User probably already gbanned.**")
+        else:
+          if reason:
+              await gspdr.edit(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                     f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
+          else:
+              await gspdr.edit(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                     f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `Private!`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
+        return    
     try:
         from userbot.modules.sql_helper.gmute_sql import gmute
     except AttributeError:
@@ -2011,10 +2029,7 @@ async def gspider(gspdr):
     else:    	
         try:
             await gspdr.client(
-                EditBannedRequest(gspdr.chat_id, user.id, BANNED_RIGHTS))
-            me = await gspdr.client.get_me()
-            my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
-            my_username = f"@{me.username}" if me.username else my_mention
+                EditBannedRequest(gspdr.chat_id, user.id, BANNED_RIGHTS))          
             if reason:
                await gspdr.edit(
                      f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
@@ -2022,7 +2037,11 @@ async def gspider(gspdr):
                      f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
                      f"**Victim ID** : `{user.id}`\n"                     
                      f"**Chat** :  `{gspdr.chat.title}`\n"
-                     f"**Reason**  : `{reason}`")
+                     f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `True`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
                      
             else:
                   await gspdr.edit(
@@ -2031,7 +2050,11 @@ async def gspider(gspdr):
                      f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
                      f"**Victim ID** : `{user.id}`\n"                     
                      f"**Chat** :  `{gspdr.chat.title}`\n"
-                     f"**Reason**  : `Private!`")
+                     f"**Reason**  : `Private!`\n"
+                     f"**Ban user **  : `True`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
             if BOTLOG:
                   await gspdr.client.send_message(
                      BOTLOG_CHATID, "#GBAN\n"
@@ -2041,19 +2064,100 @@ async def gspider(gspdr):
             return await gspdr.edit(f"`{JAVES_NNAME}:` ** Gban failed!! ** ")
 
 @javes.on(rekcah05(pattern=f"gban(?: |$)(.*)", allow_sudo=True))
-async def gspider(gspdr):
-    """ For .gmute command, globally mutes the replied/tagged person """
-    # Admin or creator check
+async def gspider(gspdr):    
+    me = await gspdr.client.get_me()
+    my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
+    my_username = f"@{me.username}" if me.username else my_mention
     chat = await gspdr.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    
-    # If not admin and not creator, return
-    if not admin and not creator:
-        await gspdr.reply(NO_ADMIN)
-        return
+    if gspdr.is_private:       
+       #await gspdr.reply(f"`{JAVES_NNAME}:` **Gban user in group!!**")
+       try:
+            from userbot.modules.sql_helper.gmute_sql import gmute
+       except AttributeError:
+            await gspdr.reply(NO_SQL)
+            return
 
-    # Check if the function running under SQL mode
+       user, reason = await get_user_from_event(gspdr)
+       if user:
+            pass
+       else:
+            return    
+       await gspdr.reply(f"`{JAVES_NNAME}:` **Gbaning User !! **")
+       if gmute(user.id) is False:
+           await gspdr.reply(
+            f"`{JAVES_NNAME}:`**Error! User probably already gbanned.**")
+       else:
+          if reason:
+              await gspdr.reply(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                   #  f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
+                    
+          else:
+              await gspdr.reply(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                     #f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `Private!`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")       
+       return                
+    admin = chat.admin_rights
+    creator = chat.creator   
+    # If not admin and not creator add user in gban list
+    if not admin and not creator:
+        try:
+            from userbot.modules.sql_helper.gmute_sql import gmute
+        except AttributeError:
+            await gspdr.reply(NO_SQL)
+            return
+
+        user, reason = await get_user_from_event(gspdr)
+        if user:
+            pass
+        else:
+            return    
+        await gspdr.reply(f"`{JAVES_NNAME}:` **Gbaning User !! **")
+        if gmute(user.id) is False:
+           await gspdr.reply(
+            f"`{JAVES_NNAME}:`**Error! User probably already gbanned.**")
+        else:
+          if reason:
+              await gspdr.reply(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                     f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
+          else:
+              await gspdr.reply(
+                     f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
+                     f"`GbanAdmin`: **{my_username}**\n\n"
+                     f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
+                     f"**Victim ID** : `{user.id}`\n"                     
+                     f"**Chat** :  `{gspdr.chat.title}`\n"
+                     f"**Reason**  : `Private!`\n"
+                     f"**Ban user **  : `False`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
+        return    
     try:
         from userbot.modules.sql_helper.gmute_sql import gmute
     except AttributeError:
@@ -2074,10 +2178,7 @@ async def gspider(gspdr):
     else:    	
         try:
             await gspdr.client(
-                EditBannedRequest(gspdr.chat_id, user.id, BANNED_RIGHTS))
-            me = await gspdr.client.get_me()
-            my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
-            my_username = f"@{me.username}" if me.username else my_mention
+                EditBannedRequest(gspdr.chat_id, user.id, BANNED_RIGHTS))          
             if reason:
                await gspdr.reply(
                      f"`{JAVES_NNAME}:` **New Gban !! ** \n" 
@@ -2085,7 +2186,11 @@ async def gspider(gspdr):
                      f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
                      f"**Victim ID** : `{user.id}`\n"                     
                      f"**Chat** :  `{gspdr.chat.title}`\n"
-                     f"**Reason**  : `{reason}`")
+                     f"**Reason**  : `{reason}`\n"
+                     f"**Ban user **  : `True`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
                      
             else:
                   await gspdr.reply(
@@ -2094,7 +2199,11 @@ async def gspider(gspdr):
                      f"**Victim Name**: [{user.first_name}](tg://user?id={user.id})\n"
                      f"**Victim ID** : `{user.id}`\n"                     
                      f"**Chat** :  `{gspdr.chat.title}`\n"
-                     f"**Reason**  : `Private!`")
+                     f"**Reason**  : `Private!`\n"
+                     f"**Ban user **  : `True`\n"
+                     f"**block user **  : `True`\n"
+                     f"**Report user **  : `True`\n"
+                     f"**Add user gban list **  : `True`\n")
             if BOTLOG:
                   await gspdr.client.send_message(
                      BOTLOG_CHATID, "#GBAN\n"
@@ -2102,8 +2211,6 @@ async def gspider(gspdr):
                         f"CHAT: {gspdr.chat.title}(`{gspdr.chat_id}`)")
         except UserIdInvalidError:
             return await gspdr.reply(f"`{JAVES_NNAME}:` ** Gban failed!! ** ")
-
-
 
 
 
@@ -3438,7 +3545,7 @@ async def _(event):
                     ))
                 except Exception as e:
                     await event.reply(str(e))
-            await event.edit(f"**{JAVES_NNAME}:** Invited Successfully")
+            await event.edit(f"**{JAVES_NNAME}:** Invited Requesr sent Successfully")
         else:
             # https://lonamiwebs.github.io/Telethon/methods/channels/invite_to_channel.html
             for user_id in to_add_users.split(" "):
