@@ -71,7 +71,7 @@ CMD_HELP.update({
 \n\n!unmute <username/reply/userid>\
 \nUsage: Removes the person from the muted list.\
 \n\n!gban <username/reply/userid> <reason (optional)>\
-\nUsage: Ban the person in all groups you have in common with them. and mute user in your pm too!\
+\nUsage: Ban the person in all groups you have in common with them. and block user in your pm too!\
 \n\n!unban <username/reply/userid>\
 \nUsage: Reply someone's message with !ungban to remove them from the gban list.\
 \n\n!delusers\
@@ -102,6 +102,28 @@ CMD_HELP.update({
 \nUsage: Deletes the specified note."
 })
 
+
+
+CMD_HELP.update({
+    "api":
+    "\
+you must add api keys else these commands not work\
+\n\n!read reply to a photo \
+\nUsage: read texts in photo\
+\n\n!auto\
+\nUsage: javes start to auto reply user(lydia).\
+\n\n!offauto\
+\nUsage: Stop auto reply.\
+\n\n!lydia reply to a msg\
+\nUsage: auto reply about taged message\
+\n\n!rbg reply to a img\
+\nUsage: Remove background from img\
+\n\n!weather <country> or <city>\
+\nUsage: get full weather details\
+\n\n!youtube <word>\
+\nUsage: Do youtube search\
+"
+})
 
 CMD_HELP.update({
     "welcome":
