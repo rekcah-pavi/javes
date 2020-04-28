@@ -4,7 +4,7 @@ import asyncio
 import asyncio
 from telethon import events
 from cowpy import cow
-#from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd
 from telethon.tl import functions, types
 import os
 import os
@@ -563,7 +563,7 @@ async def mim(event):
                 caption="Memifyed",
             )
             await event.delete()
-            #await bot.send_message(event.chat_id, "`Ã¢ÂÂ Ã¯Â¸ÂÃ¢ÂÂ Ã¯Â¸ÂAh Shit... Here we go Again!Ã°ÂÂÂ¥Ã°ÂÂÂ¥`")
+            #await bot.send_message(event.chat_id, "`ÃÂ¢ÃÂÃÂ ÃÂ¯ÃÂ¸ÃÂÃÂ¢ÃÂÃÂ ÃÂ¯ÃÂ¸ÃÂAh Shit... Here we go Again!ÃÂ°ÃÂÃÂÃÂ¥ÃÂ°ÃÂÃÂÃÂ¥`")
           elif not is_message_image(reply_message):
             await event.edit("Invalid message type. Plz choose right message type u NIBBA.")
             return
@@ -3241,10 +3241,10 @@ async def apk(e):
         app_rating = results[0].findNext('div', 'Vpfmgd').findNext('div', 'pf5lIe').find('div')['aria-label']
         app_link = "https://play.google.com"+results[0].findNext('div', 'Vpfmgd').findNext('div', 'vU6FJ p63iDd').a['href']
         app_icon = results[0].findNext('div', 'Vpfmgd').findNext('div', 'uzcko').img['data-src']
-        app_details = "<a href='"+app_icon+"'>ð²&#8203;</a>"
+        app_details = "<a href='"+app_icon+"'>Ã°ÂÂÂ²&#8203;</a>"
         app_details += " <b>"+app_name+"</b>"
         app_details += "\n\n<code>Developer :</code> <a href='"+app_dev_link+"'>"+app_dev+"</a>"
-        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "â­ ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "â­ ").replace("five", "5")
+        app_details += "\n<code>Rating :</code> "+app_rating.replace("Rated ", "Ã¢Â­Â ").replace(" out of ", "/").replace(" stars", "", 1).replace(" stars", "Ã¢Â­Â ").replace("five", "5")
         app_details += "\n<code>Features :</code> <a href='"+app_link+"'>View in Play Store</a>"
         await e.edit(app_details, link_preview = True, parse_mode = 'HTML')
     except IndexError:
@@ -3507,7 +3507,7 @@ def resize_image(image):
 
 
 
-@borg.on(events.NewMessage(pattern=r"^!(\w+)say (.*)", outgoing=True))
+@bot.on(events.NewMessage(pattern=r"^!(\w+)say (.*)", outgoing=True))
 async def univsaye(cowmsg):
     """ For .cowsay module, uniborg wrapper for cow which says things. """
     if not cowmsg.text[0].isalpha() and cowmsg.text[0] not in ("/", "#", "@"):
@@ -3521,7 +3521,7 @@ async def univsaye(cowmsg):
         cheese = cow.get_cow(arg)
         cheese = cheese()
 
-        await cowmsg.edit(f"`{cheese.milk(text).replace('`', '´')}`")
+        await cowmsg.edit(f"`{cheese.milk(text).replace('`', 'Â´')}`")
 
 
 @javes05(outgoing=True, pattern="^!shout")
