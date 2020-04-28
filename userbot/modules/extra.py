@@ -1,7 +1,52 @@
 import asyncio
 import pyfiglet
 import asyncio
+import asyncio
+from telethon import events
+from cowpy import cow
+from uniborg.util import admin_cmd
+from telethon.tl import functions, types
 import os
+import os
+import aiohttp
+from telethon import events
+import os
+from PIL import Image
+from datetime import datetime
+from telegraph import Telegraph, upload_file, exceptions
+from userbot import (TELEGRAPH_SHORT_NAME, TEMP_DOWNLOAD_DIRECTORY, BOTLOG_CHATID, CMD_HELP, bot)
+from io import BytesIO
+from userbot import CMD_HELP
+from telethon import types
+from asyncio import sleep
+from telethon.errors import PhotoInvalidDimensionsError
+from telethon.tl.functions.messages import SendMediaRequest
+import shutil
+from bs4 import BeautifulSoup
+import re
+import random
+from time import sleep
+from html import unescape
+from re import findall
+from datetime import datetime
+from selenium import webdriver
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from wikipedia import summary
+from wikipedia.exceptions import DisambiguationError, PageError
+from urbandict import define
+from requests import get
+from google_images_download import google_images_download
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googletrans import LANGUAGES, Translator
+from gtts import gTTS
+from emoji import get_emoji_regexp
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
+from userbot.utils import register
 import time
 import asyncio
 import time
@@ -394,9 +439,9 @@ if 1 == 1:
 async def _(event):
     if event.fwd_from:
         return
-    mentions = "Taged All"
+    mentions = "@tagedall"
     chat = await event.get_input_chat()
-    async for x in bot.iter_participants(chat, 50000):
+    async for x in bot.iter_participants(chat, 100):
         mentions += f"[\u2063](tg://user?id={x.id})"
     await event.reply(mentions)
     await event.delete()
@@ -435,72 +480,6 @@ async def potocmd(event):
                 return
 
 
-@javes05(outgoing=True, pattern="^!telegraph (media|text)$")
-async def telegraphs(graph):
-    """ For .telegraph command, upload media & text to telegraph site. """
-    if not graph.text[0].isalpha() and graph.text[0] not in ("/", "#", "@", "!"):
-        if graph.fwd_from:
-            return
-        if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-            os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-        if graph.reply_to_msg_id:
-            start = datetime.now()
-            r_message = await graph.get_reply_message()
-            input_str = graph.pattern_match.group(1)
-            if input_str == "media":
-                downloaded_file_name = await bot.download_media(
-                    r_message,
-                    TEMP_DOWNLOAD_DIRECTORY
-                )
-                end = datetime.now()
-                ms = (end - start).seconds
-                await graph.edit("Downloaded to {} in {} seconds.".format(downloaded_file_name, ms))
-                if downloaded_file_name.endswith((".webp")):
-                    resize_image(downloaded_file_name)
-                try:
-                    start = datetime.now()
-                    media_urls = upload_file(downloaded_file_name)
-                except exceptions.TelegraphException as exc:
-                    await graph.edit("ERROR: " + str(exc))
-                    os.remove(downloaded_file_name)
-                else:
-                    end = datetime.now()
-                    ms_two = (end - start).seconds
-                    os.remove(downloaded_file_name)
-                    await graph.edit("Uploaded to https://telegra.ph{} in {} seconds.".format(media_urls[0], (ms + ms_two)), link_preview=True)
-            elif input_str == "text":
-                user_object = await bot.get_entity(r_message.from_id)
-                title_of_page = user_object.first_name # + " " + user_object.last_name
-                # apparently, all Users do not have last_name field
-                page_content = r_message.message
-                if r_message.media:
-                    if page_content != "":
-                        title_of_page = page_content
-                    downloaded_file_name = await bot.download_media(
-                        r_message,
-                        TEMP_DOWNLOAD_DIRECTORY
-                    )
-                    m_list = None
-                    with open(downloaded_file_name, "rb") as fd:
-                        m_list = fd.readlines()
-                    for m in m_list:
-                        page_content += m.decode("UTF-8") + "\n"
-                    os.remove(downloaded_file_name)
-                page_content = page_content.replace("\n", "<br>")
-                response = telegraph.create_page(
-                    title_of_page,
-                    html_content=page_content
-                )
-                end = datetime.now()
-                ms = (end - start).seconds
-                await graph.edit("Pasted to https://telegra.ph/{} in {} seconds.".format(response["path"], ms), link_preview=True)
-        else:
-            await graph.edit("Reply to a message to get a permanent telegra.ph link. (Inspired by @ControllerBot)")
-
-
-def resize_image(image):
-    im = Image.open(image)
-    im.save(image, "PNG")
 
 
 @javes05(outgoing=True, pattern="^!mmf(?: |$)(.*)")
@@ -2019,8 +1998,229 @@ async def setlang(prog):
     CARBONLANG = prog.pattern_match.group(1)
     await prog.edit(f"Language for carbon.now.sh set to {CARBONLANG}")
 
+@javes05(outgoing=True, pattern="^!carbon1")
+async def carbon_api(e):
+ if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@"):   
+   await e.edit("`Processing..`")
+   CARBON = 'https://carbon.now.sh/?l={lang}&code={code}'
+   global CARBONLANG
+   textx = await e.get_reply_message()
+   pcode = e.text
+   if pcode[8:]:
+         pcodee = str(pcode[8:])
+         if "|" in pcodee:
+               pcode, skeme = pcodee.split("|")
+         else:
+               pcode = pcodee
+               skeme = None
+   elif textx:
+         pcode = str(textx.message)
+         skeme = None # Importing message to module
+   code = quote_plus(pcode) # Converting to urlencoded
+   await e.edit("`25%`")
+   url = CARBON.format(code=code, lang=CARBONLANG)
+   chrome_options = Options()
+   chrome_options.add_argument("--headless")
+   chrome_options.binary_location = GOOGLE_CHROME_BIN
+   chrome_options.add_argument("--window-size=1920x1080")
+   chrome_options.add_argument("--disable-dev-shm-usage")
+   chrome_options.add_argument("--no-sandbox")
+   chrome_options.add_argument("--disable-gpu")
+   prefs = {'download.default_directory' : '/root/userbot/'}
+   chrome_options.add_experimental_option('prefs', prefs)
+   driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)
+   driver.get(url)
+   await e.edit("`50%`")
+   download_path = '/root/userbot/'
+   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+   command_result = driver.execute("send_command", params)
+   driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[2]/div[1]/div[1]/div/span[2]').click()
+   if skeme != None:
+         k_skeme = driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[2]/div[1]/div[1]/div/span[2]/input')
+         k_skeme.send_keys(skeme)
+         k_skeme.send_keys(Keys.DOWN)
+         k_skeme.send_keys(Keys.ENTER)
+   else:
+       color_scheme = str(random.randint(1,29))
+       driver.find_element_by_id(("downshift-0-item-" + color_scheme)).click()
+   driver.find_element_by_id("export-menu").click()
+   driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
+   driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()   
+   sleep(0.5)
+   color_name = driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[2]/div[1]/div[1]/div/span[2]/input').get_attribute('value')
+   await e.edit("`75%`")
+   file = '/root/userbot/carbon.png'
+   await e.edit("`100%`")
+   await e.client.send_file(e.chat_id,file,caption="Done ",force_document=True,reply_to=e.message.reply_to_msg_id,)
+   os.remove('carbon.png')
+   driver.quit()   
+   await e.delete()
+   
 
-@javes05(outgoing=True, pattern="^!carbon")
+
+
+@javes05(outgoing=True, pattern="^!carbon2")
+async def carbon_api(e):
+ if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@"):   
+   await e.edit("`Processing..`")
+   CARBON = 'https://carbon.now.sh/?l={lang}&code={code}'
+   global CARBONLANG
+   textx = await e.get_reply_message()
+   pcode = e.text
+   if pcode[8:]:
+         pcodee = str(pcode[8:])
+         if "|" in pcodee:
+               pcode, skeme = pcodee.split("|")
+         else:
+               pcode = pcodee
+               skeme = None
+   elif textx:
+         pcode = str(textx.message)
+         skeme = None # Importing message to module
+   code = quote_plus(pcode) # Converting to urlencoded
+   await e.edit("`25%`")
+   url = CARBON.format(code=code, lang=CARBONLANG)
+   chrome_options = Options()
+   chrome_options.add_argument("--headless")
+   chrome_options.binary_location = GOOGLE_CHROME_BIN
+   chrome_options.add_argument("--window-size=1920x1080")
+   chrome_options.add_argument("--disable-dev-shm-usage")
+   chrome_options.add_argument("--no-sandbox")
+   chrome_options.add_argument("--disable-gpu")
+   prefs = {'download.default_directory' : '/root/userbot/'}
+   chrome_options.add_experimental_option('prefs', prefs)
+   driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)
+   driver.get(url)
+   await e.edit("`50%`")
+   download_path = '/root/userbot/'
+   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+   command_result = driver.execute("send_command", params)
+   driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[2]/div[1]/div[1]/div/span[2]').click()
+   if skeme != None:
+         k_skeme = driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[2]/div[1]/div[1]/div/span[2]/input')
+         k_skeme.send_keys(skeme)
+         k_skeme.send_keys(Keys.DOWN)
+         k_skeme.send_keys(Keys.ENTER)
+   else:
+       color_scheme = str(random.randint(1,29))
+       driver.find_element_by_id(("downshift-0-item-" + color_scheme)).click()
+   driver.find_element_by_id("export-menu").click()
+   driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
+   driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()   
+   sleep(0.5)
+   color_name = driver.find_element_by_xpath('/html/body/div[1]/main/div[2]/div[2]/div[1]/div[1]/div/span[2]/input').get_attribute('value')
+   await e.edit("`75%`")
+   file = '/root/userbot/carbon.png'
+   await e.edit("`100%`")
+   await e.client.send_file(e.chat_id,file,caption="Done ",force_document=False,reply_to=e.message.reply_to_msg_id,)
+   os.remove('carbon.png')
+   driver.quit()   
+   await e.delete()
+   
+   
+@javes05(outgoing=True, pattern="^!carbon3")
+async def carbon_api(e):
+ COLOUR1 = random.randint(0,256)
+ COLOUR2 = random.randint(0,256)
+ COLOUR3 = random.randint(0,256)
+ THEME= str(random.randint(1,29))
+ CUNTHE = random.randint(0, len(THEME) - 1)
+ The = THEME[CUNTHE]
+ if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@"):
+   await e.edit("`Processing..`")
+   CARBON = 'https://carbon.now.sh/?bg=rgba({R}%2C{G}%2C.{B}%2C1)&t={T}&wt=none&l=auto&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Fira%20Code&fs=14px&lh=152%25&si=false&es=2x&wm=false&code={code}'
+   CARBONLANG = "en"
+   textx = await e.get_reply_message()
+   pcode = e.text
+   if pcode[6:]:
+         pcode = str(pcode[6:])
+   elif textx:
+         pcode = str(textx.message) # Importing message to module
+   code = quote_plus(pcode) # Converting to urlencoded
+   url = CARBON.format(code=code, R=COLOUR1, G=COLOUR2, B=COLOUR3, T=The, lang=CARBONLANG)  
+   
+   chrome_options = Options()
+   chrome_options.add_argument("--headless")
+   chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
+   chrome_options.add_argument("--window-size=1920x1080")
+   chrome_options.add_argument("--disable-dev-shm-usage")
+   chrome_options.add_argument("--no-sandbox")
+   chrome_options.add_argument('--disable-gpu')
+   prefs = {'download.default_directory' : '/root/userbot/userbot/'}
+   chrome_options.add_experimental_option('prefs', prefs)
+   await e.edit("25%")
+   driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)   
+   driver.get(url)
+   download_path = '/root/userbot/userbot/'
+   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+   command_result = driver.execute("send_command", params)
+   driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
+   await e.edit("50%")
+   sleep(0.5)         
+   await e.edit("75%")
+   file = '/root/userbot/userbot/carbon.png'
+   await e.edit("100%")
+   await e.client.send_file(e.chat_id,file,caption=f"Done ",force_document=True,reply_to=e.message.reply_to_msg_id,)
+   os.remove('/root/userbot/userbot/carbon.png')
+   await e.delete()
+
+
+
+@javes05(outgoing=True, pattern="^!carbon4")
+async def carbon_api(e):
+ COLOUR1 = random.randint(0,256)
+ COLOUR2 = random.randint(0,256)
+ COLOUR3 = random.randint(0,256)
+ THEME= str(random.randint(1,29))
+ CUNTHE = random.randint(0, len(THEME) - 1)
+ The = THEME[CUNTHE]
+ if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@"):
+   await e.edit("`Processing..`")
+   CARBON = 'https://carbon.now.sh/?bg=rgba({R}%2C{G}%2C.{B}%2C1)&t={T}&wt=none&l=auto&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Fira%20Code&fs=14px&lh=152%25&si=false&es=2x&wm=false&code={code}'
+   CARBONLANG = "en"
+   textx = await e.get_reply_message()
+   pcode = e.text
+   if pcode[6:]:
+         pcode = str(pcode[6:])
+   elif textx:
+         pcode = str(textx.message) # Importing message to module
+   code = quote_plus(pcode) # Converting to urlencoded
+   url = CARBON.format(code=code, R=COLOUR1, G=COLOUR2, B=COLOUR3, T=The, lang=CARBONLANG)  
+   chrome_options = Options()
+   chrome_options.add_argument("--headless")
+   chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
+   chrome_options.add_argument("--window-size=1920x1080")
+   chrome_options.add_argument("--disable-dev-shm-usage")
+   chrome_options.add_argument("--no-sandbox")
+   chrome_options.add_argument('--disable-gpu')
+   prefs = {'download.default_directory' : '/root/userbot/userbot/'}
+   chrome_options.add_experimental_option('prefs', prefs)
+   await e.edit("25%")
+   driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)   
+   driver.get(url)
+   download_path = '/root/userbot/userbot/'
+   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+   command_result = driver.execute("send_command", params)
+   driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
+   await e.edit("50%")
+   sleep(0.5)         
+   await e.edit("75%")
+   file = '/root/userbot/userbot/carbon.png'
+   await e.edit("100%")
+   await e.client.send_file(e.chat_id,file,caption=f"Done ",force_document=False,reply_to=e.message.reply_to_msg_id,)
+   os.remove('/root/userbot/userbot/carbon.png')
+   await e.delete()
+
+@javes05(outgoing=True, pattern="^!carbon$")
+async def iqless(e):
+    await e.edit("**Carbon command changed To**\n!carbon1\n!carbon2\n!carbon3\n!carbon4\n!carbon5")      
+
+
+@javes05(outgoing=True, pattern="^!carbon5")
 async def carbon_api(e):
     """ A Wrapper for carbon.now.sh """
     await e.edit("`Processing..`")
@@ -3111,4 +3311,280 @@ async def _(event):
             await asyncio.sleep(ex.seconds)
         await asyncio.sleep(DDEL_TIME_OUT)
 
+@javes05(outgoing=True, pattern="^!create (b|g|c)(?: |$)(.*)")
+async def telegraphs(grop):
+    """ For .create command, Creating New Group & Channel """
+    if not grop.text[0].isalpha() and grop.text[0] not in ("/", "#", "@"):
+        if grop.fwd_from:
+            return
+        type_of_group = grop.pattern_match.group(1)
+        group_name = grop.pattern_match.group(2)
+        if type_of_group == "b":
+            try:
+                result = await grop.client(functions.messages.CreateChatRequest(  # pylint:disable=E0602
+                    users=["@MissRose_bot"],
+                    # Not enough users (to create a chat, for example)
+                    # Telegram, no longer allows creating a chat with ourselves
+                    title=group_name
+                ))
+                created_chat_id = result.chats[0].id
+                await grop.client(functions.messages.DeleteChatUserRequest(
+                    chat_id=created_chat_id,
+                    user_id="@MissRose_bot"
+                ))
+                result = await grop.client(functions.messages.ExportChatInviteRequest(
+                    peer=created_chat_id,
+                ))
+                await grop.edit("Your `{}` Group Created Successfully. Click [{}]({}) to join".format(group_name, group_name, result.link))
+            except Exception as e:  # pylint:disable=C0103,W0703
+                await grop.edit(str(e))
+        elif type_of_group == "g" or type_of_group == "c":
+            try:
+                r = await grop.client(functions.channels.CreateChannelRequest(  # pylint:disable=E0602
+                    title=group_name,
+                    about="Welcome ",
+                    megagroup=False if type_of_group == "c" else True
+                ))
+                created_chat_id = r.chats[0].id
+                result = await grop.client(functions.messages.ExportChatInviteRequest(
+                    peer=created_chat_id,
+                ))
+                await grop.edit("Your `{}` Group/Channel Created Successfully. Click [{}]({}) to join".format(group_name, group_name, result.link))
+            except Exception as e:  # pylint:disable=C0103,W0703
+                await grop.edit(str(e))
 
+@javes05(pattern=r"!git (.*)", outgoing=True)
+async def github(event):
+    URL = f"https://api.github.com/users/{event.pattern_match.group(1)}"
+    chat = await event.get_chat()
+    async with aiohttp.ClientSession() as session:
+        async with session.get(URL) as request:
+            if request.status == 404:
+                await event.reply("`" + event.pattern_match.group(1) +
+                                  " not found`")
+                return
+
+            result = await request.json()
+
+            url = result.get("html_url", None)
+            name = result.get("name", None)
+            company = result.get("company", None)
+            bio = result.get("bio", None)
+            created_at = result.get("created_at", "Not Found")
+
+            REPLY = f"GitHub Info for `{event.pattern_match.group(1)}`\
+            \nUsername: `{name}`\
+            \nBio: `{bio}`\
+            \nURL: {url}\
+            \nCompany: `{company}`\
+            \nCreated at: `{created_at}`"
+
+            if not result.get("repos_url", None):
+                await event.edit(REPLY)
+                return
+            async with session.get(result.get("repos_url", None)) as request:
+                result = request.json
+                if request.status == 404:
+                    await event.edit(REPLY)
+                    return
+
+                result = await request.json()
+
+                REPLY += "\nRepos:\n"
+
+                for nr in range(len(result)):
+                    REPLY += f"[{result[nr].get('name', None)}]({result[nr].get('html_url', None)})\n"
+
+                await event.edit(REPLY)
+
+
+@javes05(outgoing=True, pattern="^\!pic(?: |$)(.*)")
+async def on_file_to_photo(pics):
+    await pics.edit("Converting Document image to Full Size Image\nPlease wait...")
+    await sleep(2.5)
+    await pics.delete()
+    target = await pics.get_reply_message()
+    try:
+        image = target.media.document
+    except AttributeError:
+        return
+    if not image.mime_type.startswith('image/'):
+        return  # This isn't an image
+    if image.mime_type == 'image/webp':
+        return  # Telegram doesn't let you directly send stickers as photos
+    if image.size > 10 * 2560 * 1440:
+        return  # We'd get PhotoSaveFileInvalidError otherwise
+
+    file = await pics.client.download_media(target, file=BytesIO())
+    file.seek(0)
+    img = await pics.client.upload_file(file)
+    img.name = 'image.png'
+
+    try:
+        await pics.client(SendMediaRequest(
+            peer=await pics.get_input_chat(),
+            media=types.InputMediaUploadedPhoto(img),
+            message=target.message,
+            entities=target.entities,
+            reply_to_msg_id=target.id
+        ))
+    except PhotoInvalidDimensionsError:
+        return
+
+
+
+telegraph = Telegraph()
+r = telegraph.create_account(short_name=TELEGRAPH_SHORT_NAME)
+auth_url = r["auth_url"]
+
+
+@javes05(outgoing=True, pattern="^!telegraph (media|text)$")
+async def telegraphs(graph):
+    """ For .telegraph command, upload media & text to telegraph site. """
+    if not graph.text[0].isalpha() and graph.text[0] not in ("/", "#", "@"):
+        if graph.fwd_from:
+            return
+        if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+            os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+        if graph.reply_to_msg_id:
+            start = datetime.now()
+            r_message = await graph.get_reply_message()
+            input_str = graph.pattern_match.group(1)
+            if input_str == "media":
+                downloaded_file_name = await bot.download_media(
+                    r_message,
+                    TEMP_DOWNLOAD_DIRECTORY
+                )
+                end = datetime.now()
+                ms = (end - start).seconds
+                await graph.edit("Downloaded to {} in {} seconds.".format(downloaded_file_name, ms))
+                if downloaded_file_name.endswith((".webp")):
+                    resize_image(downloaded_file_name)
+                try:
+                    start = datetime.now()
+                    media_urls = upload_file(downloaded_file_name)
+                except exceptions.TelegraphException as exc:
+                    await graph.edit("ERROR: " + str(exc))
+                    os.remove(downloaded_file_name)
+                else:
+                    end = datetime.now()
+                    ms_two = (end - start).seconds
+                    os.remove(downloaded_file_name)
+                    await graph.edit("Uploaded to https://telegra.ph{} in {} seconds.".format(media_urls[0], (ms + ms_two)), link_preview=True)
+            elif input_str == "text":
+                user_object = await bot.get_entity(r_message.from_id)
+                title_of_page = user_object.first_name # + " " + user_object.last_name
+                # apparently, all Users do not have last_name field
+                page_content = r_message.message
+                if r_message.media:
+                    if page_content != "":
+                        title_of_page = page_content
+                    downloaded_file_name = await bot.download_media(
+                        r_message,
+                        TEMP_DOWNLOAD_DIRECTORY
+                    )
+                    m_list = None
+                    with open(downloaded_file_name, "rb") as fd:
+                        m_list = fd.readlines()
+                    for m in m_list:
+                        page_content += m.decode("UTF-8") + "\n"
+                    os.remove(downloaded_file_name)
+                page_content = page_content.replace("\n", "<br>")
+                response = telegraph.create_page(
+                    title_of_page,
+                    html_content=page_content
+                )
+                end = datetime.now()
+                ms = (end - start).seconds
+                await graph.edit("Pasted to https://telegra.ph/{} in {} seconds.".format(response["path"], ms), link_preview=True)
+        else:
+            await graph.edit("Reply to a message to get a permanent telegra.ph link. ")
+
+
+def resize_image(image):
+    im = Image.open(image)
+    im.save(image, "PNG")       
+
+
+
+@borg.on(events.NewMessage(pattern=r"^!(\w+)say (.*)", outgoing=True))
+async def univsaye(cowmsg):
+    """ For .cowsay module, uniborg wrapper for cow which says things. """
+    if not cowmsg.text[0].isalpha() and cowmsg.text[0] not in ("/", "#", "@"):
+        arg = cowmsg.pattern_match.group(1).lower()
+        text = cowmsg.pattern_match.group(2)
+
+        if arg == "cow":
+            arg = "default"
+        if arg not in cow.COWACTERS:
+            return
+        cheese = cow.get_cow(arg)
+        cheese = cheese()
+
+        await cowmsg.edit(f"`{cheese.milk(text).replace('`', '´')}`")
+
+
+@javes05(outgoing=True, pattern="^!shout")
+async def shout(args):
+    if args.fwd_from:
+        return
+    else:
+        msg = "```"
+        messagestr = args.text
+        messagestr = messagestr[7:]
+        text = " ".join(messagestr)
+        result = []
+        result.append(' '.join([s for s in text]))
+        for pos, symbol in enumerate(text[1:]):
+            result.append(symbol + ' ' + '  ' * pos + symbol)
+        result = list("\n".join(result))
+        result[0] = text[0]
+        result = "".join(result)
+        msg = "\n" + result
+        await args.edit("`"+msg+"`")
+        
+    
+    
+@javes05(outgoing=True, pattern="^!poll(.*)")
+async def _(event):
+    reply_message = await event.get_reply_message()
+    if reply_message.media is None:
+        await event.edit("Please reply to a media_type == @gPoll to view the questions and answers")
+    elif reply_message.media.poll is None:
+        await event.edit("Please reply to a media_type == @gPoll to view the questions and answers")
+    else:
+        media = reply_message.media
+        poll = media.poll
+        closed_status = poll.closed
+        answers = poll.answers
+        question = poll.question
+        edit_caption = """Poll is Closed: {}
+Question: {}
+Answers: \n""".format(closed_status, question)
+        if closed_status:
+            results = media.results
+            i = 0
+            for result in results.results:
+                edit_caption += "{}> {}    {}\n".format(result.option, answers[i].text, result.voters)
+                i += 1
+            edit_caption += "Total Voters: {}".format(results.total_voters)
+        else:
+            for answer in answers:
+                edit_caption += "{}> {}\n".format(answer.option, answer.text)
+        await event.edit(edit_caption)
+
+
+@javes05(outgoing=True, pattern="^!ifsc(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    input_str = event.pattern_match.group(1)
+    url = "https://ifsc.razorpay.com/{}".format(input_str)
+    r = requests.get(url)
+    if r.status_code == 200:
+        b = r.json()
+        a = json.dumps(b, sort_keys=True, indent=4)
+        # https://stackoverflow.com/a/9105132/4723940
+        await event.edit(str(a))
+    else:
+        await event.edit("`{}`: {}".format(input_str, r.text))
