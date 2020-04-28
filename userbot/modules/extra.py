@@ -4,7 +4,7 @@ import asyncio
 import asyncio
 from telethon import events
 from cowpy import cow
-from uniborg.util import admin_cmd
+#from uniborg.util import admin_cmd
 from telethon.tl import functions, types
 import os
 import os
