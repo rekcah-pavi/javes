@@ -37,7 +37,7 @@ async def install(event):
                 await event.edit("Installed module `{}`".format(os.path.basename(downloaded_file_name)))
             else:
                 os.remove(downloaded_file_name)
-                await event.edit("Errors! Cannot install this plugin.")
+                await event.edit(f"`{JAVES_NNAME}`: **Error, module already installed or unknown formet**")
         except Exception as e:  # pylint:disable=C0103,W0703
             await event.edit(str(e))
             os.remove(downloaded_file_name)
@@ -67,8 +67,7 @@ async def install(event):
         except Exception as e:  # pylint:disable=C0103,W0703
             await event.edit(str(e))
             os.remove(downloaded_file_name)
-    await asyncio.sleep(DELETE_TIMEOUT)
-    await event.delete()
+    
 
 
 
@@ -91,8 +90,7 @@ async def send(event):
     end = datetime.now()
     time_taken_in_ms = (end - start).seconds
     await event.edit("Uploaded {} in {} seconds".format(input_str, time_taken_in_ms))
-    await asyncio.sleep(DELETE_TIMEOUT)
-    await event.delete()
+    
 
 @command(pattern="^!unload (?P<shortname>\w+)$", outgoing=True)
 async def unload(event):
