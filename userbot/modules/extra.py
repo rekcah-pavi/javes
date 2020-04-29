@@ -158,8 +158,6 @@ import time
 from userbot import bot
 import glob
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
 from telethon import events
 from userbot.events import javes05
 import logging
@@ -290,10 +288,8 @@ import asyncio
 import zipfile
 from pySmartDL import SmartDL
 import time
-import os
 from userbot.modules.system import progress, humanbytes, time_formatter
 from telethon import events
-import os
 from PIL import Image
 from datetime import datetime
 from telegraph import Telegraph, upload_file, exceptions
@@ -313,7 +309,6 @@ from asyncio import sleep
 from selenium.webdriver.chrome.options import Options
 from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
 import io
-import os
 import urllib
 from urllib.request import urlopen
 import requests
@@ -352,7 +347,6 @@ from userbot import CMD_HELP
 import sys
 from requests import get, post, exceptions
 import asyncio
-import os
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
 from os import popen
 import re
@@ -373,8 +367,6 @@ from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from userbot import bot, CMD_HELP
 from requests import get, post, exceptions
-import asyncio
-import os
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
 from telethon import events
 import subprocess
@@ -384,7 +376,6 @@ import asyncio
 import time
 from userbot import CMD_HELP, bot, BIO_MESSAGE, BIO_MSG
 import glob
-import os
 from datetime import *
 import pytz
 import math
@@ -2143,7 +2134,7 @@ async def carbon_api(e):
    
    chrome_options = Options()
    chrome_options.add_argument("--headless")
-   chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
+   chrome_options.binary_location = GOOGLE_CHROME_BIN
    chrome_options.add_argument("--window-size=1920x1080")
    chrome_options.add_argument("--disable-dev-shm-usage")
    chrome_options.add_argument("--no-sandbox")
@@ -2191,7 +2182,7 @@ async def carbon_api(e):
    url = CARBON.format(code=code, R=COLOUR1, G=COLOUR2, B=COLOUR3, T=The, lang=CARBONLANG)  
    chrome_options = Options()
    chrome_options.add_argument("--headless")
-   chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
+   chrome_options.binary_location = GOOGLE_CHROME_BIN
    chrome_options.add_argument("--window-size=1920x1080")
    chrome_options.add_argument("--disable-dev-shm-usage")
    chrome_options.add_argument("--no-sandbox")
