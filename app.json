@@ -48,6 +48,12 @@
       "description": "Change this value in case your country has multiple Time Zones.",
       "value": "1",
       "required": false
+      
+    },
+    "PROFILE_PIC": {
+      "description": "Your photo link for !autopic command",
+      "value": "https://telegra.ph/file/b62ddbf8d16522eebe749.jpg",
+      "required": false
     },
     "CHROME_DRIVER": {
       "description": "ChromeDriver location for selenium based modules.",
