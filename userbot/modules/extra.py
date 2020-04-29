@@ -4,7 +4,8 @@ import asyncio
 import asyncio
 from telethon import events
 from cowpy import cow
-
+from PIL import Image, ImageDraw, ImageFont
+from pySmartDL import SmartDL
 from telethon.tl import functions, types
 import os
 import os
@@ -46,7 +47,7 @@ from googletrans import LANGUAGES, Translator
 from gtts import gTTS
 from emoji import get_emoji_regexp
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
-from userbot.utils import register
+from userbot.utils import javes05
 import time
 import asyncio
 import time
@@ -385,6 +386,9 @@ counter = 0
 start=t.time()
 
 
+AUTO_PP = os.environ.get(
+    "AUTO_PP",
+    "https://telegra.ph/file/80c75a92b94a1c3a21eae.jpg")
 
 from userbot import CMD_HELP, ALIVE_NAME, PM_MESSAGE, JAVES_NAME, JAVES_MSG, ORI_MSG
 JAVES_NNAME = str(JAVES_NAME) if JAVES_NAME else str(JAVES_MSG)
@@ -400,14 +404,33 @@ DOGBIN_URL = "https://del.dog/"
 opener = urllib.request.build_opener()
 useragent = 'Mozilla/5.0 (Linux; Android 9; SM-G960F Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.157 Mobile Safari/537.36'
 opener.addheaders = [('User-agent', useragent)]
+from telethon.errors import ImageProcessFailedError, PhotoCropSizeSmallError
+from telethon.errors.rpcerrorlist import (PhotoExtInvalidError,
+                                          UsernameOccupiedError)
+from telethon.tl.functions.account import (UpdateProfileRequest,
+                                           UpdateUsernameRequest)
+from telethon.tl.functions.photos import (DeletePhotosRequest,
+                                          GetUserPhotosRequest,
+                                          UploadProfilePhotoRequest)
+from telethon.tl.types import InputPhoto, MessageMediaPhoto
 
 thumb_image_path = TEMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 extracted = TEMP_DOWNLOAD_DIRECTORY + "extracted/"
 if not os.path.isdir(extracted):
     os.makedirs(extracted)
+from userbot import ALIVE_NAME
+NNAME = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 
+INVALID_MEDIA = "```The extension of the media entity is invalid.```"
+PP_CHANGED = "```Profile picture changed successfully.```"
+PP_TOO_SMOL = "```This image is too small, use a bigger image.```"
+PP_ERROR = "```Failure occured while processing image.```"
 
+BIO_SUCCESS = "```Successfully edited Bio.```"
 
+NAME_OK = "```Your name was successfully changed.```"
+USERNAME_SUCCESS = "```Your username was successfully changed.```"
+USERNAME_TAKEN = "```This username is already taken.```"
 
 GApi = GENIUS
 import lyricsgenius
@@ -3262,7 +3285,6 @@ DDEL_TIME_OUT = 60
 
 from datetime import datetime,tzinfo,timedelta
 
-
       
 @javes05(outgoing=True, pattern="^!autobio")
 async def _(event):
@@ -3579,3 +3601,127 @@ async def _(event):
         await event.edit(str(a))
     else:
         await event.edit("`{}`: {}".format(input_str, r.text))
+
+FONT_FILE_TO_USE = "/root/userbot/DejaVuSansMono.ttf"
+@javes05(outgoing=True, pattern="^!autopic$")
+async def autopic(event):
+    downloaded_file_name = "userbot/original_pic.png"
+    downloader = SmartDL(AUTO_PP, downloaded_file_name, progress_bar=False)
+    downloader.start(blocking=False)
+    photo = "userbot/photo_pfp.png"
+    while not downloader.isFinished():
+        place_holder = None
+    counter = -30
+    while True:
+        shutil.copy(downloaded_file_name, photo)
+        im = Image.open(photo)
+        #file_test = im.rotate(counter, expand=False).save(photo, "PNG")
+        current_time = datetime.now().strftime(f" -------------- \n  Time: %H:%M \n  Date: %d.%m.%y \n -------------- ")
+        img = Image.open(photo)
+        drawn_text = ImageDraw.Draw(img)
+        fnt = ImageFont.truetype(FONT_FILE_TO_USE, 30)
+        drawn_text.text((150, 0), current_time, font=fnt, fill=(50, 0, 20))
+        img.save(photo)
+        file = await bot.upload_file(photo)  # pylint:disable=E0602
+        await event.reply(f"**{JAVES_NAME}**: `successfully set profile picture \nSleeping 60s.......`")
+        try:
+            await bot(functions.photos.UploadProfilePhotoRequest(  # pylint:disable=E0602
+                file
+            ))
+            os.remove(photo)
+            counter -= 30
+            await asyncio.sleep(60)
+        except:
+            return
+
+
+
+@javes05(outgoing=True, pattern="^!name")
+async def update_name(name):
+    """ For .name command, change your name in Telegram. """
+    newname = name.text[6:]
+    if " " not in newname:
+        firstname = newname
+        lastname = ""
+    else:
+        namesplit = newname.split(" ", 1)
+        firstname = namesplit[0]
+        lastname = namesplit[1]
+
+    await bot(UpdateProfileRequest(first_name=firstname, last_name=lastname))
+    await name.edit(NAME_OK)
+
+
+@javes05(outgoing=True, pattern="^!profilepic$")
+async def set_profilepic(propic):
+    """ For .profilepic command, change your profile picture in Telegram. """
+    replymsg = await propic.get_reply_message()
+    photo = None
+    if replymsg.media:
+        if isinstance(replymsg.media, MessageMediaPhoto):
+            photo = await bot.download_media(message=replymsg.photo)
+        elif "image" in replymsg.media.document.mime_type.split('/'):
+            photo = await bot.download_file(replymsg.media.document)
+        else:
+            await propic.edit(INVALID_MEDIA)
+
+    if photo:
+        try:
+            await bot(UploadProfilePhotoRequest(await bot.upload_file(photo)))
+            os.remove(photo)
+            await propic.edit(PP_CHANGED)
+        except PhotoCropSizeSmallError:
+            await propic.edit(PP_TOO_SMOL)
+        except ImageProcessFailedError:
+            await propic.edit(PP_ERROR)
+        except PhotoExtInvalidError:
+            await propic.edit(INVALID_MEDIA)
+
+
+@javes05(outgoing=True, pattern="^!setbio (.*)")
+async def set_biograph(setbio):
+    """ For .setbio command, set a new bio for your profile in Telegram. """
+    newbio = setbio.pattern_match.group(1)
+    await bot(UpdateProfileRequest(about=newbio))
+    await setbio.edit(BIO_SUCCESS)
+
+
+@javes05(outgoing=True, pattern="^!username (.*)")
+async def update_username(username):
+    """ For .username command, set a new username in Telegram. """
+    newusername = username.pattern_match.group(1)
+    try:
+        await bot(UpdateUsernameRequest(newusername))
+        await username.edit(USERNAME_SUCCESS)
+    except UsernameOccupiedError:
+        await username.edit(USERNAME_TAKEN)
+
+
+@javes05(outgoing=True, pattern=r"^!delpic")
+async def remove_profilepic(delpfp):
+    """ For .delpfp command, delete your current
+        profile picture in Telegram. """
+    group = delpfp.text[8:]
+    if group == 'all':
+        lim = 0
+    elif group.isdigit():
+        lim = int(group)
+    else:
+        lim = 1
+
+    pfplist = await bot(
+        GetUserPhotosRequest(user_id=delpfp.from_id,
+                             offset=0,
+                             max_id=0,
+                             limit=lim))
+    input_photos = []
+    for sep in pfplist.photos:
+        input_photos.append(
+            InputPhoto(id=sep.id,
+                       access_hash=sep.access_hash,
+                       file_reference=sep.file_reference))
+    await bot(DeletePhotosRequest(id=input_photos))
+    await delpfp.edit(
+        f"`Successfully deleted {len(input_photos)} profile picture(s).`")
+
+
