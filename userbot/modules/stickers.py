@@ -421,8 +421,8 @@ async def _(event):
 
 
 
-@bot.on(events.NewMessage(outgoing=True, pattern="!text2 (?:(.*?) \| )?(.*)"))
-@bot.on(events.MessageEdited(outgoing=True, pattern="!text2 (?:(.*?) \| )?(.*)"))
+@bot.on(events.NewMessage(outgoing=True, pattern="!text (?:(.*?) \| )?(.*)"))
+@bot.on(events.MessageEdited(outgoing=True, pattern="!text (?:(.*?) \| )?(.*)"))
 async def sticklet(event):
     R = random.randint(0,256)
     G = random.randint(0,256)
