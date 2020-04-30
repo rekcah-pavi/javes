@@ -256,11 +256,7 @@ def javes05(**args):
 
             if groups_only and not check.is_group:
                 await check.respond("`I don't think this is a group.`")
-                return
-            try:
-                    CMD_LIST[file_test].append(cmd)
-            except:
-                    CMD_LIST.update({file_test: [cmd]})
+                return            
             try:
                 await func(check)
 
