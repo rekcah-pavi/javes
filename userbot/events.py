@@ -189,12 +189,48 @@ from userbot import bot, BOTLOG_CHATID, LOGSPAMMER
 
 def javes05(**args):
     """ Register a new event. """
+    stack = inspect.stack()
+    previous_stack_frame = stack[1]
+    file_test = Path(previous_stack_frame.filename)
+    file_test = file_test.stem.replace(".py", "")
+    allow_sudo = args.get("allow_sudo", False)
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', False)
     groups_only = args.get('groups_only', False)
     trigger_on_fwd = args.get('trigger_on_fwd', False)
     disable_errors = args.get('disable_errors', False)
+    # get the pattern from the decorator
+    if pattern is not None:
+        if pattern.startswith("\#"):
+            # special fix for snip.py
+            args["pattern"] = re.compile(pattern)
+        else:
+            args["pattern"] = re.compile("\." + pattern)
+            cmd = "." + pattern
+            try:
+                CMD_LIST[file_test].append(cmd)
+            except:
+                CMD_LIST.update({file_test: [cmd]})
 
+    args["outgoing"] = True
+    # should this command be available for other users?
+    if allow_sudo:
+        args["from_users"] = list(Config.SUDO_USERS)
+        # Mutually exclusive with outgoing (can only set one of either).
+        args["incoming"] = True
+        del args["allow_sudo"]
+
+    # error handling condition check
+    elif "incoming" in args and not args["incoming"]:
+        args["outgoing"] = True
+
+    # add blacklist chats, UB should not respond in these chats
+    allow_edited_updates = False
+    if "allow_edited_updates" in args and args["allow_edited_updates"]:
+        allow_edited_updates = args["allow_edited_updates"]
+        del args["allow_edited_updates"]
+
+    
     if pattern is not None and not pattern.startswith('(?i)'):
         args['pattern'] = '(?i)' + pattern
 
@@ -221,7 +257,10 @@ def javes05(**args):
             if groups_only and not check.is_group:
                 await check.respond("`I don't think this is a group.`")
                 return
-
+            try:
+                    CMD_LIST[file_test].append(cmd)
+            except:
+                    CMD_LIST.update({file_test: [cmd]})
             try:
                 await func(check)
 
@@ -322,8 +361,8 @@ async def progress(current, total, event, start, type_of_ps, file_name=None):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "[{0}{1}]\nProgress: {2}%\n".format(
-            ''.join(["?" for i in range(math.floor(percentage / 5))]),
-            ''.join(["?" for i in range(20 - math.floor(percentage / 5))]),
+            ''.join(["-" for i in range(math.floor(percentage / 5))]),
+            ''.join(["-" for i in range(20 - math.floor(percentage / 5))]),
             round(percentage, 2))
         tmp = progress_str + \
             "{0} of {1}\nETA: {2}".format(
