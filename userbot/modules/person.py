@@ -20,7 +20,7 @@ from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import ChannelParticipantsAdmins
 from userbot import (AFKREASON, COUNT_MSG, CMD_HELP, ISAFK, BOTLOG,
                      BOTLOG_CHATID, USERS, PM_AUTO_BAN)
-from userbot.events import javes05
+from userbot.events import javes05, javess
 from userbot import bot, CMD_HELP
 from telethon.errors import rpcbaseerrors
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
@@ -102,7 +102,7 @@ UNAPPROVED_MSG = (
    f"`{JAVES_NNAME}:`**{PM_MESSAGE}**")
     
 
-@javes05(incoming=True, disable_edited=True, disable_errors=True)
+@javess(incoming=True, disable_edited=True, disable_errors=True)
 async def permitpm(event):
     """ Prohibits people from PMing you without approval. \
         Will block retarded nibbas automatically. """
@@ -179,7 +179,7 @@ async def permitpm(event):
                         )
 
 
-@javes05(disable_edited=True, outgoing=True, disable_errors=True)
+@javess(disable_edited=True, outgoing=True, disable_errors=True)
 async def auto_accept(event):
     """ Will approve automatically if you texted them first. """
     if not PM_AUTO_BAN:
