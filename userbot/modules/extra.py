@@ -3531,7 +3531,7 @@ async def univsaye(cowmsg):
         cheese = cow.get_cow(arg)
         cheese = cheese()
 
-        await cowmsg.edit(f"`{cheese.milk(text).replace('`', '´')}`")
+        await cowmsg.edit(f"`{cheese.milk(text).replace('`', 'Â´')}`")
 
 
 @javes05(outgoing=True, pattern="^!shout")
