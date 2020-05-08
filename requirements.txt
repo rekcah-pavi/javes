@@ -2,6 +2,7 @@ Pillow
 PyGithub
 aiofiles
 aiohttp
+wheel
 aria2p
 async_generator
 beautifulsoup4
