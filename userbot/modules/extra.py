@@ -2134,7 +2134,7 @@ async def carbon_api(e):
    await e.delete()
    
    
-@javes05(outgoing=True, pattern="^!carbon3")
+@bot.on(admin_cmd(pattern="carbon3"))
 async def carbon_api(e):
  COLOUR1 = random.randint(0,256)
  COLOUR2 = random.randint(0,256)
@@ -2183,7 +2183,7 @@ async def carbon_api(e):
 
 
 
-@javes05(outgoing=True, pattern="^!carbon4")
+@bot.on(admin_cmd(pattern="carbon4"))
 async def carbon_api(e):
  COLOUR1 = random.randint(0,256)
  COLOUR2 = random.randint(0,256)
@@ -2229,12 +2229,9 @@ async def carbon_api(e):
    os.remove('/root/userbot/userbot/carbon.png')
    await e.delete()
 
-@javes05(outgoing=True, pattern="^!carbon$")
-async def iqless(e):
-    await e.edit("**Carbon command changed To**\n!carbon1\n!carbon2\n!carbon3\n!carbon4\n!carbon5")      
 
 
-@javes05(outgoing=True, pattern="^!carbon5")
+@javes05(outgoing=True, pattern="^!carbon")
 async def carbon_api(e):
     """ A Wrapper for carbon.now.sh """
     await e.edit("`Processing..`")
@@ -3724,4 +3721,36 @@ async def remove_profilepic(delpfp):
     await delpfp.edit(
         f"`Successfully deleted {len(input_photos)} profile picture(s).`")
 
+
+
+@javes05(outgoing=True, pattern="^!autopic2$")
+async def autopic(event):
+    downloaded_file_name = "userbot/original_pic.png"
+    downloader = SmartDL(AUTO_PP, downloaded_file_name, progress_bar=False)
+    downloader.start(blocking=False)
+    photo = "userbot/photo_pfp.png"
+    while not downloader.isFinished():
+        place_holder = None
+    counter = -30
+    while True:
+        shutil.copy(downloaded_file_name, photo)
+        im = Image.open(photo)
+        file_test = im.rotate(counter, expand=False).save(photo, "PNG")
+        current_time = datetime.now().strftime(f"%H:%M")
+        img = Image.open(photo)
+        drawn_text = ImageDraw.Draw(img)
+        fnt = ImageFont.truetype(FONT_FILE_TO_USE, 120)
+        drawn_text.text((25, 530), current_time, font=fnt, fill=(280, 280, 280))
+        img.save(photo)
+        file = await bot.upload_file(photo)  # pylint:disable=E0602
+        await event.reply(f"**{JAVES_NAME}**: `successfully set profile picture \nSleeping 60s.......`")
+        try:
+            await bot(functions.photos.UploadProfilePhotoRequest(  # pylint:disable=E0602
+                file
+            ))
+            os.remove(photo)
+            counter -= 30
+            await asyncio.sleep(60)
+        except:
+            return
 
