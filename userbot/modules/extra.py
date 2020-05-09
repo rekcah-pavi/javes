@@ -3743,9 +3743,8 @@ async def autopic(event):
         img.save(photo)
         file = await bot.upload_file(photo)  # pylint:disable=E0602
         await event.reply(f"**{JAVES_NAME}**: `successfully set profile picture \nSleeping 60s.......`")
-        await event.client(functions.photos.DeletePhotosRequest(await event.client.get_profile_photos("me", limit=1)))
-        n = 1
-        await event.client(functions.photos.DeletePhotosRequest(await event.client.get_profile_photos("me", limit=n)))
+        await event.client(functions.photos.DeletePhotosRequest(await event.client.get_profile_photos("me", limit=1)))       
+        #await event.client(functions.photos.DeletePhotosRequest(await event.client.get_profile_photos("me", limit=n)))
         try:
             await bot(functions.photos.UploadProfilePhotoRequest(  # pylint:disable=E0602
                 file
