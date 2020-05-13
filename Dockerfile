@@ -1,16 +1,10 @@
-# We're using Alpine Edge
+
 FROM alpine:edge
 
-#
-# We have to uncomment Community repo for some packages
-#
+
 RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
-RUN apk add --no-cache g++ freetype-dev jpeg-dev 
-#
-# Installing Packages
-#
-RUN apk add --no-cache=true --update \
+RUN apk add  --update \
     coreutils \
     bash \
     nodejs \
@@ -55,7 +49,6 @@ RUN apk add --no-cache=true --update \
     jpeg \
     zip \
     megatools \
-    nodejs \
     freetype-dev
 
 
@@ -66,20 +59,10 @@ RUN python3 -m ensurepip \
     if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
     rm -r /root/.cache
 
-#
-# Clone repo and prepare working directory
-#
 RUN git clone https://github.com/rekcah-pavi/javes /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 
-#
-# Copies session and config (if it exists)
-#
-COPY ./sample_config.env ./userbot.session* ./config.env* /root/userbot/
 
-#
-# Install requirements
-#
 RUN pip3 install -r requirements.txt
 CMD ["python3","-m","userbot"]

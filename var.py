@@ -1,3 +1,2 @@
-import os
-from config2 import Var as Config
-Var = Config
+from userbot.javes_main.heroku_var import config
+Var = config

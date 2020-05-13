@@ -1,6 +1,27 @@
-<h1 align="center">Project Javes</h1>
-<h3 align="center">A modular Telegram userbot running on Python </h3>
-<p align="center">&nbsp;</p>
-<h2 align="center">How To Install</h2>
-<h5 align="center">Tap this image to deploy in heroku! Join our telegram channel for guide https://t.me/javes05 </h5>
-<p align="center"><a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves&template=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves"> <img src="https://www.vippng.com/png/full/5-53176_baby-groot-png-image-background-groot-reading-book.png" alt="Deploy to Heroku" /></a></p>
+
+## What is Javes?
+Javes is a telgram userbot that running in python3 + Telethon ,  Born from <a href="https://github.com/AvinashReddy3108/PaperplaneExtended">PaperplaneExtended</a> 
+
+## What is javes special things
+You can set your own afk,alive,pm....etc Messages. 
+Javes has advance <a href="https://t.me/javes05/116">sudo.</a>, support other  userbot's <a href="https://t.me/javes05/119">plugins</a> too
+
+
+## Tap this img to deploy javes in heroku
+<a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves&template=https%3A%2F%2Fgithub.com%2Frekcah-pavi%2Fjaves"> <img src="https://www.herokucdn.com/deploy/button.svg" alt="Javes" /></a></p>
+
+
+## Full-Guid for make your own javes
+Tap <a href="https://t.me/javes05/24">This link</a> 
+
+
+
+## Our support channel
+Join <a href="https://t.me/javes05">Channel
+
+
+
+
+
+
+
