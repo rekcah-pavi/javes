@@ -48,7 +48,7 @@ class config(object):
     LOGGER = True
     GITHUB_ACCESS_TOKEN = os.environ.get("GITHUB_ACCESS_TOKEN", None)
     GIT_REPO_NAME = os.environ.get("GIT_REPO_NAME", None)
-    SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS").split())
+    SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
     LYDIA_API_KEY = os.environ.get("LYDIA_API_KEY", None)
     LESS_SPAMMY = os.environ.get("LESS_SPAMMY", None)
     PM_MESSAGE = os.environ.get(f"PM_MESSAGE", None)
