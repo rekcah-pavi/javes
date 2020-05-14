@@ -29,6 +29,7 @@ async def main():
             
 bot.start()
 bot.loop.run_until_complete(main())
+from userbot.javes_main import custom_installer
 LOGS.info("Loading modules")
 from userbot.modules import *
 LOGS.info("Sucessfully connected check it by typing !javes in any chat, type  !help for more info.")
