@@ -3,7 +3,7 @@
 Javes is a telgram userbot that running in python3 + Telethon ,  Born from <a href="https://github.com/AvinashReddy3108/PaperplaneExtended">PaperplaneExtended</a> 
 
 ## What is javes special things
-You can set your own afk,alive,pm....etc Messages. 
+Powerfull Gban. 
 Javes has advance <a href="https://t.me/javes05/116">sudo.</a>, support other  userbot's <a href="https://t.me/javes05/119">plugins</a> too
 
 
