@@ -8,7 +8,7 @@ from userbot import CMD_LIST
 import re
 import logging
 import inspect
-import sys
+import sys, json
 from asyncio import create_subprocess_shell as asyncsubshell
 from asyncio import subprocess as asyncsub
 from os import remove
