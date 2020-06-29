@@ -63,3 +63,4 @@ speedtest-cli
 sqlalchemy
 python-dateutil
 spamwatch
+virustotal_python
