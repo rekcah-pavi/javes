@@ -2,8 +2,8 @@ Pillow
 PyGithub
 aiofiles
 aiohttp
-wheel
 aria2p
+cryptg
 async_generator
 beautifulsoup4
 bs4
@@ -64,4 +64,3 @@ sqlalchemy
 python-dateutil
 spamwatch
 virustotal_python
-cryptg
