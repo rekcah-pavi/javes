@@ -15,11 +15,8 @@ load_dotenv("config.env")
 from userbot.javes_main.heroku_var import config
 
 CONSOLE_LOGGER_VERBOSE = config.CONSOLE_LOGGER_VERBOSE
-if CONSOLE_LOGGER_VERBOSE:basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",level=DEBUG,)
-else:
-    basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",level=INFO)
-LOGS = getLogger(__name__)
-
+basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 
 ENV = config.ENV
 API_KEY = config.API_KEY
