@@ -2,8 +2,7 @@
 
 import os
 from sys import version_info
-import logging
-from logging import basicConfig, getLogger, INFO, DEBUG
+from logging import basicConfig, getLogger, INFO, DEBUG, WARNING
 from distutils.util import strtobool as sb
 from pylast import LastFMNetwork, md5
 from pySmartDL import SmartDL
@@ -17,7 +16,7 @@ from userbot.javes_main.heroku_var import config
 
 CONSOLE_LOGGER_VERBOSE = config.CONSOLE_LOGGER_VERBOSE
 basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+                    level=WARNING)
 
 ENV = config.ENV
 API_KEY = config.API_KEY
