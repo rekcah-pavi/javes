@@ -2,6 +2,7 @@
 
 import os
 from sys import version_info
+import logging
 from logging import basicConfig, getLogger, INFO, DEBUG
 from distutils.util import strtobool as sb
 from pylast import LastFMNetwork, md5
