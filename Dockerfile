@@ -10,6 +10,7 @@ RUN apk add  --update \
     nodejs \
     build-base \
     bzip2-dev \
+    openjdk11 \
     curl \
     figlet \
     gcc \
