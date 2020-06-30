@@ -16,7 +16,7 @@ from userbot.javes_main.heroku_var import config
 
 CONSOLE_LOGGER_VERBOSE = config.CONSOLE_LOGGER_VERBOSE
 basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=WARNING)
+                    level=INFO)
 LOGS = getLogger(__name__)
 ENV = config.ENV
 API_KEY = config.API_KEY
