@@ -64,7 +64,8 @@ RUN python3 -m ensurepip \
 RUN git clone https://github.com/rekcah-pavi/javes /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
-
-
+RUN mv userbot/javes_main/extra/apktool /usr/local/bin
+RUN mv userbot/javes_main/extra/apktool.jar /usr/local/bin
+RUN chmod +x /usr/local/bin/*
 RUN pip3 install -r requirements.txt
 CMD ["python3","-m","userbot"]
