@@ -1,16 +1,12 @@
 
-FROM alpine:edge
+FROM kalilinux/kali-rolling
+RUN apt-get update && apt upgrade -y && apt-get install sudo
 
-
-RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
-RUN apk add  --update \
+RUN apt-get install -y\
     coreutils \
     bash \
     nodejs \
-    build-base \
-    bzip2-dev \
-    openjdk11 \
+    bzip2 \
     curl \
     figlet \
     gcc \
@@ -18,54 +14,53 @@ RUN apk add  --update \
     git \
     aria2 \
     util-linux \
-    libevent \
-    jpeg-dev \
+    libevent-dev \
+    libjpeg-dev \
     libffi-dev \
-    libpq \
+    libpq-dev \
     libwebp-dev \
     libxml2 \
     libxml2-dev \
     libxslt-dev \
-    linux-headers \
     musl \
     neofetch \
-    openssl-dev \
+    libcurl4-openssl-dev \
     postgresql \
     postgresql-client \
-    postgresql-dev \
+    postgresql-server-dev-all \
     openssl \
     pv \
     jq \
     wget \
     python3 \
     python3-dev \
-    readline-dev \
+    python3-pip \
+    libreadline-dev \
+    metasploit-framework \
+    apktool \
+    openjdk-13-jdk \
+    zipalign \
     sqlite \
     ffmpeg \
-    sqlite-dev \
-    sudo \
+    libsqlite3-dev \
     chromium \
-    chromium-chromedriver \
-    zlib-dev \
-    jpeg \
+    zlib1g-dev \
+    recoverjpeg \
     zip \
     megatools \
-    freetype-dev
+    libfreetype6-dev
 
 
-RUN python3 -m ensurepip \
-    && pip3 install --upgrade pip setuptools \
-    && pip3 install --upgrade pip install wheel \
-    && rm -r /usr/lib/python*/ensurepip && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
-    rm -r /root/.cache
+
+
+RUN pip3 install --upgrade pip setuptools 
+RUN pip3 install --upgrade pip install wheel 
+RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi 
+RUN if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi 
+RUN rm -r /root/.cache
 
 RUN git clone https://github.com/rekcah-pavi/javes /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
-RUN mv userbot/javes_main/extra/apktool /usr/local/bin
-RUN mv userbot/javes_main/extra/apktool.jar /usr/local/bin
-RUN chmod +x /usr/local/bin/*
 RUN pip3 install -r requirements.txt
 CMD ["python3","-m","userbot"]
