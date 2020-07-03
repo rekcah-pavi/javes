@@ -15,10 +15,12 @@
   "stack": "container",
   "env": {
     "TELEGRAM_API_KEY": {
-      "description": "Get this value from my.telegram.org.[IMPORTANT]"
+      "description": "Get this value from my.telegram.org.[IMPORTANT]",
+      "value": "1754367"
     },
     "TELEGRAM_API_HASH": {
-      "description": "Get this value from my.telegram.org.[IMPORTANT]"
+      "description": "Get this value from my.telegram.org.[IMPORTANT]",
+      "value": "231b8cc6cca12ee51a85cf543321f476"
     },
     "TELEGRAM_STRING_SESSION": {
       "description": "Get this value by running [python3 string_session.py] in Termux or heroku[IMPORTANT]"    
