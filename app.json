@@ -158,7 +158,7 @@
       
     },
     "SUDO_USERS": {
-      "description": "give sudo user's id , he can controll your javes you can add multiple sudo users id by space , sudo users cant access your privacy untill you on full_sudo",
+      "description": "give sudo user's id , he can controll your javes, you can add multiple sudo users id by space , sudo users cant access your privacy untill you on full_sudo",
       "value": "",
       "required": false
             
@@ -197,7 +197,8 @@
     },
     "LOGSPAMMER": {
       "description": "BOTLOG_CHATID must be filled correct if you set it true",
-      "value": "false"
+      "value": "false",
+      "required": false
     }
   },
   "addons": [
