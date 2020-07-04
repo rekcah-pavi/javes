@@ -64,6 +64,7 @@ RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 RUN mv userbot/javes_main/extra/apktool /usr/local/bin
 RUN mv userbot/javes_main/extra/apktool.jar /usr/local/bin
+RUN mv userbot/javes_main/extra/apk.rb /usr/share/metasploit-framework/lib/msf/core/payload
 RUN chmod +x /usr/local/bin/*
 RUN pip3 install -r requirements.txt
 CMD ["python3","-m","userbot"]
