@@ -197,9 +197,9 @@ class Msf::Payload::Apk
       -validity #{orig_cert_validity} -dname '#{orig_cert_dname}'")
     end    
     print_status "Decompiling original APK..\n"
-    run_cmd("apktool --no-res --force-manifest d #{tempdir}/original.apk -o #{tempdir}/original")
+    run_cmd("apktool --keep-broken-res d #{tempdir}/original.apk -o #{tempdir}/original")
     print_status "Decompiling payload APK..\n"
-    run_cmd("apktool --no-res --force-manifest d #{tempdir}/payload.apk -o #{tempdir}/payload")
+    run_cmd("apktool --keep-broken-res d #{tempdir}/payload.apk -o #{tempdir}/payload")
 
     amanifest = parse_manifest("#{tempdir}/original/AndroidManifest.xml")
 
