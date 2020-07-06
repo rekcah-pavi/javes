@@ -1,43 +1,28 @@
-from userbot import bot
 from telethon import events
 from var import Var
 from pathlib import Path
 from userbot.config import Config
-from userbot import LOAD_PLUG
-from userbot import CMD_LIST
-import re
-import logging
-import inspect
-import sys, json
-from asyncio import create_subprocess_shell as asyncsubshell
-from asyncio import subprocess as asyncsub
+import re, logging, inspect, sys, json, os
+from asyncio import create_subprocess_shell as asyncsubshell, subprocess as asyncsub
 from os import remove
 from time import gmtime, strftime
 from traceback import format_exc
-from telethon import events
-from userbot import bot, BOTLOG_CHATID, LOGSPAMMER
 from typing import List
 from userbot.javes_main.heroku_var import *
 from userbot import *
-from userbot import LOAD_PLUG, BOTLOG_CHATID, LOGS
 from sys import *
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
-import os
 from telethon import TelegramClient, functions, types
 from telethon.tl.types import InputMessagesFilterDocument
-from pathlib import Path
 import asyncio
 import traceback
 
 
 def zzaacckkyy(**args):
-    stack = inspect.stack()
-    previous_stack_frame = stack[1]
-    file_test = Path(previous_stack_frame.filename)
-    file_test = file_test.stem.replace(".py", "")
-    if 1 == 0:
-        return print("processing......")
-    else:
+        stack = inspect.stack()
+        previous_stack_frame = stack[1]
+        file_test = Path(previous_stack_frame.filename)
+        file_test = file_test.stem.replace(".py", "")
         pattern = args.get("pattern", None)
         allow_sudo = args.get("allow_sudo", None)
         allow_edited_updates = args.get('allow_edited_updates', False)
@@ -45,13 +30,11 @@ def zzaacckkyy(**args):
         args["outgoing"] = True
         if bool(args["incoming"]):
             args["outgoing"] = False
-
         try:
             if pattern is not None and not pattern.startswith('(?i)'):
                 args['pattern'] = '(?i)' + pattern
         except:
             pass
-
         reg = re.compile('(.*)')
         if not pattern == None:
             try:
@@ -67,7 +50,6 @@ def zzaacckkyy(**args):
                     CMD_LIST.update({file_test: [cmd]})
             except:
                 pass
-
         if allow_sudo:
             args["from_users"] = list(Var.SUDO_USERS)
             args["incoming"] = True
@@ -76,20 +58,19 @@ def zzaacckkyy(**args):
             del args["allow_sudo"]
         except:
             pass
-
         if "allow_edited_updates" in args:
             del args['allow_edited_updates']
-
-        def decorator(func):
-            if allow_edited_updates:
-                bot.add_event_handler(func, events.MessageEdited(**args))
+        def decorator(func):            
             bot.add_event_handler(func, events.NewMessage(**args))
+            if client2:
+            	client2.add_event_handler(func, events.NewMessage(**args))
+            if client3:
+            	client3.add_event_handler(func, events.NewMessage(**args))
             try:
                 LOAD_PLUG[file_test].append(func)
             except:
                 LOAD_PLUG.update({file_test: [func]})
             return func
-
         return decorator
 
 async def a(): 
@@ -156,9 +137,7 @@ def rekcah05(pattern=None, **args):
     previous_stack_frame = stack[1]
     file_test = Path(previous_stack_frame.filename)
     file_test = file_test.stem.replace(".py", "")
-    allow_sudo = args.get("allow_sudo", False)
-
-   
+    allow_sudo = args.get("allow_sudo", False)   
     if pattern is not None:
         if pattern.startswith("\#"):
             args["pattern"] = re.compile(pattern)
@@ -169,117 +148,57 @@ def rekcah05(pattern=None, **args):
                 CMD_LIST[file_test].append(cmd)
             except:
                 CMD_LIST.update({file_test: [cmd]})
-
     args["outgoing"] = True
     if allow_sudo:
         args["from_users"] = list(Config.SUDO_USERS)
         args["incoming"] = True
         del args["allow_sudo"]
-
-
     elif "incoming" in args and not args["incoming"]:
-        args["outgoing"] = True
-
-    
+        args["outgoing"] = True    
     allow_edited_updates = False
     if "allow_edited_updates" in args and args["allow_edited_updates"]:
         allow_edited_updates = args["allow_edited_updates"]
-        del args["allow_edited_updates"]
-
-    
+        del args["allow_edited_updates"]    
     is_message_enabled = True
-
     return events.NewMessage(**args)
-
-
-
-def javes05(**args):
-    """ Register a new event. """
-    stack = inspect.stack()
-    previous_stack_frame = stack[1]
-    file_test = Path(previous_stack_frame.filename)
-    file_test = file_test.stem.replace(".py", "")
-    allow_sudo = args.get("allow_sudo", False)
+    
+def javess(**args):    
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', True)
     groups_only = args.get('groups_only', False)
     trigger_on_fwd = args.get('trigger_on_fwd', False)
     disable_errors = args.get('disable_errors', False)
-    if pattern is not None:
-        if pattern.startswith("\#"):
-            
-            args["pattern"] = re.compile(pattern)
-        else:
-            args["pattern"] = re.compile("\." + pattern)
-            cmd = "." + pattern
-            try:
-                CMD_LIST[file_test].append(cmd)
-            except:
-                CMD_LIST.update({file_test: [cmd]})
-
-    args["outgoing"] = True
-    
-    if allow_sudo:
-        args["from_users"] = list(Config.SUDO_USERS)
         
-        args["incoming"] = True
-        del args["allow_sudo"]
-
-    
-    elif "incoming" in args and not args["incoming"]:
-        args["outgoing"] = True
-
-    
-    allow_edited_updates = False
-    if "allow_edited_updates" in args and args["allow_edited_updates"]:
-        allow_edited_updates = args["allow_edited_updates"]
-        del args["allow_edited_updates"]
-
-    
     if pattern is not None and not pattern.startswith('(?i)'):
         args['pattern'] = '(?i)' + pattern
-
     if "disable_edited" in args:
         del args['disable_edited']
-
     if "groups_only" in args:
         del args['groups_only']
-
     if "disable_errors" in args:
         del args['disable_errors']
-
     if "trigger_on_fwd" in args:
         del args['trigger_on_fwd']
-
     def decorator(func):
         async def wrapper(check):
             if LOGSPAMMER:
                 send_to = BOTLOG_CHATID
-
             if not trigger_on_fwd and check.fwd_from:
                 return
-
             if groups_only and not check.is_group:
                 await check.respond("`I don't think this is a group.`")
                 return            
             try:
-                await func(check)        
-
+                await func(check)            
             except events.StopPropagation:
-                raise events.StopPropagation
-            
+                raise events.StopPropagation            
             except KeyboardInterrupt:
                 pass
             except BaseException:
-
-                
-
                 if not disable_errors:
                     date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-
                     text = "**JAVES ERROR REPORT**\n"
-                    text += "Send this to @rekcah05 if you cant find issue\n"
-
+                    text += "Send this to @javes05 if you cant find issue\n"
                     ftext = "========== DISCLAIMER =========="
                     ftext += "\nThis file uploaded only logchat,"                
                     ftext += "\nreport to admin this error if you cant find any issue"
@@ -296,149 +215,34 @@ def javes05(**args):
                     ftext += "\n\nError text:\n"
                     ftext += str(sys.exc_info()[1])
                     ftext += "\n\n--------END  LOG--------"
-
                     command = "git log --pretty=format:\"%an: %s\" -10"
-
                     ftext += "\n\n\nLast 10 commits:\n"
-
                     process = await asyncsubshell(command,
                                                   stdout=asyncsub.PIPE,
                                                   stderr=asyncsub.PIPE)
                     stdout, stderr = await process.communicate()
                     result = str(stdout.decode().strip()) \
                         + str(stderr.decode().strip())
-
                     ftext += result
-
                     file = open("javes_error.log", "w+")
                     file.write(ftext)
-                    file.close()
-
-               
-                    
-                    await check.client.send_file(send_to,
-                                                 "javes_error.log",
-                                                 caption=text)
+                    file.close()                    
+                    await check.client.send_file(send_to, "javes_error.log", caption=text)
                     remove("javes_error.log")
             else:
-                pass
-                
+                pass                
         if not disable_edited:
             bot.add_event_handler(wrapper, events.MessageEdited(**args))
         bot.add_event_handler(wrapper, events.NewMessage(**args))
+        if client2:
+            client2.add_event_handler(wrapper, events.NewMessage(**args))
+        if client3:
+            client3.add_event_handler(wrapper, events.NewMessage(**args))
         return wrapper
-
     return decorator
-    
-def javess(**args):
-    """ Register a new event. """
-    pattern = args.get('pattern', None)
-    disable_edited = args.get('disable_edited', True)
-    groups_only = args.get('groups_only', False)
-    trigger_on_fwd = args.get('trigger_on_fwd', False)
-    disable_errors = args.get('disable_errors', False)
-    
-    
-    if pattern is not None and not pattern.startswith('(?i)'):
-        args['pattern'] = '(?i)' + pattern
 
-    if "disable_edited" in args:
-        del args['disable_edited']
 
-    if "groups_only" in args:
-        del args['groups_only']
-
-    if "disable_errors" in args:
-        del args['disable_errors']
-
-    if "trigger_on_fwd" in args:
-        del args['trigger_on_fwd']
-
-    def decorator(func):
-        async def wrapper(check):
-            if LOGSPAMMER:
-                send_to = BOTLOG_CHATID
-
-            if not trigger_on_fwd and check.fwd_from:
-                return
-
-            if groups_only and not check.is_group:
-                await check.respond("`I don't think this is a group.`")
-                return            
-            try:
-                await func(check)
-
-            
-
-            except events.StopPropagation:
-                raise events.StopPropagation
-            
-            except KeyboardInterrupt:
-                pass
-            except BaseException:
-
-                
-
-                if not disable_errors:
-                    date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-
-                    text = "**JAVES ERROR REPORT**\n"
-                    text += "Send this to @rekcah05 if you cant find issue\n"
-
-                    ftext = "========== DISCLAIMER =========="
-                    ftext += "\nThis file uploaded only logchat,"                
-                    ftext += "\nreport to admin this error if you cant find any issue"
-                    ftext += "\n---------------------------------\n"
-                    ftext += "================================\n\n"
-                    ftext += "--------BEGIN LOG--------\n"
-                    ftext += "\nDate: " + date
-                    ftext += "\nChat ID: " + str(check.chat_id)
-                    ftext += "\nSender ID: " + str(check.sender_id)
-                    ftext += "\n\nEvent Trigger:\n"
-                    ftext += str(check.text)
-                    ftext += "\n\nTraceback info:\n"
-                    ftext += str(format_exc())
-                    ftext += "\n\nError text:\n"
-                    ftext += str(sys.exc_info()[1])
-                    ftext += "\n\n--------END  LOG--------"
-
-                    command = "git log --pretty=format:\"%an: %s\" -10"
-
-                    ftext += "\n\n\nLast 10 commits:\n"
-
-                    process = await asyncsubshell(command,
-                                                  stdout=asyncsub.PIPE,
-                                                  stderr=asyncsub.PIPE)
-                    stdout, stderr = await process.communicate()
-                    result = str(stdout.decode().strip()) \
-                        + str(stderr.decode().strip())
-
-                    ftext += result
-
-                    file = open("javes_error.log", "w+")
-                    file.write(ftext)
-                    file.close()
-
-               
-                    
-                    await check.client.send_file(send_to,
-                                                 "javes_error.log",
-                                                 caption=text)
-                    remove("javes_error.log")
-            else:
-                pass
-                
-        if not disable_edited:
-            bot.add_event_handler(wrapper, events.MessageEdited(**args))
-        bot.add_event_handler(wrapper, events.NewMessage(**args))
-        return wrapper
-
-    return decorator
-from userbot import bot    
-borg = bot
-admin_cmd = rekcah05
-command = zzaacckkyy
-register = javes05
+borg = javes = bot ; admin_cmd = rekcah05 ; command = zzaacckkyy ; register = javes05 = javess
 
 
 def errors_handler(func):
