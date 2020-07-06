@@ -99,39 +99,25 @@ for binary, path in binaries.items():
     downloader.start()
     os.chmod(path, 0o755)
 
-
+S2 = os.environ.get("S2", None)
+S3 = os.environ.get("S3", None)
+client2 = None
+client3 = None
 if STRING_SESSION:
     client = TelegramClient(StringSession(STRING_SESSION),API_KEY,API_HASH,connection_retries=None,auto_reconnect=False,lang_code='en')
 else:
-    client = TelegramClient("userbot",API_KEY,API_HASH,connection_retries=None,auto_reconnect=False,lang_code='en')
+     quit(1)
+
+if S2:
+    client2 = TelegramClient(StringSession(S2),API_KEY,API_HASH,connection_retries=None,auto_reconnect=False,lang_code='en')
+
+if S3:
+    client3 = TelegramClient(StringSession(S3),API_KEY,API_HASH,connection_retries=None,auto_reconnect=False,lang_code='en')
+
 
 bot = client
 
-async def check_botlog_chatid():
-    if not BOTLOG_CHATID and LOGSPAMMER:
-        LOGS.info("You must set up the BOTLOG_CHATID or set flase LOGSPAMMER")
-        quit(1)
 
-    elif not BOTLOG_CHATID and BOTLOG:
-        LOGS.info("You must set up the BOTLOG_CHATID or set flase BOTLOG")
-        quit(1)
-
-    elif not BOTLOG or not LOGSPAMMER:
-        return
-
-    entity = await bot.get_entity(BOTLOG_CHATID)
-    if not entity.creator:
-        if entity.default_banned_rights.send_messages:
-            LOGS.info("Your account doesn't have rights to send messages to BOTLOG_CHATID ""group. Check if you typed the Chat ID correctly.")
-            quit(1)
-
-
-with bot:
-    try:
-        bot.loop.run_until_complete(check_botlog_chatid())
-    except:
-        LOGS.info("BOTLOG_CHATID environment variable isn't a ""valid entity. Check your environment .")
-        quit(1)
 
 borg = bot
 COUNT_MSG = 0
