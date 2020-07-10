@@ -14,9 +14,8 @@ from sys import *
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
 from telethon import TelegramClient, functions, types
 from telethon.tl.types import InputMessagesFilterDocument
-import asyncio
 import traceback
-
+import asyncio, time, io, math, os, logging, asyncio, shutil, re
 
 def zzaacckkyy(**args):
         stack = inspect.stack()
