@@ -64,3 +64,4 @@ sqlalchemy
 python-dateutil
 spamwatch
 virustotal_python
+youtube-search-python
