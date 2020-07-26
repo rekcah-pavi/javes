@@ -225,9 +225,13 @@ def javess(**args):
                     ftext += result
                     file = open("javes_error.log", "w+")
                     file.write(ftext)
-                    file.close()                    
-                    await check.client.send_file(send_to, "javes_error.log", caption=text)
-                    remove("javes_error.log")
+                    file.close()
+                    try:                 
+                      await check.client.send_file(send_to, "javes_error.log", caption=text)
+                      remove("javes_error.log")
+                    except:
+                      pass
+                    
             else:
                 pass                
         if not disable_edited:
