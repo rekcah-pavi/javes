@@ -161,7 +161,12 @@ def rekcah05(pattern=None, **args):
     is_message_enabled = True
     return events.NewMessage(**args)
     
-def javess(**args):    
+def javess(**args):
+    stack = inspect.stack()
+    previous_stack_frame = stack[1]
+    file_test = Path(previous_stack_frame.filename)
+    file_test = file_test.stem.replace(".py", "")
+    pattern = args.get("pattern", None)
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', True)
     groups_only = args.get('groups_only', False)
