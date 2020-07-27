@@ -167,7 +167,20 @@ def javess(**args):
     groups_only = args.get('groups_only', False)
     trigger_on_fwd = args.get('trigger_on_fwd', False)
     disable_errors = args.get('disable_errors', False)
-        
+    reg = re.compile('(.*)')
+    if not pattern == None:
+        try:
+            cmd = re.search(reg, pattern)
+            try:
+               cmd = cmd.group(1).replace("$", "").replace("\\", "").replace("^", "")
+            except:
+               pass
+            try:
+               CMD_LIST[file_test].append(cmd)
+            except:
+                CMD_LIST.update({file_test: [cmd]})
+        except:
+             pass
     if pattern is not None and not pattern.startswith('(?i)'):
         args['pattern'] = '(?i)' + pattern
     if "disable_edited" in args:
