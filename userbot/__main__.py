@@ -1,6 +1,6 @@
 from userbot import * ;  from sys import * ; from telethon import TelegramClient, functions, types ; from telethon.tl.types import InputMessagesFilterDocument ; from pathlib import Path ; from userbot.javes_main.commands import * ; import asyncio, os, traceback ; javes = tgbot = bot.tgbot = borg = client
 
-LOGS.info("Connecting...") ; o = o2 =o3 = ","
+LOGS.info("Connecting...") ; o = o2 =o3 = ""
 try:
    client.start() ; LOGS.info("client connected") ; o = "client1"
 except:
