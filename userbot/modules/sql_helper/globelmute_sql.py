@@ -6,7 +6,7 @@ except ImportError:
 from sqlalchemy import Column, String, UnicodeText
 
 
-class globelmute(BASE):
+class GLOBELMute(BASE):
     __tablename__ = "globelmute"
     sender = Column(String(14), primary_key=True)
 
@@ -14,12 +14,12 @@ class globelmute(BASE):
         self.sender = str(sender)
 
 
-globelmute.__table__.create(checkfirst=True)
+GLOBELMute.__table__.create(checkfirst=True)
 
 
 def is_globelmuted(sender_id):
     try:
-        return SESSION.query(globelmute).all()
+        return SESSION.query(GLOBELMute).all()
     except BaseException:
         return None
     finally:
@@ -27,13 +27,13 @@ def is_globelmuted(sender_id):
 
 
 def globelmute(sender):
-    adder = globelmute(str(sender))
+    adder = GLOBELMute(str(sender))
     SESSION.add(adder)
     SESSION.commit()
 
 
 def unglobelmute(sender):
-    rem = SESSION.query(globelmute).get((str(sender)))
+    rem = SESSION.query(GLOBELMute).get((str(sender)))
     if rem:
         SESSION.delete(rem)
         SESSION.commit()
