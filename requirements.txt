@@ -9,6 +9,7 @@ beautifulsoup4
 bs4
 bwb
 cfscrape
+bash
 var
 coffeehouse
 show
