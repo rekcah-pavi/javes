@@ -5,7 +5,6 @@ import asyncio
 from sys import version_info
 from logging import *
 from distutils.util import strtobool as sb
-from pylast import *
 from pySmartDL import SmartDL
 from dotenv import load_dotenv
 from requests import get
@@ -37,11 +36,6 @@ class config(object):
     CLEAN_WELCOME = sb(os.environ.get("CLEAN_WELCOME", "True"))
     BIO_PREFIX = os.environ.get("BIO_PREFIX", None)
     DEFAULT_BIO = os.environ.get("DEFAULT_BIO", None)
-    LASTFM_API = os.environ.get("LASTFM_API", None)
-    LASTFM_SECRET = os.environ.get("LASTFM_SECRET", None)
-    LASTFM_USERNAME = os.environ.get("LASTFM_USERNAME", None)
-    LASTFM_PASSWORD_PLAIN = os.environ.get("LASTFM_PASSWORD", None)
-    LASTFM_PASS = md5(LASTFM_PASSWORD_PLAIN)
     CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
     PM_AUTO_BAN = sb(os.environ.get("PM_PROTECTOR", "True"))
     TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY","./downloads")
