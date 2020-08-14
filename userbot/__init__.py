@@ -4,7 +4,6 @@ import os
 from sys import version_info
 from logging import basicConfig, getLogger, INFO, DEBUG, WARNING
 from distutils.util import strtobool as sb
-from pylast import LastFMNetwork, md5
 from pySmartDL import SmartDL
 from dotenv import load_dotenv
 from requests import get
