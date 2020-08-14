@@ -67,10 +67,7 @@ TEMP_DOWNLOAD_DIRECTORY = config.TEMP_DOWNLOAD_DIRECTORY
 
 
 
-if LASTFM_API and LASTFM_SECRET and LASTFM_USERNAME and LASTFM_PASS:
-    lastfm = LastFMNetwork(api_key=LASTFM_API,api_secret=LASTFM_SECRET,username=LASTFM_USERNAME,password_hash=LASTFM_PASS)
-else:
-    lastfm = None
+
     
 from userbot import ALIVE_NAME
 from userbot import DEFAULTUSER
