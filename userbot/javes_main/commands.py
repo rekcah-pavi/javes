@@ -190,7 +190,7 @@ def javess(**args):
     if pattern is not None and not pattern.startswith('(?i)'):
         args['pattern'] = '(?i)' + pattern
     if "trigger_on_inline" in args:
-        del args['trigger_on_inline
+        del args['trigger_on_inline']
     if "disable_edited" in args:
         del args['disable_edited']
     if "groups_only" in args:
