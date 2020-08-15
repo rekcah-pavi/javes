@@ -18,6 +18,7 @@ import traceback
 import asyncio, time, io, math, os, logging, asyncio, shutil, re
 
 def zzaacckkyy(**args):
+        args["func"] = lambda e: e.via_bot_id is None
         stack = inspect.stack()
         previous_stack_frame = stack[1]
         file_test = Path(previous_stack_frame.filename)
@@ -27,6 +28,9 @@ def zzaacckkyy(**args):
         allow_edited_updates = args.get('allow_edited_updates', False)
         args["incoming"] = args.get("incoming", False)
         args["outgoing"] = True
+        if "trigger_on_inline" in args:
+           del args['trigger_on_inline']
+        
         if bool(args["incoming"]):
             args["outgoing"] = False
         try:
@@ -132,6 +136,7 @@ def remove_plugin(shortname):
         raise ValueError
 
 def rekcah05(pattern=None, **args):
+    args["func"] = lambda e: e.via_bot_id is None
     stack = inspect.stack()
     previous_stack_frame = stack[1]
     file_test = Path(previous_stack_frame.filename)
@@ -147,6 +152,9 @@ def rekcah05(pattern=None, **args):
                 CMD_LIST[file_test].append(cmd)
             except:
                 CMD_LIST.update({file_test: [cmd]})
+    if "trigger_on_inline" in args:
+        del args['trigger_on_inline']
+    
     args["outgoing"] = True
     if allow_sudo:
         args["from_users"] = list(Config.SUDO_USERS)
@@ -162,6 +170,7 @@ def rekcah05(pattern=None, **args):
     return events.NewMessage(**args)
     
 def javess(**args):
+    args["func"] = lambda e: e.via_bot_id is None
     stack = inspect.stack()
     previous_stack_frame = stack[1]
     file_test = Path(previous_stack_frame.filename)
