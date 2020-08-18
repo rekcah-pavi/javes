@@ -1,5 +1,5 @@
 
-FROM kalilinux/kali-rolling
+FROM python:3.8-slim-buster
 RUN apt-get update && apt upgrade -y && apt-get install sudo
 
 RUN apt-get install -y\
@@ -37,10 +37,10 @@ RUN apt-get install -y\
     python3-dev \
     python3-pip \
     libreadline-dev \
-    metasploit-framework \
-    apktool \
-    openjdk-13-jdk \
-    zipalign \
+    #metasploit-framework \
+    #apktool \
+    #openjdk-13-jdk \
+    #zipalign \
     sqlite \
     ffmpeg \
     libsqlite3-dev \
